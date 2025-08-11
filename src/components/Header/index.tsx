@@ -1,0 +1,11 @@
+import ThemeToggle from "../ThemeToggle";
+import styles from "./Header.module.scss";
+
+export default function Header() {
+  return (
+    <header className={styles.header}>
+      Header Component
+      <ThemeToggle />
+    </header>
+  );
+}

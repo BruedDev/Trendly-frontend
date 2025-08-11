@@ -1,0 +1,75 @@
+.toggle {
+  display: flex;
+}
+
+.label {
+  position: relative;
+  display: block;
+  width: 48px;
+  height: 26px;
+  border-radius: 26px;
+  background-color: var(--bg-toggle-theme-light);
+  overflow: hidden;
+  cursor: pointer;
+}
+
+[data-theme="dark"] .label {
+  background-color: var(--bg-toggle-theme-dark);
+}
+
+.label:before,
+.label:after {
+  display: block;
+  position: absolute;
+  content: "";
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  top: 4px;
+  left: 4px;
+  transition: 0.5s ease;
+}
+
+.label:before {
+  background-color: #ffa41b;
+}
+
+.label:after {
+  background-color: #000839;
+  left: -16px;
+  transform: scale(0.00001);
+  /* Bỏ transition khi quay về light mode */
+  transition: none;
+
+  @media (prefers-color-scheme: dark) {
+    & {
+      background-color: #fff;
+    }
+  }
+}
+
+.input[type="checkbox"] {
+  display: none;
+}
+
+.input[type="checkbox"]:checked + .label:before {
+  background-color: #fff;
+  transform: translateX(22px);
+
+  @media (prefers-color-scheme: dark) {
+    & {
+      background-color: #000;
+    }
+  }
+}
+
+.input[type="checkbox"]:checked + .label:after {
+  transform: translateX(30px) scale(1);
+  /* Giữ transition khi chuyển sang dark mode */
+  transition: 0.5s ease;
+}
+
+/* Hoặc cách khác: chỉ áp dụng transition khi checked */
+.input[type="checkbox"]:not(:checked) + .label:after {
+  transition: none !important;
+}

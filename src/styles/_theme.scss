@@ -1,0 +1,14 @@
+:root {
+  --background: #{$background-light};
+  --foreground: #{$foreground-light};
+  --bg-toggle-theme-light: #{$bg-toggle-theme-light};
+  --bg-toggle-icon-theme-light: #{$bg-toggle-icon-theme-light};
+  --bg-header: #{$bg-header};
+}
+
+[data-theme="dark"] {
+  --background: #{$background-dark};
+  --foreground: #{$foreground-dark};
+  --bg-toggle-theme-dark: #{$bg-toggle-theme-dark};
+  --bg-toggle-icon-theme-dark: #{$bg-toggle-icon-theme-dark};
+}
