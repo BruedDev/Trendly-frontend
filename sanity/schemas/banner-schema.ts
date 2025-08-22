@@ -35,12 +35,30 @@ export const bannerSchema = defineType({
       title: "Description",
       type: "text",
     }),
-    defineField({
-      name: "isActive",
-      title: "Active",
-      type: "boolean",
-      initialValue: true,
-    }),
+        defineField({
+          name: "isActive",
+          title: "Active",
+          type: "boolean",
+          initialValue: false,
+        }),
+        defineField({
+          name: "metaTitle",
+          title: "Meta Title",
+          type: "string",
+          description: "SEO meta title for the banner page",
+        }),
+        defineField({
+          name: "metaDescription",
+          title: "Meta Description",
+          type: "text",
+          description: "SEO meta description for the banner page",
+        }),
+        defineField({
+          name: "metaKeywords",
+          title: "Meta Keywords",
+          type: "string",
+          description: "SEO keywords, separated by commas",
+        }),
   ],
   preview: {
     select: {
