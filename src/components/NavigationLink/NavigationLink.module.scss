@@ -1,9 +1,9 @@
-:global(.nav) .nav-link.nav-active {
-  background: var(--gradient-nav);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  font-weight: 600;
+.nav-link.nav-active {
+  background: var(--gradient-nav) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  background-clip: text !important;
+  font-weight: 600 !important;
 }
 
 .nav-link {
@@ -41,7 +41,6 @@
   opacity: 1;
 }
 
-/* Tăng độ ưu tiên cho hiệu ứng hover của text active */
-:global(.nav) .nav-link.nav-active .nav-text::after {
-  opacity: 1;
+.nav-link.nav-active .nav-text::after {
+  opacity: 1 !important;
 }
