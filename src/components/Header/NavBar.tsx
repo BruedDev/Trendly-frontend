@@ -1,4 +1,5 @@
 "use client";
+
 import NavigationLink from "../NavigationLink";
 import useNavItems from "@/hooks/useNavItems";
 import styles from "./Header.module.scss";

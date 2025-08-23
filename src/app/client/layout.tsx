@@ -29,8 +29,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${roboto.variable} ${lora.variable} antialiased`}>
+      <head>
         <ThemeScript />
+      </head>
+      <body className={`${roboto.variable} ${lora.variable} antialiased`}>
         <Header />
         {children}
       </body>
