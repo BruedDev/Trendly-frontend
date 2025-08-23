@@ -17,7 +17,7 @@ const NavigationLink = React.forwardRef<HTMLAnchorElement, NavigationLinkProps>(
         className={`${styles["nav-link"]} ${className} ${
           active ? styles["nav-active"] : ""
         }`.trim()}
-        ref={ref as any}
+        ref={ref}
         onClick={handleClick}
       >
         <span className={styles["nav-text"]} data-text={children}>
