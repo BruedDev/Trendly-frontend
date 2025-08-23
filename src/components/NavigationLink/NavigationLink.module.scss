@@ -1,4 +1,4 @@
-.nav-active {
+.nav-link.nav-active {
   background: var(--gradient-nav);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -41,6 +41,6 @@
   opacity: 1;
 }
 
-.nav-active .nav-text::after {
+.nav-link.nav-active .nav-text::after {
   opacity: 1;
 }

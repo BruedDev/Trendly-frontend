@@ -11,20 +11,18 @@ const NavigationLink = React.forwardRef<HTMLAnchorElement, NavigationLinkProps>(
       }
     };
 
-    // Sử dụng legacyBehavior để bọc <a> bên trong Link
     return (
-      <Link href={href} passHref legacyBehavior>
-        <a
-          ref={ref}
-          className={`${styles["nav-link"]} ${className} ${
-            active ? styles["nav-active"] : ""
-          }`.trim()}
-          onClick={handleClick}
-        >
-          <span className={styles["nav-text"]} data-text={children}>
-            {children}
-          </span>
-        </a>
+      <Link
+        href={href}
+        className={`${styles["nav-link"]} ${className} ${
+          active ? styles["nav-active"] : ""
+        }`.trim()}
+        ref={ref}
+        onClick={handleClick}
+      >
+        <span className={styles["nav-text"]} data-text={children}>
+          {children}
+        </span>
       </Link>
     );
   }
