@@ -4,6 +4,8 @@
   --bg-toggle-theme-light: #{$bg-toggle-theme-light};
   --bg-toggle-icon-theme-light: #{$bg-toggle-icon-theme-light};
   --bg-header: #{$bg-header};
+  --border-color-light: #{$border-color-light};
+  --gradient-nav: #{$gradient-nav-light};
 }
 
 [data-theme="dark"] {
@@ -11,4 +13,6 @@
   --foreground: #{$foreground-dark};
   --bg-toggle-theme-dark: #{$bg-toggle-theme-dark};
   --bg-toggle-icon-theme-dark: #{$bg-toggle-icon-theme-dark};
+  --border-color-dark: #{$border-color-dark};
+  --gradient-nav: #{$gradient-nav-dark};
 }

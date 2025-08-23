@@ -1,3 +1,50 @@
 .header {
   width: 100%;
+  padding: 0 120px;
+  position: sticky;
+  top: 0;
+  left: 0;
+  background-color: var(--background);
+  overflow: hidden;
+  z-index: 9999;
+
+  @media (max-width: 1280px) {
+    padding: 0 60px;
+  }
+
+  @media (max-width: 1150px) {
+    padding: 0;
+  }
+}
+
+.content {
+  @include flex-center-space-between;
+  height: 70px;
+}
+.logo {
+  img {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+  }
+}
+
+.nav {
+  display: flex;
+  gap: 30px;
+  position: relative;
+}
+
+.nav-underline {
+  position: absolute;
+  bottom: -16px;
+  height: 3px;
+  background: var(--gradient-nav);
+  border-radius: 2px;
+  z-index: 1;
+  transform: scaleX(1);
+  transform-origin: left;
+  transition: left 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
+    width 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
+    transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
