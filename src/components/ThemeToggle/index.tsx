@@ -21,11 +21,16 @@ export default function ThemeToggle() {
     };
 
     if (savedTheme === "dark" || savedTheme === "light") {
+      // Nếu đã có THEME_KEY thì chỉ dùng giá trị này, không cần kiểm tra hệ thống nữa
       applyTheme(savedTheme);
     } else {
+      // Nếu chưa có thì lấy theo hệ thống, và lắng nghe thay đổi hệ thống
       applyTheme(mediaQuery.matches ? "dark" : "light");
       const handleSystemThemeChange = (e: MediaQueryListEvent) => {
-        applyTheme(e.matches ? "dark" : "light");
+        // Chỉ đổi theme nếu chưa có THEME_KEY
+        if (!localStorage.getItem(THEME_KEY)) {
+          applyTheme(e.matches ? "dark" : "light");
+        }
       };
       mediaQuery.addEventListener("change", handleSystemThemeChange);
       return () => {
@@ -42,10 +47,15 @@ export default function ThemeToggle() {
     document.documentElement.setAttribute("data-theme", newTheme);
   };
 
-  if (!isReady) return null;
+  if (!isReady)
+    return (
+      <div className={styles.toggle}>
+        <div className={styles.skeleton} />
+      </div>
+    );
 
   return (
-    <div className={styles.toggle}>
+    <button className={styles.toggle} aria-label="Toggle theme">
       <input
         className={styles.input}
         type="checkbox"
@@ -54,6 +64,6 @@ export default function ThemeToggle() {
         onChange={handleToggle}
       />
       <label className={styles.label} htmlFor="toggle"></label>
-    </div>
+    </button>
   );
 }

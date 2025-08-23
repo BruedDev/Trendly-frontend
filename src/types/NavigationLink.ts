@@ -3,4 +3,5 @@ export interface NavigationLinkProps {
   children: React.ReactNode;
   active?: boolean;
   className?: string;
+  onClick?: () => void;
 }

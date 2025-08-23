@@ -1,4 +1,4 @@
-import { themeScript } from "@/utils/themeScript";
+import { themeScript } from "@/utils/getThemeScript";
 
 export default function ThemeScript() {
   return (

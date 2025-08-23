@@ -77,12 +77,6 @@ export interface Post extends SanityDocument {
     caption?: string;
   };
 
-  /**
-   * Categories — `array`
-   *
-   *
-   */
-  categories?: Array<SanityKeyedReference<Category>>;
 
   /**
    * Content — `array`
@@ -120,32 +114,8 @@ export interface Post extends SanityDocument {
  *
  *
  */
-export interface Category extends SanityDocument {
-  _type: "category";
 
-  /**
-   * Title — `string`
-   *
-   *
-   */
-  title?: string;
-
-  /**
-   * Slug — `slug`
-   *
-   *
-   */
-  slug?: { _type: "slug"; current: string };
-
-  /**
-   * Description — `text`
-   *
-   *
-   */
-  description?: string;
-}
-
-export type Documents = Post | Category;
+export type Documents = Post;
 
 /**
  * This interface is a stub. It was referenced in your sanity schema but

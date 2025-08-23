@@ -1,5 +1,22 @@
+.skeleton {
+  width: 48px;
+  height: 26px;
+  border-radius: 26px;
+  background: linear-gradient(90deg, #eee 25%, #ddd 50%, #eee 75%);
+  animation: skeleton-loading 1s infinite linear;
+}
+
+@keyframes skeleton-loading {
+  0% {
+    background-position: -48px 0;
+  }
+  100% {
+    background-position: 48px 0;
+  }
+}
 .toggle {
   display: flex;
+  transform: scale(0.7);
 }
 
 .label {
@@ -38,7 +55,6 @@
   background-color: #000839;
   left: -16px;
   transform: scale(0.00001);
-  /* Bỏ transition khi quay về light mode */
   transition: none;
 
   @media (prefers-color-scheme: dark) {
@@ -65,11 +81,9 @@
 
 .input[type="checkbox"]:checked + .label:after {
   transform: translateX(30px) scale(1);
-  /* Giữ transition khi chuyển sang dark mode */
   transition: 0.5s ease;
 }
 
-/* Hoặc cách khác: chỉ áp dụng transition khi checked */
 .input[type="checkbox"]:not(:checked) + .label:after {
   transition: none !important;
 }
