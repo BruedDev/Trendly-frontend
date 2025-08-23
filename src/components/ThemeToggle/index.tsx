@@ -2,8 +2,10 @@
 
 import { useEffect, useState } from "react";
 import styles from "./ThemeToggle.module.scss";
+import { saveThemeToBackend } from "@/services/data-theme";
 
-const THEME_KEY = "Mode";
+const THEME_KEY = "data-theme";
+const UUID_KEY = "trendly_uuid";
 
 export default function ThemeToggle() {
   const [isDark, setIsDark] = useState(false);
@@ -40,11 +42,20 @@ export default function ThemeToggle() {
   }, []);
 
   // Xử lý khi người dùng toggle
-  const handleToggle = () => {
+  const handleToggle = async () => {
     const newTheme = isDark ? "light" : "dark";
     setIsDark(!isDark);
     localStorage.setItem(THEME_KEY, newTheme);
     document.documentElement.setAttribute("data-theme", newTheme);
+
+    // Lấy hoặc tạo uuid
+    let uuid = localStorage.getItem(UUID_KEY);
+    if (!uuid) {
+      uuid = crypto.randomUUID();
+      localStorage.setItem(UUID_KEY, uuid);
+    }
+    // Gửi theme và uuid lên backend (không chặn UI)
+    saveThemeToBackend(uuid, newTheme).catch(() => {});
   };
 
   if (!isReady)
