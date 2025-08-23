@@ -2,30 +2,27 @@ import React from "react";
 import Link from "next/link";
 import { NavigationLinkProps } from "@/types/NavigationLink";
 import styles from "./NavigationLink.module.scss";
+import clsx from "clsx";
 
 const NavigationLink = React.forwardRef<HTMLAnchorElement, NavigationLinkProps>(
   ({ href, children, active = false, className = "", onClick }, ref) => {
-    const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
-      if (onClick) {
-        onClick();
-      }
-    };
-
     return (
       <Link
         href={href}
-        className={`${styles["nav-link"]} ${className} ${
-          active ? styles["nav-active"] : ""
-        }`.trim()}
         ref={ref}
-        onClick={handleClick}
+        onClick={onClick}
+        className={clsx(styles["nav-link"], className, {
+          [styles["nav-active"]]: active,
+        })}
       >
-        <span className={styles["nav-text"]} data-text={children}>
+        <span className={styles["nav-text"]} data-text={children as string}>
           {children}
         </span>
       </Link>
     );
   }
 );
+
+NavigationLink.displayName = "NavigationLink";
 
 export default NavigationLink;
