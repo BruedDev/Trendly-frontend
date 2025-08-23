@@ -89,8 +89,7 @@ export default function NavBar() {
     <nav className={styles.nav} ref={navRef}>
       {navItems.map((item, idx) => (
         <NavigationLink
-          // THAY ĐỔI DUY NHẤT NẰM Ở ĐÂY
-          key={`${item.path}-${item.isActive}`}
+          key={item.path}
           href={item.path}
           className={styles.link}
           active={item.isActive}
