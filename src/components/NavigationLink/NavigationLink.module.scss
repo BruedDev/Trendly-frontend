@@ -6,14 +6,6 @@
   font-weight: 600;
 }
 
-.nav-link:hover .nav-text::after {
-  opacity: 1;
-}
-
-.nav-link.nav-active .nav-text::after {
-  opacity: 1;
-}
-
 .nav-link {
   display: flex;
   align-items: center;
@@ -50,5 +42,5 @@
 }
 
 .nav-link.nav-active .nav-text::after {
-  opacity: 1 !important;
+  opacity: 1;
 }
