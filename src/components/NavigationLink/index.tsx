@@ -11,6 +11,7 @@ const NavigationLink = React.forwardRef<HTMLAnchorElement, NavigationLinkProps>(
       }
     };
 
+    // Sử dụng legacyBehavior để bọc <a> bên trong Link
     return (
       <Link href={href} passHref legacyBehavior>
         <a
