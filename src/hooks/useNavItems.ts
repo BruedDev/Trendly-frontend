@@ -16,27 +16,21 @@ const useNavItems = (): NavItem[] => {
   const pathname = usePathname();
 
   return useMemo(() => {
-    let activePath = "";
-    if (pathname === "/") {
-      activePath = "/";
-    } else {
-      for (const item of NAV_ITEMS) {
-        if (item.path !== "/" && pathname.startsWith(item.path)) {
-          if (item.path.length > activePath.length) {
-            activePath = item.path;
+    const bestMatch = NAV_ITEMS.reduce(
+      (currentBest, item) => {
+        if (pathname.startsWith(item.path)) {
+          if (!currentBest || item.path.length > currentBest.path.length) {
+            return item;
           }
         }
-      }
-    }
-
-    if (activePath === "") {
-        const matchingRoot = NAV_ITEMS.find(item => item.path === '/');
-        if (matchingRoot) activePath = '/';
-    }
+        return currentBest;
+      },
+      null as (typeof NAV_ITEMS[0] | null)
+    );
 
     return NAV_ITEMS.map((item) => ({
       ...item,
-      isActive: item.path === activePath,
+      isActive: item.path === bestMatch?.path,
     }));
   }, [pathname]);
 };
