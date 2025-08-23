@@ -1,6 +1,10 @@
 @import "tailwindcss";
 @import "../styles/_theme.scss";
-@import "../styles/_font_family.scss";
+
+:root {
+  --font-roboto: "Roboto", sans-serif;
+  --font-lora: "Lora", serif;
+}
 
 body {
   background: var(--background);
