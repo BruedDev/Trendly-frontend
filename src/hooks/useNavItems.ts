@@ -1,4 +1,5 @@
 "use client";
+
 import { useMemo, useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { NavItem } from "@/types/NavItem";
@@ -15,13 +16,11 @@ const useNavItems = (): NavItem[] => {
   const pathname = usePathname();
   const [isHydrated, setIsHydrated] = useState(false);
 
-  // Đảm bảo hydration hoàn tất
   useEffect(() => {
     setIsHydrated(true);
   }, []);
 
   return useMemo(() => {
-    // Trong quá trình SSR, không active item nào
     if (!isHydrated) {
       return NAV_ITEMS.map((item) => ({
         ...item,
@@ -29,16 +28,12 @@ const useNavItems = (): NavItem[] => {
       }));
     }
 
-    // Logic tìm active item được cải thiện
     let bestMatch = null;
 
-    // Kiểm tra exact match trước
     const exactMatch = NAV_ITEMS.find(item => item.path === pathname);
     if (exactMatch) {
       bestMatch = exactMatch;
     } else {
-      // Nếu không có exact match, tìm longest prefix match
-      // Nhưng loại trừ root path "/" để tránh conflict
       bestMatch = NAV_ITEMS.filter(item => item.path !== "/")
         .reduce((currentBest, item) => {
           if (pathname.startsWith(item.path)) {
