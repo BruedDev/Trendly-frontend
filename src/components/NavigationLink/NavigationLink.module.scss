@@ -1,4 +1,4 @@
-.nav-link.nav-active {
+:global(.nav) .nav-link.nav-active {
   background: var(--gradient-nav);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -41,6 +41,7 @@
   opacity: 1;
 }
 
-.nav-link.nav-active .nav-text::after {
+/* Tăng độ ưu tiên cho hiệu ứng hover của text active */
+:global(.nav) .nav-link.nav-active .nav-text::after {
   opacity: 1;
 }
