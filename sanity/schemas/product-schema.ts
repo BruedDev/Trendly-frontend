@@ -1,13 +1,10 @@
 import { defineType, defineField } from "sanity";
-// Nếu bạn có các trường bắt buộc chung, import từ must-have-schema
-// import { mustHaveFields } from "./must-have-schema";
 
-export const postSchema = defineType({
-  name: "post",
-  title: "Post",
+export const productSchema = defineType({
+  name: "productSection",
+  title: "product",
   type: "document",
   fields: [
-    // ...mustHaveFields, // Nếu có các trường chung, bỏ comment này
     {
       name: "title",
       title: "Title",

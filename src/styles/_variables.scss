@@ -1,14 +1,18 @@
 // Phần tối
-$background-dark: #0a0a1a;
+$background-dark: #0a0a0a;
 $foreground-dark: #ededed;
 $bg-toggle-theme-dark: #fff;
 $bg-toggle-icon-theme-dark: #000;
+$border-color-dark: #181623;
+$gradient-nav-dark: linear-gradient(90deg, #2dd4bf, #5eead4, #a7f3d0);
 
 // Phần sáng
 $background-light: #ffffff;
 $foreground-light: #171717;
-$bg-toggle-theme-light: #000839;
+$bg-toggle-theme-light: #0a0a0a;
 $bg-toggle-icon-theme-light: #ffa41b;
+$border-color-light: #384250;
+$gradient-nav-light: linear-gradient(90deg, #ff6b35, #ff8c42, #ffa726);
 
 // $bg-collapse: #232c26;
 $bg-header: #222;
