@@ -14,7 +14,7 @@ export default function LayoutClient({
     requestAnimationFrame(() => {
       setTimeout(() => {
         setIsLoading(false);
-      }, 400);
+      }, 200);
     });
   }, []);
 
