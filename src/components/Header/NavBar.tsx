@@ -89,7 +89,7 @@ export default function NavBar({ isLoading = false }) {
       }
       previousActiveIndexRef.current = newActiveIndex;
     });
-  }, [navItems, isLoading, isAnimating, underlineStyle]); // Thêm dependencies
+  }, [navItems, isLoading, isAnimating, underlineStyle]);
 
   // Early return sau khi gọi tất cả hooks
   if (isLoading) {

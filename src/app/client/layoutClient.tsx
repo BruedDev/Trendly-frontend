@@ -11,7 +11,11 @@ export default function LayoutClient({
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    setIsLoading(false);
+    requestAnimationFrame(() => {
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 400);
+    });
   }, []);
 
   return (
