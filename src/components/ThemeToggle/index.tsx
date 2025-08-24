@@ -11,26 +11,46 @@ export default function ThemeToggle() {
   const [isDark, setIsDark] = useState(false);
   const [isReady, setIsReady] = useState(false);
 
-  // Kiểm tra theme hệ thống và localStorage khi load
   useEffect(() => {
-    const savedTheme = localStorage.getItem(THEME_KEY);
+    // Helper lấy giá trị từ cookie
+    function getCookie(name: string) {
+      const value = `; ${document.cookie}`;
+      const parts = value.split(`; ${name}=`);
+      if (parts.length === 2) return parts.pop()?.split(";").shift();
+      return undefined;
+    }
+
+    // Helper ghi giá trị vào cookie (1 năm)
+    function setCookie(name: string, value: string) {
+      document.cookie = `${name}=${value}; path=/; max-age=31536000`;
+    }
+
+    const savedTheme = getCookie(THEME_KEY);
+    const savedUUID = getCookie(UUID_KEY);
     const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
 
     const applyTheme = (theme: "dark" | "light") => {
       setIsDark(theme === "dark");
       document.documentElement.setAttribute("data-theme", theme);
+      setCookie(THEME_KEY, theme);
       setIsReady(true);
     };
 
+    // Lấy hoặc tạo uuid, chỉ dùng cookie, nếu chưa có thì tạo mới
+    let uuid = savedUUID;
+    if (!uuid) {
+      uuid = crypto.randomUUID();
+      setCookie(UUID_KEY, uuid);
+    } else {
+      setCookie(UUID_KEY, uuid); // refresh cookie
+    }
+
     if (savedTheme === "dark" || savedTheme === "light") {
-      // Nếu đã có THEME_KEY thì chỉ dùng giá trị này, không cần kiểm tra hệ thống nữa
       applyTheme(savedTheme);
     } else {
-      // Nếu chưa có thì lấy theo hệ thống, và lắng nghe thay đổi hệ thống
       applyTheme(mediaQuery.matches ? "dark" : "light");
       const handleSystemThemeChange = (e: MediaQueryListEvent) => {
-        // Chỉ đổi theme nếu chưa có THEME_KEY
-        if (!localStorage.getItem(THEME_KEY)) {
+        if (!getCookie(THEME_KEY)) {
           applyTheme(e.matches ? "dark" : "light");
         }
       };
@@ -45,15 +65,27 @@ export default function ThemeToggle() {
   const handleToggle = async () => {
     const newTheme = isDark ? "light" : "dark";
     setIsDark(!isDark);
-    localStorage.setItem(THEME_KEY, newTheme);
     document.documentElement.setAttribute("data-theme", newTheme);
 
-    // Lấy hoặc tạo uuid
-    let uuid = localStorage.getItem(UUID_KEY);
-    if (!uuid) {
-      uuid = crypto.randomUUID();
-      localStorage.setItem(UUID_KEY, uuid);
+    // Helper ghi giá trị vào cookie (1 năm)
+    function setCookie(name: string, value: string) {
+      document.cookie = `${name}=${value}; path=/; max-age=31536000`;
     }
+
+    setCookie(THEME_KEY, newTheme);
+
+    // Lấy hoặc tạo uuid, chỉ dùng cookie, nếu chưa có thì tạo mới
+    let uuid = (function () {
+      const cookieUUID = document.cookie
+        .split("; ")
+        .find((row) => row.startsWith(UUID_KEY + "="))
+        ?.split("=")[1];
+      if (cookieUUID) return cookieUUID;
+      const newUUID = crypto.randomUUID();
+      setCookie(UUID_KEY, newUUID);
+      return newUUID;
+    })();
+
     // Gửi theme và uuid lên backend (không chặn UI)
     saveThemeToBackend(uuid, newTheme).catch(() => {});
   };
