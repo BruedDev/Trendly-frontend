@@ -1,13 +1,28 @@
 export const themeScript = `
   (function() {
     try {
-      var dataTheme = localStorage.getItem('data-theme');
+      function getCookie(name) {
+        const value = "; " + document.cookie;
+        const parts = value.split("; " + name + "=");
+        if (parts.length === 2) return parts.pop().split(';').shift();
+        return undefined;
+      }
+
+      var dataTheme = getCookie('data-theme');
+      var theme;
+
       if (dataTheme === 'dark' || dataTheme === 'light') {
-        document.documentElement.setAttribute('data-theme', dataTheme);
+        theme = dataTheme;
       } else {
         var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        document.documentElement.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
+        theme = prefersDark ? 'dark' : 'light';
+        // Save detected theme to cookie immediately
+        document.cookie = 'data-theme=' + theme + '; path=/; max-age=31536000';
       }
-    } catch(e) {}
+
+      document.documentElement.setAttribute('data-theme', theme);
+    } catch(e) {
+      document.documentElement.setAttribute('data-theme', 'light');
+    }
   })();
 `;

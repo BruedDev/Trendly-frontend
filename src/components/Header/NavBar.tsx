@@ -3,9 +3,10 @@
 import NavigationLink from "../NavigationLink";
 import useNavItems from "@/hooks/useNavItems";
 import styles from "./Header.module.scss";
+import Skeleton from "@/ui/Skeleton";
 import { useRef, useEffect, useState } from "react";
 
-export default function NavBar() {
+export default function NavBar({ isLoading = false }) {
   const navItems = useNavItems();
   const navRef = useRef<HTMLDivElement>(null);
   const [underlineStyle, setUnderlineStyle] = useState({
@@ -17,7 +18,11 @@ export default function NavBar() {
   const linkRefs = useRef<(HTMLAnchorElement | null)[]>([]);
   const previousActiveIndexRef = useRef<number | null>(null);
 
+  // Di chuyển useEffect lên trên early return
   useEffect(() => {
+    // Chỉ chạy logic khi không loading
+    if (isLoading) return;
+
     const newActiveIndex = navItems.findIndex((item) => item.isActive);
 
     if (newActiveIndex === -1) {
@@ -84,7 +89,65 @@ export default function NavBar() {
       }
       previousActiveIndexRef.current = newActiveIndex;
     });
-  }, [navItems]);
+  }, [navItems, isLoading, isAnimating, underlineStyle]); // Thêm dependencies
+
+  // Early return sau khi gọi tất cả hooks
+  if (isLoading) {
+    return (
+      <nav className={styles.nav} ref={navRef}>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            height: "40px",
+            padding: "0 8px",
+          }}
+        >
+          <Skeleton width="70px" height="16px" borderRadius="4px" />
+        </div>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            height: "40px",
+            padding: "0 8px",
+          }}
+        >
+          <Skeleton width="85px" height="16px" borderRadius="4px" />
+        </div>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            height: "40px",
+            padding: "0 8px",
+          }}
+        >
+          <Skeleton width="95px" height="16px" borderRadius="4px" />
+        </div>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            height: "40px",
+            padding: "0 8px",
+          }}
+        >
+          <Skeleton width="80px" height="16px" borderRadius="4px" />
+        </div>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            height: "40px",
+            padding: "0 8px",
+          }}
+        >
+          <Skeleton width="75px" height="16px" borderRadius="4px" />
+        </div>
+      </nav>
+    );
+  }
 
   return (
     <nav className={styles.nav} ref={navRef}>
