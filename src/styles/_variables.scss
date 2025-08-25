@@ -5,6 +5,7 @@ $bg-toggle-theme-dark: #fff;
 $bg-toggle-icon-theme-dark: #000;
 $border-color-dark: #181623;
 $gradient-nav-dark: linear-gradient(90deg, #2dd4bf, #5eead4, #a7f3d0);
+$bg-CircleQuantity-dark: #eee;
 
 // Phần sáng
 $background-light: #ffffff;
@@ -13,6 +14,14 @@ $bg-toggle-theme-light: #0a0a0a;
 $bg-toggle-icon-theme-light: #ffa41b;
 $border-color-light: #384250;
 $gradient-nav-light: linear-gradient(90deg, #ff6b35, #ff8c42, #ffa726);
+$bg-CircleQuantity-light: #000;
 
-// $bg-collapse: #232c26;
-$bg-header: #222;
+// animation
+$timing-fast: 0.4s;
+$timing-medium: 0.6s;
+$timing-slow: 0.8s;
+
+$ease-smooth: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+$ease-premium: cubic-bezier(0.23, 1, 0.32, 1);
+$ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+$ease-silk: cubic-bezier(0.19, 1, 0.22, 1);

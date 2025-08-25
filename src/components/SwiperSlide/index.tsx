@@ -2,7 +2,7 @@ import { Swiper, SwiperSlide as SwiperSlideItem } from "swiper/react";
 import { Autoplay } from "swiper/modules";
 import "swiper/css";
 import { ReactNode } from "react";
-import styles from "./SwiperSlide.module.scss";
+// import styles from "./SwiperSlide.module.scss";
 
 interface SwiperSlideProps<T> {
   data: T[];

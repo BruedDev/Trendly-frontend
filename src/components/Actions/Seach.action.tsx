@@ -1,9 +1,16 @@
+"use client";
+
+import Tooltip from "@/ui/Tooltip";
 import { IoIosSearch } from "react-icons/io";
+import Search from "@/components/Search";
+import IsOpenButton from "@/components/isOpenButton";
 
 export default function SearchAction() {
   return (
-    <button data-original-title="Danh sách tìm kiếm">
-      <IoIosSearch />
-    </button>
+    <Tooltip title="Tìm kiếm" arrow="top-center">
+      <IsOpenButton componentToOpen={<Search />}>
+        <IoIosSearch size={22} data-original-title="Danh sách tìm kiếm" />
+      </IsOpenButton>
+    </Tooltip>
   );
 }

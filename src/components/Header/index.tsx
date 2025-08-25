@@ -11,7 +11,7 @@ export default function Header({ isLoading = false }) {
       <header className={styles.header}>
         <div className={styles.content}>
           <div className={styles.logo}>
-            <Skeleton width="120px" height="32px" borderRadius="6px" />
+            <Skeleton width="100px" height="32px" borderRadius="6px" />
           </div>
           <NavBar isLoading={true} />
           <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>

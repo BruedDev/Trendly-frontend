@@ -7,8 +7,7 @@ export default async function Home() {
   if (!pageData) {
     return (
       <main>
-        Không tìm thấy dữ liệu trang home (slug '/'). Hãy kiểm tra lại trên
-        Sanity Studio.
+        Không tìm thấy dữ liệu trang home. Hãy kiểm tra lại trên Sanity Studio.
       </main>
     );
   }

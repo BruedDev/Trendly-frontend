@@ -103,6 +103,7 @@ export default function NavBar({ isLoading = false }) {
       }
       previousActiveIndexRef.current = newActiveIndex;
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [navItems]);
 
   // Khôi phục underline sau khi loading xong
