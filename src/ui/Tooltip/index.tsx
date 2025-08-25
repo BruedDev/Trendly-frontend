@@ -17,14 +17,16 @@ export default function Tooltip({
     <MuiTooltip
       title={title}
       arrow
-      placement={muiPlacement as any}
+      placement={
+        muiPlacement as import("@mui/material").TooltipProps["placement"]
+      }
       PopperProps={{
         modifiers: [
           {
             name: "zIndex",
             enabled: true,
             phase: "write",
-            fn: ({ state }: any) => {
+            fn: ({ state }: { state: import("@popperjs/core").State }) => {
               state.styles.popper.zIndex = "1000";
             },
           },
@@ -32,7 +34,7 @@ export default function Tooltip({
             name: "customTooltipColor",
             enabled: true,
             phase: "write",
-            fn: ({ state }: any) => {
+            fn: ({ state }: { state: import("@popperjs/core").State }) => {
               if (state.elements && state.elements.popper) {
                 const tooltip = state.elements.popper.querySelector(
                   ".MuiTooltip-tooltip"
@@ -46,15 +48,15 @@ export default function Tooltip({
                   if (theme === "light") bg = "#181623";
                 }
                 if (tooltip) {
-                  tooltip.style.background = bg;
-                  tooltip.style.padding = "6px 12px";
-                  tooltip.style.borderRadius = "5px";
-                  tooltip.style.fontSize = "12px";
-                  tooltip.style.transition = "none";
-                  tooltip.style.color = "#eee";
+                  (tooltip as HTMLElement).style.background = bg;
+                  (tooltip as HTMLElement).style.padding = "6px 12px";
+                  (tooltip as HTMLElement).style.borderRadius = "5px";
+                  (tooltip as HTMLElement).style.fontSize = "12px";
+                  (tooltip as HTMLElement).style.transition = "none";
+                  (tooltip as HTMLElement).style.color = "#eee";
                 }
                 if (arrow) {
-                  arrow.style.color = bg;
+                  (arrow as HTMLElement).style.color = bg;
                 }
               }
             },
