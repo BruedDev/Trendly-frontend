@@ -28,7 +28,6 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  // Get theme from server-side cookie to prevent hydration mismatch
   const cookieStore = cookies();
   const themeCookie = (await cookieStore).get("data-theme");
   const serverTheme = themeCookie?.value === "dark" ? "dark" : "light";

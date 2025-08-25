@@ -5,8 +5,8 @@ export default function Skeleton({
   width = "100%",
   height = "20px",
   borderRadius = "4px",
-  variant = "text", // text, circular, rectangular
-  animation = "pulse", // pulse, wave, none
+  variant = "text",
+  animation = "pulse",
   className = "",
   style = {},
   count = 1,
@@ -28,7 +28,6 @@ export default function Skeleton({
     .filter(Boolean)
     .join(" ");
 
-  // Render multiple skeleton items if count > 1
   if (count > 1) {
     return (
       <div className={styles.skeletonGroup}>
