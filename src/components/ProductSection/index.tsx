@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import { ProductSectionProps } from "@/types/Products_section";
 import Product from "@/ui/Product";

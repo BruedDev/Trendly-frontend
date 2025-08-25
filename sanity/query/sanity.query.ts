@@ -43,14 +43,29 @@ export async function getPage(slug: string = "/") {
             price,
             originalPrice,
             thumbnail {
-              asset->{
-                url
+              defaultImage {
+                asset->{url},
+                alt
               },
-              alt
+              hoverImage {
+                asset->{url},
+                alt
+              }
             },
             categories[]->{
               title,
-              slug
+              slug,
+              image{
+                asset->{url},
+                alt
+              }
+            },
+            colors[]{
+              colorCode,
+              image{
+                asset->{url},
+                alt
+              }
             },
             isNew,
             isBestseller,

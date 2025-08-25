@@ -1,34 +1,27 @@
-import Image from "next/image";
 import React from "react";
 import { Product as ProductType } from "@/types/Products_section";
+import ProductImage from "./ProductImage";
+import ProductPrice from "./ProductPrice";
+import ProductColors from "./ProductColors";
+import styles from "./Product.module.scss";
 
 interface ProductProps {
   product: ProductType;
 }
 
 export default function Product({ product }: ProductProps) {
+  const [isHover, setIsHover] = React.useState(false);
+
   return (
-    <div style={{ border: "1px solid #eee", padding: 16, width: 220 }}>
-      {product.thumbnail?.asset?.url && (
-        <Image
-          src={product.thumbnail.asset.url}
-          alt={product.thumbnail.alt || product.title}
-          style={{ objectFit: "cover", marginBottom: 8 }}
-          width={1000}
-          height={1000}
-        />
-      )}
-      <h3>{product.title}</h3>
-      <p>Giá: {product.price?.toLocaleString()} VNĐ</p>
-      {product.originalPrice && (
-        <p style={{ textDecoration: "line-through", color: "#888" }}>
-          {product.originalPrice.toLocaleString()} VNĐ
-        </p>
-      )}
-      {product.isNew && <span style={{ color: "green" }}>Sản phẩm mới</span>}
-      {product.isBestseller && (
-        <span style={{ color: "orange", marginLeft: 8 }}>Bán chạy</span>
-      )}
+    <div
+      className={styles.productContainer}
+      onMouseEnter={() => setIsHover(true)}
+      onMouseLeave={() => setIsHover(false)}
+    >
+      <ProductImage product={product} isHover={isHover} />
+      <h3 className={styles.productTitle}>{product.title}</h3>
+      <ProductPrice product={product} />
+      <ProductColors product={product} />
     </div>
   );
 }

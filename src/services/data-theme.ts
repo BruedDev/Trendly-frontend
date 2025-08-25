@@ -1,4 +1,3 @@
-
 const BASE_URL = `${process.env.NEXT_PUBLIC_API_URL}/theme/theme`;
 
 // Service để gửi theme và uuid lên backend
