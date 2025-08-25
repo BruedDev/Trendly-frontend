@@ -1,16 +1,10 @@
-const BASE_URL = `${process.env.NEXT_PUBLIC_API_URL}/theme/theme`;
+import API_ROUTES from "@/router/index";
+import getFetchApi from "@/utils/getFetchApi";
+const { SAVED_THEME } = API_ROUTES.theme;
 
-// Service để gửi theme và uuid lên backend
-export async function saveThemeToBackend(uuid: string, theme: string) {
-	const res = await fetch(BASE_URL, {
+export async function saveTheme(uuid: string, theme: string) {
+	return getFetchApi(SAVED_THEME, {
 		method: 'POST',
-		headers: {
-			'Content-Type': 'application/json',
-		},
-		body: JSON.stringify({ uuid, theme }),
+		data: { uuid, theme },
 	});
-	if (!res.ok) {
-		throw new Error('Lưu theme thất bại');
-	}
-	return res.json();
 }

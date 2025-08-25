@@ -1,3 +1,8 @@
+export interface ProductSectionType {
+  _key: string;
+  sectionTitle?: string;
+  products?: Product[];
+}
 
 export interface ProductColor {
   colorCode: string;
