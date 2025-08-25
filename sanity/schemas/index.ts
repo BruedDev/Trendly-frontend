@@ -1,13 +1,13 @@
 import { productSchema } from './product-schema';
-import { heroSection } from "./heroSection-schema"
 import { categorySchema } from './category-schema';
-import { pageSchema } from "./page-schema";
+import { pageSchema } from './page-schema';
+import sections from '../sections';
 
 const schemas = [
   productSchema,
-  heroSection,
   categorySchema,
   pageSchema,
+  ...sections,
 ];
 
 export default schemas;
