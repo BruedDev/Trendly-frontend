@@ -1,9 +1,9 @@
 import HeroSection from "@/components/Hero_section";
+import ProductSection from "@/components/ProductSection";
 import { getPage } from "../../../sanity/query/sanity.query";
 
 export default async function Home() {
-  // Lấy dữ liệu trang home với slug là '/'
-  const pageData = await getPage("hero-section");
+  const pageData = await getPage("/");
   if (!pageData) {
     return (
       <main>
@@ -33,9 +33,26 @@ export default async function Home() {
       : [],
   };
 
+  // Lấy section productSection Sản phẩm mới
+  const productSection = Array.isArray(pageData.body)
+    ? pageData.body.find(
+        (section: { _type: string }) => section._type === "productSection"
+      )
+    : undefined;
+
   return (
     <main>
       <HeroSection data={heroProps} />
+      {productSection && (
+        <ProductSection
+          title={productSection.sectionTitle || "Sản phẩm"}
+          products={
+            Array.isArray(productSection.products)
+              ? productSection.products
+              : []
+          }
+        />
+      )}
     </main>
   );
 }
