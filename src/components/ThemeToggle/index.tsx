@@ -75,7 +75,7 @@ export default function ThemeToggle() {
     setCookie(THEME_KEY, newTheme);
 
     // Lấy hoặc tạo uuid, chỉ dùng cookie, nếu chưa có thì tạo mới
-    let uuid = (function () {
+    const uuid = (function () {
       const cookieUUID = document.cookie
         .split("; ")
         .find((row) => row.startsWith(UUID_KEY + "="))
