@@ -1,9 +1,15 @@
 import type { Metadata } from "next";
-import { Roboto, Lora } from "next/font/google";
+import { Noto_Sans, Roboto, Lora } from "next/font/google";
 import { cookies } from "next/headers";
 import ThemeScript from "@/components/ThemeScript";
 import LayoutClient from "./layoutClient";
 import "../globals.scss";
+
+const notoSans = Noto_Sans({
+  variable: "--font-noto-sans",
+  subsets: ["latin", "vietnamese"],
+  weight: ["100", "300", "400", "500", "600", "700", "800", "900"],
+});
 
 const roboto = Roboto({
   variable: "--font-roboto",
@@ -37,7 +43,9 @@ export default async function RootLayout({
       <head>
         <ThemeScript />
       </head>
-      <body className={`${roboto.variable} ${lora.variable} antialiased`}>
+      <body
+        className={`${notoSans.variable} ${roboto.variable} ${lora.variable} antialiased`}
+      >
         <LayoutClient>{children}</LayoutClient>
       </body>
     </html>
