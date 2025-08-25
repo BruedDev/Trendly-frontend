@@ -1,5 +1,5 @@
 .container {
-  height: calc(100vh - 70px);
+  height: calc(100dvh - 70px);
   overflow: hidden;
   width: 100%;
 }
@@ -9,6 +9,26 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  position: relative;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(180deg, rgba(29, 35, 31, 0) 0%, #021d2e 110%);
+  }
+  &::after {
+    content: "";
+    position: absolute;
+    top: -50px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(180deg, #021d2e 0%, rgba(29, 35, 31, 0) 40%);
+  }
 }
 .image {
   width: 100%;
