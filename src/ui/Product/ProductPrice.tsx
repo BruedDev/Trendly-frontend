@@ -1,15 +1,11 @@
-import { Product as ProductType } from "@/types/Products_section";
+import { ProductPriceProps } from "@/types/Products_section";
 import styles from "./Product.module.scss";
-
-interface ProductPriceProps {
-  product: ProductType;
-}
 
 export default function ProductPrice({ product }: ProductPriceProps) {
   return (
-    <div>
+    <div className={styles.PriceContainer}>
       <p className={styles.productPrice}>
-        Giá: {product.price?.toLocaleString()} VNĐ
+        {product.price?.toLocaleString()} VNĐ
       </p>
       {product.originalPrice && (
         <p className={styles.productOriginalPrice}>

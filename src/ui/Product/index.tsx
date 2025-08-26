@@ -1,27 +1,41 @@
 import React from "react";
-import { Product as ProductType } from "@/types/Products_section";
+import { ProductCardProps } from "@/types/Products_section";
 import ProductImage from "./ProductImage";
 import ProductPrice from "./ProductPrice";
 import ProductColors from "./ProductColors";
 import styles from "./Product.module.scss";
 
-interface ProductProps {
-  product: ProductType;
-}
-
-export default function Product({ product }: ProductProps) {
-  const [isHover, setIsHover] = React.useState(false);
-
+export default function Product({
+  product,
+  isHover,
+  onImageMouseEnter,
+  onImageMouseLeave,
+  activeColor,
+  setActiveColor,
+  activeColorImage,
+}: ProductCardProps) {
   return (
-    <div
-      className={styles.productContainer}
-      onMouseEnter={() => setIsHover(true)}
-      onMouseLeave={() => setIsHover(false)}
-    >
-      <ProductImage product={product} isHover={isHover} />
-      <h3 className={styles.productTitle}>{product.title}</h3>
-      <ProductPrice product={product} />
-      <ProductColors product={product} />
+    <div className={styles.product_Item}>
+      <div
+        className={styles.productImageContainer}
+        onMouseEnter={onImageMouseEnter}
+        onMouseLeave={onImageMouseLeave}
+      >
+        <ProductImage
+          product={product}
+          isHover={isHover}
+          activeColorImage={activeColorImage}
+        />
+      </div>
+      <div className={styles.productInfo}>
+        <h3 className={`${styles.productTitle}`}>{product.title}</h3>
+        <ProductPrice product={product} />
+        <ProductColors
+          product={product}
+          activeColor={activeColor}
+          setActiveColor={setActiveColor}
+        />
+      </div>
     </div>
   );
 }

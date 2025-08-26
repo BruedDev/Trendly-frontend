@@ -42,17 +42,28 @@ export default async function Home() {
 
   return (
     <main>
-      <HeroSection data={heroProps} />
-      {productSection && (
-        <ProductSection
-          title={productSection.sectionTitle || "Sản phẩm"}
-          products={
-            Array.isArray(productSection.products)
-              ? productSection.products
-              : []
-          }
-        />
-      )}
+      {/* Hero Section */}
+      <section id="heroSection" aria-label="Hero Section">
+        <HeroSection data={heroProps} />
+      </section>
+
+      {/* Product Section (new product)  */}
+      <section
+        id="newProducts"
+        aria-label="New Products"
+        className="container_section"
+      >
+        {productSection && (
+          <ProductSection
+            title={productSection.sectionTitle || "Sản phẩm mới"}
+            products={
+              Array.isArray(productSection.products)
+                ? productSection.products
+                : []
+            }
+          />
+        )}
+      </section>
     </main>
   );
 }
