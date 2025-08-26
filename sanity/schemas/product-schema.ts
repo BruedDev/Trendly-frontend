@@ -24,6 +24,14 @@ export const productSchema = defineType({
               title: "Hình minh họa",
               type: "image",
               options: { hotspot: true },
+            },
+            {
+              name: "quantity",
+              title: "Tồn kho màu này (Quantity)",
+              type: "number",
+              validation: (Rule) => Rule.required().min(0).error("Tồn kho màu phải >= 0"),
+              initialValue: 0,
+              description: "Số lượng tồn kho riêng cho màu này.",
             }
           ]
         }
