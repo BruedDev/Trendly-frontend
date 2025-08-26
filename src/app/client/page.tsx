@@ -40,6 +40,8 @@ export default async function Home() {
       )
     : undefined;
 
+  console.log("Product Section:", productSection);
+
   return (
     <main>
       {/* Hero Section */}
