@@ -1,8 +1,8 @@
 :root {
   --background: #{$background-light};
   --foreground: #{$foreground-light};
-  --bg-toggle-theme-light: #{$bg-toggle-theme-light};
-  --bg-toggle-icon-theme-light: #{$bg-toggle-icon-theme-light};
+  --bg-toggle-theme: #{$bg-toggle-theme-light};
+  --bg-toggle-icon-theme: #{$bg-toggle-icon-theme-light};
   --border-color-light: #{$border-color-light};
   --gradient-nav: #{$gradient-nav-light};
   --bg-CircleQuantity: #{$bg-CircleQuantity-light};
@@ -11,9 +11,9 @@
 [data-theme="dark"] {
   --background: #{$background-dark};
   --foreground: #{$foreground-dark};
-  --bg-toggle-theme-dark: #{$bg-toggle-theme-dark};
-  --bg-toggle-icon-theme-dark: #{$bg-toggle-icon-theme-dark};
-  --border-color-dark: #{$border-color-dark};
+  --bg-toggle-theme: #{$bg-toggle-theme-dark};
+  --bg-toggle-icon-theme: #{$bg-toggle-icon-theme-dark};
+  --border-color: #{$border-color-dark};
   --gradient-nav: #{$gradient-nav-dark};
   --bg-CircleQuantity: #{$bg-CircleQuantity-dark};
 }

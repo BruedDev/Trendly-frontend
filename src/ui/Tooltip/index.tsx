@@ -52,6 +52,7 @@ export default function Tooltip({
                   (tooltip as HTMLElement).style.padding = "6px 12px";
                   (tooltip as HTMLElement).style.borderRadius = "5px";
                   (tooltip as HTMLElement).style.fontSize = "12px";
+                  (tooltip as HTMLElement).style.textTransform = "capitalize";
                   (tooltip as HTMLElement).style.transition = "none";
                   (tooltip as HTMLElement).style.color = "#eee";
                 }

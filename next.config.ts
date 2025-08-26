@@ -9,7 +9,7 @@ const nextConfig: NextConfig = {
   },
 
   images: {
-    domains: ['cdn.sanity.io'], // 👈 thêm dòng này
+    domains: ['cdn.sanity.io'],
   },
 
   async rewrites() {

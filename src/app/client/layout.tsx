@@ -4,6 +4,7 @@ import { cookies } from "next/headers";
 import ThemeScript from "@/components/ThemeScript";
 import LayoutClient from "./layoutClient";
 import "../globals.scss";
+import "../globals.css";
 
 const notoSans = Noto_Sans({
   variable: "--font-noto-sans",

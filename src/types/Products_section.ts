@@ -1,3 +1,20 @@
+// Props for ProductImage component
+export interface ProductImageProps {
+  product: Product;
+  isHover: boolean;
+  activeColorImage?: ProductImage | null;
+}
+
+// Props for ProductPrice component
+export interface ProductPriceProps {
+  product: Product;
+}
+// Props for ProductColors component
+export interface ProductColorsProps {
+  product: Product;
+  activeColor: number | null;
+  setActiveColor: (idx: number, image?: ProductImage | null) => void;
+}
 export interface ProductSectionType {
   _key: string;
   sectionTitle?: string;
@@ -42,4 +59,20 @@ export interface Product {
 export interface ProductSectionProps {
   title: string;
   products: Product[];
+}
+
+// Props for Product Card component
+export interface ProductCardProps {
+  product: Product;
+  isHover: boolean;
+  onImageMouseEnter: () => void;
+  onImageMouseLeave: () => void;
+  activeColor: number | null;
+  setActiveColor: (colorIdx: number | null, image?: ProductImage | null) => void;
+  activeColorImage?: ProductImage | null;
+}
+
+export interface ProductHeaderProps {
+  title: string;
+  description?: string;
 }

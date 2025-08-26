@@ -11,7 +11,7 @@ export default function HeroSection({ data }: { data?: BannerSection }) {
   const images = data.images.filter((img) => img?.asset?.url);
 
   return (
-    <section className={styles.container}>
+    <div className={styles.container}>
       <SwiperSlide
         data={images}
         renderItem={(image, index) => (
@@ -33,6 +33,6 @@ export default function HeroSection({ data }: { data?: BannerSection }) {
         }}
         transitionSpeed={getSlidingSpeed(1000)}
       />
-    </section>
+    </div>
   );
 }
