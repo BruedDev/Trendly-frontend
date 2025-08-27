@@ -5,7 +5,6 @@ export const productSchema = defineType({
   title: "Product",
   type: "document",
   fields: [
-    // ...existing fields...
     defineField({
       name: "colors",
       title: "Màu sắc",
@@ -42,7 +41,7 @@ export const productSchema = defineType({
       title: "Product Name",
       type: "string",
       validation: (Rule) => Rule.required().error("Product name is required"),
-    }),
+  }),
     defineField({
       name: "slug",
       title: "Slug",
@@ -107,7 +106,7 @@ export const productSchema = defineType({
       title: "Categories",
       type: "array",
       of: [{ type: "reference", to: [{ type: "category" }] }],
-      validation: (Rule) => Rule.min(1).error("At least one category is required"),
+      validation: (Rule) => Rule.min(1).error("At least one category section is required"),
     }),
     defineField({
       name: "description",

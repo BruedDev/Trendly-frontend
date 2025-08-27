@@ -327,6 +327,13 @@ export type ProductSection = {
   sectionTitle?: string;
 
   /**
+   * Description — `text`
+   *
+   * Mô tả cho section sản phẩm
+   */
+  description?: string;
+
+  /**
    * Display Type — `string`
    *
    *

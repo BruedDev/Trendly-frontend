@@ -7,35 +7,24 @@ export const categorySchema = defineType({
   fields: [
     defineField({
       name: "title",
-      title: "Title",
+      title: "Tên danh mục nhỏ",
       type: "string",
-      validation: (Rule) => Rule.required().custom((value) => {
-        if (!value) return "Title is required";
-        // Kiểm tra có dấu tiếng Việt
-        if (!/[àáảãạâầấẩẫậăằắẳẵặèéẻẽẹêềếểễệìíỉĩịòóỏõọôồốổỗộơờớởỡợùúủũụưừứửữựỳýỷỹỵđ]/i.test(value)) {
-          return "Vui lòng nhập đúng tiếng Việt có dấu";
-        }
-        // Viết hoa chữ cái đầu
-        if (value[0] !== value[0].toUpperCase()) {
-          return "Chữ cái đầu phải viết hoa";
-        }
-        return true;
-      }),
+      validation: (Rule) => Rule.required().error("Tên danh mục nhỏ là bắt buộc"),
     }),
     defineField({
       name: "slug",
-      title: "Slug",
+      title: "Đường dẫn",
       type: "slug",
       options: {
         source: "title",
         maxLength: 96,
       },
-      validation: (Rule) => Rule.required().error("Slug is required"),
+      validation: (Rule) => Rule.required().error("Đường dẫn là bắt buộc"),
     }),
     defineField({
       name: "description",
-      title: "Description",
+      title: "Mô tả",
       type: "text",
-    }),
+    })
   ],
 });
