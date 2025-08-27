@@ -59,6 +59,7 @@ export interface Product {
 export interface ProductSectionProps {
   title: string;
   products: Product[];
+  description?: string;
 }
 
 // Props for Product Card component
