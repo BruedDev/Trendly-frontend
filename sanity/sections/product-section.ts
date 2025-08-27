@@ -12,6 +12,13 @@ export const productSection = {
       initialValue: 'Our Products'
     },
     {
+      name: 'description',
+      title: 'Description',
+      type: 'text',
+      description: 'Mô tả cho section sản phẩm',
+      rows: 3
+    },
+    {
       name: 'displayType',
       title: 'Display Type',
       type: 'string',
