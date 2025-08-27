@@ -1,7 +1,6 @@
 import { groq } from "next-sanity";
 import { client } from "../lib/index"
 
-// Lấy thông tin trang theo slug
 export async function getPage(slug: string = "/") {
   return client.fetch(
     groq`*[_type == "page" && slug.current == $slug][0] {
@@ -74,6 +73,8 @@ export async function getPage(slug: string = "/") {
         _type == "reference" => @->{
           _type,
           sections[]{
+            _key,
+            _type,
             _type == "heroSection" => {
               _key,
               _type,
@@ -88,6 +89,7 @@ export async function getPage(slug: string = "/") {
               _key,
               _type,
               sectionTitle,
+              description,
               displayType,
               limit,
               "products": *[
@@ -130,20 +132,68 @@ export async function getPage(slug: string = "/") {
                 isBestseller,
                 inStock
               }
+            },
+            _type == "categorySection" => {
+              _key,
+              _type,
+              title,
+              description,
+              "categories": categories[]->{
+                _id,
+                title,
+                slug,
+                description
+              }
+            },
+            // FIX: Query cho categoryGroup reference
+            _type == "reference" && @->._type == "categoryGroup" => @->{
+              _key,
+              _type,
+              title,
+              description,
+              slug,
+              categories[]->{
+                _id,
+                title,
+                slug,
+                description
+              },
+              "products": *[_type == "product" && count(categories[_ref in ^.categories[]._ref]) > 0] {
+                _id,
+                title,
+                slug,
+                price,
+                originalPrice,
+                thumbnail {
+                  defaultImage {
+                    asset->{url},
+                    alt
+                  },
+                  hoverImage {
+                    asset->{url},
+                    alt
+                  }
+                },
+                categories[]->{
+                  title,
+                  slug
+                },
+                colors[]{
+                  colorCode,
+                  image{
+                    asset->{url},
+                    alt
+                  }
+                },
+                isNew,
+                isBestseller,
+                inStock
+              }
             }
           }
         }
       }
     }`,
     { slug }
-  );
-}
-
-// Lấy tất cả slug của page
-export async function getAllSlugs() {
-  return client.fetch(
-    groq`*[_type == "page" && defined(slug.current)][]{
-      "slug": slug.current
-    }`
   );
 }

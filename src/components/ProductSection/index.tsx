@@ -1,15 +1,18 @@
 "use client";
 
 import React from "react";
-import { ProductSectionProps } from "@/types/Products_section";
+import {
+  ProductSectionProps,
+  ProductImage as ProductImageType,
+} from "@/types/Products_section";
 import ProductUi from "@/ui/Product";
-import { ProductImage as ProductImageType } from "@/types/Products_section";
 import ProductHeader from "@/ui/Product/ProductHeader";
 import styles from "./ProductSection.module.scss";
 
 export default function ProductSection({
   title,
   products,
+  description,
 }: ProductSectionProps) {
   const [hoveredId, setHoveredId] = React.useState<string | null>(null);
   const [activeColors, setActiveColors] = React.useState<
@@ -34,7 +37,7 @@ export default function ProductSection({
 
   return (
     <div className={styles.wrapper}>
-      <ProductHeader title={title} />
+      <ProductHeader title={title} description={description} />
       <div className={styles.wrapper_productList}>
         {products.map((product) => (
           <ProductUi

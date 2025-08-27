@@ -25,10 +25,16 @@ export default async function Home() {
     "5cb364e8f8f2"
   );
 
-  // Lấy dữ liệu newProductSections
+  // Lấy dữ liệu newProductSections (SẢN PHẨM MỚI)
   const newProductSections = getSectionById<ProductSectionWithProducts>(
     pageData.body,
     "6c2fc8079296"
+  );
+
+  // Lấy dữ liệu BestsellerProductSections (SẢN PHẨM BÁN CHẠY)
+  const BestsellerProductSections = getSectionById<ProductSectionWithProducts>(
+    pageData.body,
+    "b475ab074c96"
   );
 
   if (!heroSection) {
@@ -69,7 +75,24 @@ export default async function Home() {
         {newProductSections && (
           <ProductSection
             title={newProductSections.sectionTitle || "Sản phẩm mới"}
+            description={newProductSections.description}
             products={newProductSections.products ?? []}
+          />
+        )}
+      </section>
+
+      <section
+        id="bestsellerProducts"
+        aria-label="Bestseller Products"
+        className="container_section"
+      >
+        {BestsellerProductSections && (
+          <ProductSection
+            title={
+              BestsellerProductSections.sectionTitle || "Sản phẩm bán chạy"
+            }
+            description={BestsellerProductSections.description}
+            products={BestsellerProductSections.products ?? []}
           />
         )}
       </section>
