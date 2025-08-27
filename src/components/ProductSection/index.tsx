@@ -2,7 +2,7 @@
 
 import React from "react";
 import { ProductSectionProps } from "@/types/Products_section";
-import Product from "@/ui/Product";
+import ProductUi from "@/ui/Product";
 import { ProductImage as ProductImageType } from "@/types/Products_section";
 import ProductHeader from "@/ui/Product/ProductHeader";
 import styles from "./ProductSection.module.scss";
@@ -37,7 +37,7 @@ export default function ProductSection({
       <ProductHeader title={title} />
       <div className={styles.wrapper_productList}>
         {products.map((product) => (
-          <Product
+          <ProductUi
             key={product._id}
             product={product}
             isHover={hoveredId === product._id}
