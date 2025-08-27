@@ -1,0 +1,8 @@
+.wrapper {
+  margin: 0 auto;
+
+  &_productList {
+    display: flex;
+    gap: 20px;
+  }
+}

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import styles from "./ThemeToggle.module.scss";
-import { saveThemeToBackend } from "@/services/data-theme";
+import { saveTheme } from "@/services/data-theme";
 
 const THEME_KEY = "data-theme";
 const UUID_KEY = "trendly_uuid";
@@ -87,7 +87,7 @@ export default function ThemeToggle() {
     })();
 
     // Gửi theme và uuid lên backend (không chặn UI)
-    saveThemeToBackend(uuid, newTheme).catch(() => {});
+    saveTheme(uuid, newTheme).catch(() => {});
   };
 
   if (!isReady)

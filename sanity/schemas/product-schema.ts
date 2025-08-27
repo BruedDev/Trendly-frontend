@@ -24,6 +24,14 @@ export const productSchema = defineType({
               title: "Hình minh họa",
               type: "image",
               options: { hotspot: true },
+            },
+            {
+              name: "quantity",
+              title: "Tồn kho màu này (Quantity)",
+              type: "number",
+              validation: (Rule) => Rule.required().min(0).error("Tồn kho màu phải >= 0"),
+              initialValue: 0,
+              description: "Số lượng tồn kho riêng cho màu này.",
             }
           ]
         }
@@ -48,17 +56,39 @@ export const productSchema = defineType({
     defineField({
       name: "thumbnail",
       title: "Product Image",
-      type: "image",
-      options: { hotspot: true },
+      type: "object",
       fields: [
         {
-          name: "alt",
-          title: "Alternative Text",
-          type: "string",
-          description: "Important for accessibility and SEO",
+          name: "defaultImage",
+          title: "Default Image",
+          type: "image",
+          options: { hotspot: true },
+          fields: [
+            {
+              name: "alt",
+              title: "Alternative Text",
+              type: "string",
+              description: "Important for accessibility and SEO",
+            },
+          ],
+          validation: (Rule) => Rule.required().error("Default image is required"),
+        },
+        {
+          name: "hoverImage",
+          title: "Hover Image",
+          type: "image",
+          options: { hotspot: true },
+          fields: [
+            {
+              name: "alt",
+              title: "Alternative Text",
+              type: "string",
+              description: "Important for accessibility and SEO",
+            },
+          ],
+          hidden: ({ parent }) => !parent?.defaultImage,
         },
       ],
-      validation: (Rule) => Rule.required().error("Product image is required"),
     }),
     defineField({
       name: "price",

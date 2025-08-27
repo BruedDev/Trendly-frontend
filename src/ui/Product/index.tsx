@@ -1,34 +1,41 @@
-import Image from "next/image";
 import React from "react";
-import { Product as ProductType } from "@/types/Products_section";
+import { ProductCardProps } from "@/types/Products_section";
+import ProductImage from "./ProductImage";
+import ProductPrice from "./ProductPrice";
+import ProductColors from "./ProductColors";
+import styles from "./Product.module.scss";
 
-interface ProductProps {
-  product: ProductType;
-}
-
-export default function Product({ product }: ProductProps) {
+export default function Product({
+  product,
+  isHover,
+  onImageMouseEnter,
+  onImageMouseLeave,
+  activeColor,
+  setActiveColor,
+  activeColorImage,
+}: ProductCardProps) {
   return (
-    <div style={{ border: "1px solid #eee", padding: 16, width: 220 }}>
-      {product.thumbnail?.asset?.url && (
-        <Image
-          src={product.thumbnail.asset.url}
-          alt={product.thumbnail.alt || product.title}
-          style={{ objectFit: "cover", marginBottom: 8 }}
-          width={1000}
-          height={1000}
+    <div className={styles.product_Item}>
+      <div
+        className={styles.productImageContainer}
+        onMouseEnter={onImageMouseEnter}
+        onMouseLeave={onImageMouseLeave}
+      >
+        <ProductImage
+          product={product}
+          isHover={isHover}
+          activeColorImage={activeColorImage}
         />
-      )}
-      <h3>{product.title}</h3>
-      <p>Giá: {product.price?.toLocaleString()} VNĐ</p>
-      {product.originalPrice && (
-        <p style={{ textDecoration: "line-through", color: "#888" }}>
-          {product.originalPrice.toLocaleString()} VNĐ
-        </p>
-      )}
-      {product.isNew && <span style={{ color: "green" }}>Sản phẩm mới</span>}
-      {product.isBestseller && (
-        <span style={{ color: "orange", marginLeft: 8 }}>Bán chạy</span>
-      )}
+      </div>
+      <div className={styles.productInfo}>
+        <h3 className={`${styles.productTitle}`}>{product.title}</h3>
+        <ProductPrice product={product} />
+        <ProductColors
+          product={product}
+          activeColor={activeColor}
+          setActiveColor={setActiveColor}
+        />
+      </div>
     </div>
   );
 }

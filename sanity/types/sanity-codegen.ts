@@ -37,12 +37,165 @@ export type {
 };
 
 /**
- * Post
+ * Product
  *
  *
  */
-export interface Post extends SanityDocument {
-  _type: "post";
+export interface Product extends SanityDocument {
+  _type: "product";
+
+  /**
+   * Màu sắc — `array`
+   *
+   *
+   */
+  colors?: Array<
+    SanityKeyed<{
+      /**
+       * Mã màu — `string`
+       *
+       *
+       */
+      colorCode?: string;
+
+      /**
+       * Hình minh họa — `image`
+       *
+       *
+       */
+      image?: {
+        _type: "image";
+        asset: SanityReference<SanityImageAsset>;
+        crop?: SanityImageCrop;
+        hotspot?: SanityImageHotspot;
+      };
+
+      /**
+       * Tồn kho màu này (Quantity) — `number`
+       *
+       * Số lượng tồn kho riêng cho màu này.
+       */
+      quantity?: number;
+    }>
+  >;
+
+  /**
+   * Product Name — `string`
+   *
+   *
+   */
+  title?: string;
+
+  /**
+   * Slug — `slug`
+   *
+   *
+   */
+  slug?: { _type: "slug"; current: string };
+
+  /**
+   * Product Image — `object`
+   *
+   *
+   */
+  thumbnail?: {
+    _type: "thumbnail";
+    /**
+     * Default Image — `image`
+     *
+     *
+     */
+    defaultImage?: {
+      _type: "image";
+      asset: SanityReference<SanityImageAsset>;
+      crop?: SanityImageCrop;
+      hotspot?: SanityImageHotspot;
+
+      /**
+       * Alternative Text — `string`
+       *
+       * Important for accessibility and SEO
+       */
+      alt?: string;
+    };
+
+    /**
+     * Hover Image — `image`
+     *
+     *
+     */
+    hoverImage?: {
+      _type: "image";
+      asset: SanityReference<SanityImageAsset>;
+      crop?: SanityImageCrop;
+      hotspot?: SanityImageHotspot;
+
+      /**
+       * Alternative Text — `string`
+       *
+       * Important for accessibility and SEO
+       */
+      alt?: string;
+    };
+  };
+
+  /**
+   * Price — `number`
+   *
+   *
+   */
+  price?: number;
+
+  /**
+   * Original Price — `number`
+   *
+   * Price before discount (optional)
+   */
+  originalPrice?: number;
+
+  /**
+   * Categories — `array`
+   *
+   *
+   */
+  categories?: Array<SanityKeyedReference<Category>>;
+
+  /**
+   * Description — `text`
+   *
+   *
+   */
+  description?: string;
+
+  /**
+   * New Product — `boolean`
+   *
+   *
+   */
+  isNew?: boolean;
+
+  /**
+   * Bestseller — `boolean`
+   *
+   *
+   */
+  isBestseller?: boolean;
+
+  /**
+   * In Stock — `boolean`
+   *
+   *
+   */
+  inStock?: boolean;
+}
+
+/**
+ * Category
+ *
+ *
+ */
+export interface Category extends SanityDocument {
+  _type: "category";
 
   /**
    * Title — `string`
@@ -52,74 +205,140 @@ export interface Post extends SanityDocument {
   title?: string;
 
   /**
-   * Thumbnail — `image`
+   * Slug — `slug`
    *
    *
    */
-  thumbnail?: {
-    _type: "image";
-    asset: SanityReference<SanityImageAsset>;
-    crop?: SanityImageCrop;
-    hotspot?: SanityImageHotspot;
-
-    /**
-     * Alternative Text — `string`
-     *
-     * Important for accessibility and SEO
-     */
-    alt?: string;
-
-    /**
-     * Caption — `string`
-     *
-     * Optional image caption
-     */
-    caption?: string;
-  };
-
+  slug?: { _type: "slug"; current: string };
 
   /**
-   * Content — `array`
+   * Description — `text`
    *
    *
    */
-  content?: Array<
-    | SanityKeyed<SanityBlock>
-    | SanityKeyed<{
-        _type: "image";
-        asset: SanityReference<SanityImageAsset>;
-        crop?: SanityImageCrop;
-        hotspot?: SanityImageHotspot;
-
-        /**
-         * Alternative Text — `string`
-         *
-         * Important for accessibility and SEO
-         */
-        alt?: string;
-
-        /**
-         * Caption — `string`
-         *
-         * Optional image caption
-         */
-        caption?: string;
-      }>
-    | SanityKeyed<Table>
-  >;
+  description?: string;
 }
 
 /**
- * Category
+ * Page
  *
  *
  */
+export interface Page extends SanityDocument {
+  _type: "page";
 
-export type Documents = Post;
+  /**
+   * Title — `string`
+   *
+   *
+   */
+  title?: string;
+
+  /**
+   * Slug — `slug`
+   *
+   *
+   */
+  slug?: { _type: "slug"; current: string };
+
+  /**
+   * Body — `array`
+   *
+   *
+   */
+  body?: Array<SanityKeyedReference<Sections>>;
+}
 
 /**
- * This interface is a stub. It was referenced in your sanity schema but
- * the definition was not actually found. Future versions of
- * sanity-codegen will let you type this explicity.
+ * Sections
+ *
+ *
  */
-type Table = any;
+export interface Sections extends SanityDocument {
+  _type: "sections";
+
+  /**
+   * Section Name — `string`
+   *
+   *
+   */
+  sectionName?: string;
+
+  /**
+   * Title — `string`
+   *
+   *
+   */
+  title?: string;
+
+  /**
+   * Sections List — `array`
+   *
+   * Tập hợp các section như hero, product để dễ quản lý và tái sử dụng.
+   */
+  sections?: Array<SanityKeyed<HeroSection> | SanityKeyed<ProductSection>>;
+}
+
+export type HeroSection = {
+  _type: "heroSection";
+  /**
+   * Title — `string`
+   *
+   *
+   */
+  title?: string;
+
+  /**
+   * Subtitle — `string`
+   *
+   *
+   */
+  subtitle?: string;
+
+  /**
+   * Slider Images — `array`
+   *
+   *
+   */
+  images?: Array<
+    SanityKeyed<{
+      _type: "image";
+      asset: SanityReference<SanityImageAsset>;
+      crop?: SanityImageCrop;
+      hotspot?: SanityImageHotspot;
+
+      /**
+       * Alternative Text — `string`
+       *
+       * Important for accessibility and SEO
+       */
+      alt?: string;
+    }>
+  >;
+};
+
+export type ProductSection = {
+  _type: "productSection";
+  /**
+   * Section Title — `string`
+   *
+   *
+   */
+  sectionTitle?: string;
+
+  /**
+   * Display Type — `string`
+   *
+   *
+   */
+  displayType?: "new" | "bestseller" | "all";
+
+  /**
+   * Number of Products — `number`
+   *
+   *
+   */
+  limit?: number;
+};
+
+export type Documents = Product | Category | Page | Sections;

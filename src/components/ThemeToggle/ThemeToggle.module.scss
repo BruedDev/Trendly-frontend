@@ -25,13 +25,9 @@
   width: 48px;
   height: 26px;
   border-radius: 26px;
-  background-color: var(--bg-toggle-theme-light);
+  background-color: var(--bg-toggle-theme);
   overflow: hidden;
   cursor: pointer;
-}
-
-[data-theme="dark"] .label {
-  background-color: var(--bg-toggle-theme-dark);
 }
 
 .label:before,

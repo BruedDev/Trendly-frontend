@@ -23,8 +23,9 @@ export const pageSchema = defineType({
       title: "Body",
       type: "array",
       of: [
-        { type: "heroSection" },
-        { type: "productSection" },
+        // { type: "heroSection" },
+        // { type: "productSection" },
+        { type: "reference", to: [{ type: "sections" }] },
       ],
     }),
   ],

@@ -6,7 +6,8 @@
     "dev": "concurrently \"next dev --turbopack\" \"npx sanity dev\"",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "codegen": "npx sanity-codegen"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
