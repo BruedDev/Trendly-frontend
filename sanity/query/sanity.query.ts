@@ -18,9 +18,7 @@ export async function getPage(slug: string = "/") {
           title,
           subtitle,
           images[]{
-            asset->{
-              url
-            },
+            asset->{ url },
             alt
           }
         },
@@ -70,6 +68,69 @@ export async function getPage(slug: string = "/") {
             isNew,
             isBestseller,
             inStock
+          }
+        },
+        // Nếu là reference tới Sections document
+        _type == "reference" => @->{
+          _type,
+          sections[]{
+            _type == "heroSection" => {
+              _key,
+              _type,
+              title,
+              subtitle,
+              images[]{
+                asset->{ url },
+                alt
+              }
+            },
+            _type == "productSection" => {
+              _key,
+              _type,
+              sectionTitle,
+              displayType,
+              limit,
+              "products": *[
+                _type == "product" &&
+                (^.displayType == "all" ||
+                 (^.displayType == "new" && isNew == true) ||
+                 (^.displayType == "bestseller" && isBestseller == true))
+              ][0...20] {
+                _id,
+                title,
+                slug,
+                price,
+                originalPrice,
+                thumbnail {
+                  defaultImage {
+                    asset->{url},
+                    alt
+                  },
+                  hoverImage {
+                    asset->{url},
+                    alt
+                  }
+                },
+                categories[]->{
+                  title,
+                  slug,
+                  image{
+                    asset->{url},
+                    alt
+                  }
+                },
+                colors[]{
+                  colorCode,
+                  image{
+                    asset->{url},
+                    alt
+                  }
+                },
+                isNew,
+                isBestseller,
+                inStock
+              }
+            }
           }
         }
       }

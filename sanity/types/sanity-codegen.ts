@@ -69,6 +69,13 @@ export interface Product extends SanityDocument {
         crop?: SanityImageCrop;
         hotspot?: SanityImageHotspot;
       };
+
+      /**
+       * Tồn kho màu này (Quantity) — `number`
+       *
+       * Số lượng tồn kho riêng cho màu này.
+       */
+      quantity?: number;
     }>
   >;
 
@@ -239,18 +246,16 @@ export interface Page extends SanityDocument {
    *
    *
    */
-  body?: Array<SanityKeyed<HeroSection> | SanityKeyed<ProductSection>>;
+  body?: Array<SanityKeyedReference<Sections>>;
 }
 
 /**
- * Section
+ * Sections
  *
  *
  */
-export interface Section extends SanityDocument {
-  products(products: unknown): unknown;
-  sectionTitle: string;
-  _type: "section";
+export interface Sections extends SanityDocument {
+  _type: "sections";
 
   /**
    * Section Name — `string`
@@ -267,25 +272,11 @@ export interface Section extends SanityDocument {
   title?: string;
 
   /**
-   * Slug — `slug`
+   * Sections List — `array`
    *
-   *
+   * Tập hợp các section như hero, product để dễ quản lý và tái sử dụng.
    */
-  slug?: { _type: "slug"; current: string };
-
-  /**
-   * Description — `array`
-   *
-   *
-   */
-  description?: Array<SanityKeyed<SanityBlock>>;
-
-  /**
-   * Category Filter — `array`
-   *
-   *
-   */
-  categoryFilter?: Array<SanityKeyedReference<Category>>;
+  sections?: Array<SanityKeyed<HeroSection> | SanityKeyed<ProductSection>>;
 }
 
 export type HeroSection = {
@@ -350,4 +341,4 @@ export type ProductSection = {
   limit?: number;
 };
 
-export type Documents = Product | Category | Page | Section;
+export type Documents = Product | Category | Page | Sections;
