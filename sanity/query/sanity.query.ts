@@ -101,6 +101,7 @@ export async function getPage(slug: string = "/") {
                 _id,
                 title,
                 slug,
+                msp,
                 price,
                 originalPrice,
                 thumbnail {

@@ -6,6 +6,7 @@
   --border-color-light: #{$border-color-light};
   --gradient-nav: #{$gradient-nav-light};
   --bg-CircleQuantity: #{$bg-CircleQuantity-light};
+  --bg-tooltip: #{$bg-tooltip-light};
 }
 
 [data-theme="dark"] {
@@ -16,4 +17,5 @@
   --border-color: #{$border-color-dark};
   --gradient-nav: #{$gradient-nav-dark};
   --bg-CircleQuantity: #{$bg-CircleQuantity-dark};
+  --bg-tooltip: #{$bg-tooltip-dark};
 }

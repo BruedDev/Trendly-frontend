@@ -5,6 +5,11 @@ const placementMap: Record<string, string> = {
   "top-left": "top-start",
   "top-center": "top",
   "top-right": "top-end",
+  "bottom-left": "bottom-start",
+  "bottom-center": "bottom",
+  "bottom-right": "bottom-end",
+  left: "left",
+  right: "right",
 };
 
 export default function Tooltip({
@@ -41,12 +46,7 @@ export default function Tooltip({
                 );
                 const arrow =
                   state.elements.popper.querySelector(".MuiTooltip-arrow");
-                let bg = "#1f2937";
-                if (typeof document !== "undefined") {
-                  const theme =
-                    document.documentElement.getAttribute("data-theme");
-                  if (theme === "light") bg = "#181623";
-                }
+                const bg = "var(--bg-tooltip)";
                 if (tooltip) {
                   (tooltip as HTMLElement).style.background = bg;
                   (tooltip as HTMLElement).style.padding = "6px 12px";

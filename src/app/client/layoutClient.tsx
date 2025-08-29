@@ -4,7 +4,9 @@ import { useState, useEffect } from "react";
 import Header from "@/components/Header";
 import Overlay from "@/ui/Overlay";
 import ContextProvider from "@/contexts/index";
+import { StatusMessageProvider } from "@/contexts/StatusMessageContext";
 import { useOverlay } from "@/hooks/useOverlay";
+import StatusMessage from "@/components/StatusMessage";
 
 export default function LayoutClient({
   children,
@@ -22,9 +24,11 @@ export default function LayoutClient({
   }, []);
 
   return (
-    <ContextProvider>
-      <LayoutContent isLoading={isLoading}>{children}</LayoutContent>
-    </ContextProvider>
+    <StatusMessageProvider>
+      <ContextProvider>
+        <LayoutContent isLoading={isLoading}>{children}</LayoutContent>
+      </ContextProvider>
+    </StatusMessageProvider>
   );
 }
 
@@ -39,12 +43,14 @@ function LayoutContent({
 
   return (
     <>
+      <StatusMessage />
       <Header isLoading={isLoading} />
       {(isOpen || isExiting) && (
         <Overlay onClose={closeOverlay} isExiting={isExiting}>
           {content}
         </Overlay>
       )}
+
       {children}
     </>
   );

@@ -1,0 +1,96 @@
+.button {
+  background-color: #000;
+  width: 100%;
+  padding: 7px;
+  font-size: 0.8rem;
+  color: #fff;
+  position: relative;
+  border: none;
+  cursor: pointer;
+  overflow: hidden;
+
+  .text {
+    position: relative;
+    z-index: 2;
+  }
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(180deg, rgba(29, 35, 31, 0) 0%, #021d2e 110%);
+  }
+  &::after {
+    content: "";
+    position: absolute;
+    top: -50px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(180deg, #021d2e 0%, rgba(29, 35, 31, 0) 40%);
+  }
+
+  // Border trên
+  .border_one {
+    position: absolute;
+    top: 4px;
+    left: 50%;
+    width: 0;
+    height: 1px;
+    background-color: #fff;
+    transition: all 0.3s ease;
+    transform: translateX(-50%);
+  }
+
+  // Border dưới
+  .border_two {
+    position: absolute;
+    bottom: 4px;
+    left: 50%;
+    width: 0;
+    height: 1px;
+    background-color: #fff;
+    transition: all 0.3s ease;
+    transform: translateX(-50%);
+  }
+
+  // Border trái
+  .border_three {
+    position: absolute;
+    left: 4px;
+    top: 4px;
+    width: 1px;
+    height: 0;
+    background-color: #fff;
+    transition: all 0.3s ease;
+  }
+
+  // Border phải
+  .border_four {
+    position: absolute;
+    right: 4px;
+    top: 4px;
+    width: 1px;
+    height: 0;
+    background-color: #fff;
+    transition: all 0.3s ease;
+  }
+
+  &:hover {
+    .border_one,
+    .border_two {
+      width: calc(100% - 8px);
+    }
+
+    .border_three,
+    .border_four {
+      height: calc(100% - 8px);
+    }
+  }
+}
+.buttonHeart {
+  position: relative;
+}
