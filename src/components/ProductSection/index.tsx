@@ -6,6 +6,7 @@ import {
   ProductImage as ProductImageType,
 } from "@/types/Products_section";
 import ProductUi from "@/ui/Product";
+import SwiperSlide from "@/components/SwiperSlide";
 import ProductHeader from "@/ui/Product/ProductHeader";
 import styles from "./ProductSection.module.scss";
 
@@ -15,6 +16,9 @@ export default function ProductSection({
   description,
 }: ProductSectionProps) {
   const [hoveredId, setHoveredId] = React.useState<string | null>(null);
+  const [hoverShowActions, setHoverShowActions] = React.useState<string | null>(
+    null
+  );
   const [activeColors, setActiveColors] = React.useState<
     Record<string, number | null>
   >({});
@@ -39,20 +43,34 @@ export default function ProductSection({
     <div className={styles.wrapper}>
       <ProductHeader title={title} description={description} />
       <div className={styles.wrapper_productList}>
-        {products.map((product) => (
-          <ProductUi
-            key={product._id}
-            product={product}
-            isHover={hoveredId === product._id}
-            onImageMouseEnter={() => handleMouseEnter(product._id)}
-            onImageMouseLeave={handleMouseLeave}
-            activeColor={activeColors[product._id] ?? null}
-            setActiveColor={(colorIdx, image) =>
-              handleSetActiveColor(product._id, colorIdx, image)
-            }
-            activeColorImage={activeColorImages[product._id] ?? null}
-          />
-        ))}
+        <SwiperSlide
+          data={products}
+          swiperProps={{
+            slidesPerView: 5,
+            slidesPerGroup: 5,
+            spaceBetween: 20,
+            pagination: {
+              clickable: true,
+            },
+          }}
+          renderItem={(product) => (
+            <ProductUi
+              key={product._id}
+              product={product}
+              isHover={hoveredId === product._id}
+              showActions={hoverShowActions === product._id}
+              onMouseEnter={() => setHoverShowActions(product._id)}
+              onMouseLeave={() => setHoverShowActions(null)}
+              onImageMouseEnter={() => handleMouseEnter(product._id)}
+              onImageMouseLeave={handleMouseLeave}
+              activeColor={activeColors[product._id] ?? null}
+              setActiveColor={(colorIdx, image) =>
+                handleSetActiveColor(product._id, colorIdx, image)
+              }
+              activeColorImage={activeColorImages[product._id] ?? null}
+            />
+          )}
+        />
       </div>
     </div>
   );

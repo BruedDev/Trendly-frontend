@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import SwiperSlide from "@/components/SwiperSlide";
-import { getSlidingSpeed } from "@/utils/getSlidingSpeed";
+import { getTimeSpeed } from "@/utils/getTimeSpeed";
 import styles from "./HeroSection.module.scss";
 import { BannerSection } from "@/types/Hero_section";
 
@@ -31,7 +31,7 @@ export default function HeroSection({ data }: { data?: BannerSection }) {
           loop: true,
           autoplay: { delay: 5000 },
         }}
-        transitionSpeed={getSlidingSpeed(1000)}
+        transitionSpeed={getTimeSpeed(1000)}
       />
     </div>
   );

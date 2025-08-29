@@ -7,6 +7,14 @@
 - **UI**: Chỉ đảm nhận việc hiển thị giao diện (render UI). UI component tuyệt đối không sử dụng hook, state hoặc logic xử lý. UI nhận props từ component cha, giúp tái sử dụng giao diện ở nhiều nơi khác nhau một cách nhất quán.
 - **Quy tắc**: Mọi xử lý logic, state, action đều nằm ở component. UI chỉ nhận props và render. Điều này giúp tách biệt rõ ràng giữa logic và giao diện, tăng khả năng tái sử dụng và bảo trì.
 
+## 1.1. UI-Only Components
+
+Trong quá trình phát triển giao diện, đối với các component chỉ phục vụ mục đích hiển thị (UI) và không yêu cầu xử lý trạng thái, hook hoặc action, bạn có thể triển khai trực tiếp phần UI trong component. Cách tiếp cận này giúp tăng tốc độ phát triển và giữ cho mã nguồn đơn giản, dễ bảo trì.
+
+**Khuyến nghị:**
+- Chỉ áp dụng cho các component tĩnh, không có tương tác hoặc logic phức tạp.
+- Nếu cần bổ sung logic hoặc xử lý trạng thái, hãy tách riêng phần xử lý ra khỏi component UI để đảm bảo tính rõ ràng và dễ mở rộng.
+
 ## 2. Router
 
 - Thư mục `router/` quản lý cấu hình các route và endpoint API cho toàn bộ ứng dụng. Đảm bảo các route được tổ chức rõ ràng, dễ mở rộng.

@@ -1,15 +1,14 @@
 import { ProductPriceProps } from "@/types/Products_section";
 import styles from "./Product.module.scss";
+import { formatPrice } from "@/utils/formatNumber";
 
 export default function ProductPrice({ product }: ProductPriceProps) {
   return (
     <div className={styles.PriceContainer}>
-      <p className={styles.productPrice}>
-        {product.price?.toLocaleString()} VNĐ
-      </p>
+      <p className={styles.productPrice}>{formatPrice(product.price)}</p>
       {product.originalPrice && (
         <p className={styles.productOriginalPrice}>
-          {product.originalPrice.toLocaleString()} VNĐ
+          {formatPrice(product.originalPrice)}
         </p>
       )}
     </div>

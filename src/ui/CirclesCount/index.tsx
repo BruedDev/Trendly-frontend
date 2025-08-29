@@ -1,9 +1,9 @@
 import styles from "./CircleQuantity.module.scss";
+import { formatNumber } from "@/utils/formatNumber";
 
 export default function CircleQuantity({ quantity = 0 }) {
   const isMultipleDigits = quantity > 9;
-
-  const displayQuantity = quantity > 99 ? "99+" : quantity.toString();
+  const displayQuantity = quantity > 99 ? "99+" : formatNumber(quantity);
 
   return (
     <div

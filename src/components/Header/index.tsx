@@ -2,7 +2,7 @@ import Link from "next/link";
 import styles from "./Header.module.scss";
 import NavBar from "./NavBar";
 import Logo from "./Logo";
-import ActionsComponent from "../Actions";
+import ActionsHeader from "../Actions/HeaderActions";
 import Skeleton from "@/ui/Skeleton";
 
 export default function Header({ isLoading = false }) {
@@ -33,7 +33,7 @@ export default function Header({ isLoading = false }) {
           <Logo />
         </Link>
         <NavBar isLoading={false} />
-        <ActionsComponent />
+        <ActionsHeader />
       </div>
     </header>
   );
