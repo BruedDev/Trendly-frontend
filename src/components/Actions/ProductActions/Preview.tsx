@@ -1,5 +1,5 @@
 import ButtonProduct from "@/ui/ButtonProduct";
 
 export default function Preview() {
-  return <ButtonProduct type="preview" text="Xem nhanh" />;
+  return <ButtonProduct variant="preview" text="Xem nhanh" />;
 }

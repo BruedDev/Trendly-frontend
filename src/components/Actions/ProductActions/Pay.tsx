@@ -1,5 +1,5 @@
 import ButtonProduct from "@/ui/ButtonProduct";
 
 export default function PayProduct() {
-  return <ButtonProduct type="pay" text="Thanh toán" />;
+  return <ButtonProduct variant="pay" text="Thanh toán" />;
 }
