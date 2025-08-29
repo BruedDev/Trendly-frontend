@@ -8,14 +8,25 @@ import styles from "./Product.module.scss";
 export default function Product({
   product,
   isHover,
+  showActions,
+  onMouseEnter,
+  onMouseLeave,
   onImageMouseEnter,
   onImageMouseLeave,
   activeColor,
   setActiveColor,
   activeColorImage,
-}: ProductCardProps) {
+}: ProductCardProps & {
+  showActions?: boolean;
+  onMouseEnter?: () => void;
+  onMouseLeave?: () => void;
+}) {
   return (
-    <div className={styles.product_Item}>
+    <div
+      className={styles.product_Item}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
+    >
       <div
         className={styles.productImageContainer}
         onMouseEnter={onImageMouseEnter}
@@ -25,10 +36,13 @@ export default function Product({
           product={product}
           isHover={isHover}
           activeColorImage={activeColorImage}
+          showActions={showActions}
         />
       </div>
       <div className={styles.productInfo}>
-        <h3 className={`${styles.productTitle}`}>{product.title}</h3>
+        <h3 className={`${styles.productTitle}`}>
+          {product.title} <span className={`${styles.msp}`}>{product.msp}</span>
+        </h3>
         <ProductPrice product={product} />
         <ProductColors
           product={product}

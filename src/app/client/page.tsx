@@ -59,6 +59,8 @@ export default async function Home() {
       : [],
   };
 
+  // console.log("BestsellerProductSections:", BestsellerProductSections);
+
   return (
     <main>
       {/* Hero Section */}

@@ -1,4 +1,11 @@
 // Props for ProductImage component
+// ...existing code...
+export interface ProductImageProps {
+  product: Product;
+  isHover: boolean;
+  activeColorImage?: ProductImage | null;
+  showActions?: boolean;
+}
 export interface ProductImageProps {
   product: Product;
   isHover: boolean;
@@ -43,6 +50,7 @@ export interface ProductThumbnail {
 }
 
 export interface Product {
+  msp: string;
   _id: string;
   title: string;
   slug: { current: string };
@@ -63,6 +71,17 @@ export interface ProductSectionProps {
 }
 
 // Props for Product Card component
+// ...existing code...
+export interface ProductCardProps {
+  product: Product;
+  isHover: boolean;
+  showActions?: boolean;
+  onImageMouseEnter: () => void;
+  onImageMouseLeave: () => void;
+  activeColor: number | null;
+  setActiveColor: (colorIdx: number | null, image?: ProductImage | null) => void;
+  activeColorImage?: ProductImage | null;
+}
 export interface ProductCardProps {
   product: Product;
   isHover: boolean;

@@ -3,9 +3,9 @@ import HeartComponent from "./Heart.action";
 import SearchAction from "./Seach.action";
 import UserComponent from "./User.action";
 import styles from "./Actions.module.scss";
-import ThemeToggle from "../ThemeToggle";
+import ThemeToggle from "../../ThemeToggle";
 
-export default function ActionsComponent() {
+export default function ActionsHeader() {
   const actions = [
     <SearchAction key="search" />,
     <UserComponent key="user" />,

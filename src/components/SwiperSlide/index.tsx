@@ -1,6 +1,7 @@
 import { Swiper, SwiperSlide as SwiperSlideItem } from "swiper/react";
-import { Autoplay } from "swiper/modules";
+import { Autoplay, Pagination } from "swiper/modules";
 import "swiper/css";
+import "swiper/css/pagination";
 import { ReactNode } from "react";
 // import styles from "./SwiperSlide.module.scss";
 
@@ -18,7 +19,11 @@ function SwiperSlide<T>({
   transitionSpeed,
 }: SwiperSlideProps<T>) {
   return (
-    <Swiper {...swiperProps} speed={transitionSpeed} modules={[Autoplay]}>
+    <Swiper
+      {...swiperProps}
+      speed={transitionSpeed}
+      modules={[Autoplay, Pagination]}
+    >
       {data.map((item, idx) => (
         <SwiperSlideItem key={idx}>{renderItem(item, idx)}</SwiperSlideItem>
       ))}

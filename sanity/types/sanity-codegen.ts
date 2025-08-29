@@ -187,6 +187,50 @@ export interface Product extends SanityDocument {
    *
    */
   inStock?: boolean;
+
+  /**
+   * Mã sản phẩm (MSP) — `string`
+   *
+   * Mã sản phẩm gồm 8 số, tự động sinh khi tạo mới.
+   */
+  msp?: string;
+}
+
+/**
+ * Category Group
+ *
+ *
+ */
+export interface CategoryGroup extends SanityDocument {
+  _type: "categoryGroup";
+
+  /**
+   * Tên nhóm danh mục — `string`
+   *
+   *
+   */
+  title?: string;
+
+  /**
+   * Đường dẫn — `slug`
+   *
+   *
+   */
+  slug?: { _type: "slug"; current: string };
+
+  /**
+   * Mô tả — `text`
+   *
+   *
+   */
+  description?: string;
+
+  /**
+   * Danh sách danh mục con — `array`
+   *
+   *
+   */
+  categories?: Array<SanityKeyedReference<Category>>;
 }
 
 /**
@@ -198,21 +242,21 @@ export interface Category extends SanityDocument {
   _type: "category";
 
   /**
-   * Title — `string`
+   * Tên danh mục nhỏ — `string`
    *
    *
    */
   title?: string;
 
   /**
-   * Slug — `slug`
+   * Đường dẫn — `slug`
    *
    *
    */
   slug?: { _type: "slug"; current: string };
 
   /**
-   * Description — `text`
+   * Mô tả — `text`
    *
    *
    */
@@ -276,7 +320,11 @@ export interface Sections extends SanityDocument {
    *
    * Tập hợp các section như hero, product để dễ quản lý và tái sử dụng.
    */
-  sections?: Array<SanityKeyed<HeroSection> | SanityKeyed<ProductSection>>;
+  sections?: Array<
+    | SanityKeyed<HeroSection>
+    | SanityKeyed<ProductSection>
+    | SanityKeyedReference<CategoryGroup>
+  >;
 }
 
 export type HeroSection = {
@@ -348,4 +396,4 @@ export type ProductSection = {
   limit?: number;
 };
 
-export type Documents = Product | Category | Page | Sections;
+export type Documents = Product | CategoryGroup | Category | Page | Sections;

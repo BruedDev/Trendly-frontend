@@ -16,7 +16,7 @@ export default function ProductColors({
         <Tooltip
           key={color.colorCode + idx}
           title={color.colorCode}
-          arrow="top-center"
+          arrow="bottom-center"
         >
           <span
             className={

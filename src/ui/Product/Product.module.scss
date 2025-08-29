@@ -5,20 +5,72 @@
 .product_Item {
   display: flex;
   flex-direction: column;
-  width: 300px;
-  height: auto;
+  width: 100%;
+  height: 100%;
 }
 
 .productImageContainer {
   position: relative;
   flex: 2;
+  overflow: hidden;
+}
 
-  .productImage {
-    object-fit: cover;
-    margin-bottom: 8px;
-    transition: 0.2s;
+.imageContainer {
+  position: relative;
+  width: 100%;
+  height: 300px;
+  margin-bottom: 8px;
+  overflow: hidden;
+
+  img {
     width: 100%;
-    height: 300px;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  .actionsOverlay {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.3s, transform 0.3s;
+    pointer-events: none;
+  }
+  .actionsOverlay.visible {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+}
+
+.productImage {
+  object-fit: cover;
+  width: 100%;
+  min-height: 300px;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.hoverImage {
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+
+  &.visible {
+    opacity: 1;
+  }
+}
+
+.defaultImage {
+  &.hidden {
+    opacity: 0;
   }
 }
 
@@ -26,9 +78,15 @@
   flex: 1;
 
   .productTitle {
-    font-size: 1.1rem;
+    display: block;
+    font-size: 0.9rem;
     font-weight: 600;
     margin-bottom: 4px;
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
   }
 }
 
@@ -40,7 +98,7 @@
   .productPrice {
     margin-bottom: 4px;
     font-weight: bold;
-    color: red;
+    color: #dc143c;
   }
 
   .productOriginalPrice {
@@ -61,8 +119,11 @@
     height: 27px;
     border-radius: 50%;
     border: 2px solid #888;
-    padding: 3px;
+    padding: 2px;
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
     &.active {
       border: 2px solid var(--bg-CircleQuantity);
@@ -75,10 +136,16 @@
     height: 100%;
     border-radius: 50%;
   }
+}
+.heartIcon {
+  position: absolute;
+  top: 5px;
+  right: 7px;
+  z-index: 3;
 
-  // .productColorCode {
-  //   border: 1px solid #ccc;
-  //   padding: 2px 6px;
-  //   border-radius: 4px;
-  // }
+  svg {
+    cursor: pointer;
+    font-size: 24px;
+    color: #000;
+  }
 }
