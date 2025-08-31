@@ -2,7 +2,7 @@ import API_ROUTES from "@/router";
 import getFetchApi from "@/utils/getFetchApi";
 import { Product } from "@/types/Products_section";
 
-const { ADD_TO_CART, GET_CART } = API_ROUTES.cart;
+const { ADD_TO_CART, GET_CART, DELETE_ITEM_CART } = API_ROUTES.cart;
 
 export async function addToCart(product: Product) {
   return getFetchApi(ADD_TO_CART, {
@@ -14,5 +14,12 @@ export async function addToCart(product: Product) {
 export async function getCart() {
   return getFetchApi(GET_CART, {
     method: "GET"
+  });
+}
+
+export async function deleteItemCart(productId: string) {
+  return getFetchApi(DELETE_ITEM_CART, {
+    method: "DELETE",
+    data: { productId },
   });
 }
