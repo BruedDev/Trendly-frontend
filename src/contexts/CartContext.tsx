@@ -1,6 +1,6 @@
 import React, { createContext, useState, useEffect } from "react";
 import { useStatusMessage } from "@/hooks/useStatusMessage";
-import { getCart, addToCart } from "@/services/cart";
+import { getCart, addToCart, deleteItemCart } from "@/services/cart";
 import { Product } from "@/types/Products_section";
 
 interface CartItem {
@@ -9,12 +9,13 @@ interface CartItem {
   product?: Product;
 }
 
-interface CartContextType {
+type CartContextType = {
   cart: CartItem[];
   loading: boolean;
   fetchCart: () => Promise<void>;
   addProductToCart: (product: Product) => Promise<void>;
-}
+  deleteItemFromCart: (productId: string) => Promise<void>;
+};
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
@@ -70,13 +71,28 @@ const CartProviderInner: React.FC<{ children: React.ReactNode }> = ({
     }
   };
 
+  const deleteItemFromCart = async (productId: string) => {
+    setLoading(true);
+    showLoading();
+    try {
+      await deleteItemCart(productId);
+      showSuccess("Xóa sản phẩm thành công");
+      await fetchCart();
+    } catch (error) {
+      showError("Xóa sản phẩm thất bại");
+      console.error("Lỗi xóa sản phẩm khỏi giỏ hàng:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     fetchCart();
   }, []);
 
   return (
     <CartContext.Provider
-      value={{ cart, loading, fetchCart, addProductToCart }}
+      value={{ cart, loading, fetchCart, addProductToCart, deleteItemFromCart }}
     >
       {children}
     </CartContext.Provider>
