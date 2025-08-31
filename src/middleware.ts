@@ -4,24 +4,38 @@ import type { NextRequest } from 'next/server';
 export function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
-  // Không chặn Sanity và trang login
-  if (pathname.startsWith('/admin/sanity') || pathname.startsWith('/admin/login')) {
+  // Lấy user token
+  const userToken = req.cookies.get('accessToken')?.value;
+
+  // Cho phép truy cập trang login khi chưa đăng nhập
+  if (pathname.startsWith('/auth/login')) {
+    // Nếu đã có token, chuyển hướng về home
+    if (userToken) {
+      return NextResponse.redirect(new URL('/', req.url));
+    }
     return NextResponse.next();
   }
 
-  // Chặn các route bắt đầu bằng /admin
-  if (pathname.startsWith('/admin')) {
-    const isLoggedIn = req.cookies.get('admin_token')?.value; // ví dụ check token
-    if (!isLoggedIn) {
-      const loginUrl = new URL('/admin/login', req.url);
-      return NextResponse.redirect(loginUrl);
+  // Cho phép truy cập trang register khi chưa đăng nhập
+  if (pathname.startsWith('/auth/register')) {
+    // Nếu đã có token, chuyển hướng về home
+    if (userToken) {
+      return NextResponse.redirect(new URL('/', req.url));
     }
+    return NextResponse.next();
+  }
+
+  // Bảo vệ tất cả các route khác
+  if (!userToken) {
+    return NextResponse.redirect(new URL('/auth/login', req.url));
   }
 
   return NextResponse.next();
 }
 
-// Áp dụng cho các route admin
 export const config = {
-  matcher: ['/admin/:path*'],
+  matcher: [
+    // Bảo vệ tất cả routes trừ static files và API
+    '/((?!api|_next/static|_next/image|favicon.ico).*)',
+  ],
 };
