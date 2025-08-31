@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { login } from "@/services/auth";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -66,6 +67,7 @@ export default function LoginPage() {
         </button>
         {error && <div style={{ color: "red" }}>{error}</div>}
       </form>
+      <Link href="/auth/register">Đăng ký tài khoản</Link>
     </div>
   );
 }
