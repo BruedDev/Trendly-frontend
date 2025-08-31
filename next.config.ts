@@ -14,8 +14,15 @@ const nextConfig: NextConfig = {
 
   async rewrites() {
     return [
+      // Proxy API requests to backend (giữ nguyên)
       {
-        source: '/:path*',
+        source: '/api/:path*',
+        destination: `${process.env.NEXT_PUBLIC_API_URL}/:path*`,
+      },
+      // ĐIỀU CHỈNH Ở ĐÂY:
+      // Chỉ rewrite những path KHÔNG phải là /api hoặc /auth
+      {
+        source: '/:path((?!api/|auth/).*)',
         destination: '/client/:path*',
       },
     ];
