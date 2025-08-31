@@ -10,27 +10,14 @@ export async function register(data: { email: string; password: string }) {
   });
 }
 
-interface LoginResponse {
-  success: boolean;
-  user: {
-    id: string;
-    email: string;
-  };
-  token?: string;
-}
 
 export async function login(data: { email: string; password: string }) {
-  const response = await getFetchApi<unknown, LoginResponse>(LOGIN, {
+  return getFetchApi(LOGIN, {
     method: "POST",
     data,
   });
-
-  if (response.success && response.token) {
-    document.cookie = `token=${response.token}; path=/; max-age=86400; secure; samesite=none`;
-  }
-
-  return response;
 }
+
 
 export async function getMe() {
   return getFetchApi(ME, {
