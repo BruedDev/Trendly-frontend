@@ -11,6 +11,7 @@ export default async function getFetchApi<T = unknown, R = unknown>(
       'Content-Type': 'application/json',
       ...headers,
     },
+    credentials: 'include',
   };
   if (data && ['POST', 'PUT', 'PATCH', 'DELETE'].includes(method.toUpperCase())) {
     fetchOptions.body = JSON.stringify(data);
