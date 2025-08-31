@@ -3,5 +3,5 @@ import { createRoutes } from "@/utils/getRoutes";
 export default createRoutes({
   ADD_TO_CART: "/cart/add",
   GET_CART: "/cart/getCart",
-  DELETE_ITEM_CART: "/cart/deleteItem",
+  DELETE_ITEM_CART: "/cart/remove",
 });
