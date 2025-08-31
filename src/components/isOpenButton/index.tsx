@@ -17,7 +17,7 @@ const IsOpenButton = forwardRef<HTMLButtonElement, IsOpenButtonProps>(
     };
 
     return (
-      <button ref={ref} onClick={handleToggle} {...props}>
+      <button ref={ref} onClick={handleToggle} {...props} className="relative">
         {children}
       </button>
     );

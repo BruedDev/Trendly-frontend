@@ -1,5 +1,4 @@
 // Props for ProductImage component
-// ...existing code...
 export interface ProductImageProps {
   product: Product;
   isHover: boolean;
@@ -71,7 +70,6 @@ export interface ProductSectionProps {
 }
 
 // Props for Product Card component
-// ...existing code...
 export interface ProductCardProps {
   product: Product;
   isHover: boolean;
@@ -95,4 +93,10 @@ export interface ProductCardProps {
 export interface ProductHeaderProps {
   title: string;
   description?: string;
+}
+
+export interface CartItem {
+  productId: string;
+  quantity: number;
+  product?: Product;
 }
