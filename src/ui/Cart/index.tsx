@@ -7,7 +7,7 @@ import { getSanityImageUrl } from "@/utils/getSanityImageUrl";
 import DeleteItemCartButton from "@/components/Actions/cart/deleteItemCart";
 
 export default function Cart() {
-  const { cart } = useGetCart();
+  const { cart, increaseQuantity, decreaseQuantity } = useGetCart();
 
   if (!cart || cart.length === 0) {
     return (
@@ -74,6 +74,8 @@ export default function Cart() {
           const product = item.product;
           const defaultImg = product?.thumbnail?.defaultImage;
           const imgUrl = getSanityImageUrl(defaultImg);
+          const isQuantityZero = item.quantity === 1;
+
           return (
             <li key={item.productId} className={styles.cartItem}>
               <div className={styles.cartItemImageWrapper}>
@@ -106,9 +108,22 @@ export default function Cart() {
                 </div>
                 <div className={styles.cartItemQuantityRow}>
                   <div className={styles.cartItemControls}>
-                    <button className={styles.cartItemQtyBtn}>-</button>
+                    <button
+                      className={`${styles.cartItemQtyBtn} ${
+                        isQuantityZero ? styles.disabled : ""
+                      }`}
+                      onClick={() => decreaseQuantity(item.productId)}
+                      disabled={isQuantityZero}
+                    >
+                      -
+                    </button>
                     <span className={styles.cartItemQty}>{item.quantity}</span>
-                    <button className={styles.cartItemQtyBtn}>+</button>
+                    <button
+                      className={styles.cartItemQtyBtn}
+                      onClick={() => increaseQuantity(item.productId)}
+                    >
+                      +
+                    </button>
                   </div>
                   <span className={styles.cartItemPrice}>
                     {formatPrice(product?.price ?? 0)}

@@ -25,14 +25,15 @@ export const StatusMessageProvider: React.FC<{ children: React.ReactNode }> = ({
     setStatus("loading");
     setMessage(msg);
   };
-  const showSuccess = (msg = "Thêm vào giỏ hàng thành công!") => {
+  const showSuccess = (msg?: string) => {
     setStatus("success");
-    setMessage(msg);
+    setMessage(msg || "");
     setTimeout(() => setStatus("idle"), 1500);
   };
-  const showError = (msg = "Thêm vào giỏ hàng thất bại!") => {
+
+  const showError = (msg?: string) => {
     setStatus("error");
-    setMessage(msg);
+    setMessage(msg || "");
     setTimeout(() => setStatus("idle"), 1500);
   };
   const reset = () => {

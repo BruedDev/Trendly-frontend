@@ -4,7 +4,10 @@ import { register } from "@/services/auth";
 import Link from "next/link";
 
 export default function AuthRegister() {
+  const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [address, setAddress] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
@@ -16,13 +19,16 @@ export default function AuthRegister() {
     setSuccess("");
     setLoading(true);
     try {
-      await register({ email, password });
+      await register({ fullName, email, address, password, phone });
       setSuccess("Đăng ký thành công! Hãy đăng nhập.");
+      setFullName("");
       setEmail("");
+      setPhone("");
+      setAddress("");
       setPassword("");
     } catch {
       setError(
-        "Đăng ký thất bại. Email có thể đã tồn tại hoặc có lỗi hệ thống."
+        "Đăng ký thất bại. Email/SĐT có thể đã tồn tại hoặc có lỗi hệ thống."
       );
     } finally {
       setLoading(false);
@@ -34,10 +40,33 @@ export default function AuthRegister() {
       <h1>Register</h1>
       <form onSubmit={handleSubmit}>
         <input
+          type="text"
+          placeholder="Họ và tên"
+          value={fullName}
+          onChange={(e) => setFullName(e.target.value)}
+          required
+          style={{ width: "100%", marginBottom: 8, padding: 8 }}
+        />
+        <input
           type="email"
           placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
+          required
+          style={{ width: "100%", marginBottom: 8, padding: 8 }}
+        />
+        <input
+          type="text"
+          placeholder="Số điện thoại (tùy chọn)"
+          value={phone}
+          onChange={(e) => setPhone(e.target.value)}
+          style={{ width: "100%", marginBottom: 8, padding: 8 }}
+        />
+        <input
+          type="text"
+          placeholder="Địa chỉ"
+          value={address}
+          onChange={(e) => setAddress(e.target.value)}
           required
           style={{ width: "100%", marginBottom: 8, padding: 8 }}
         />

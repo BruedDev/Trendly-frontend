@@ -8,14 +8,21 @@ import { Product } from "@/types/Products_section";
 interface ActionsProductProps {
   type?: string;
   product: Product;
+  activeColorIdx?: number | null;
 }
 
-export default function ActionsProduct({ type, product }: ActionsProductProps) {
+export default function ActionsProduct({
+  type,
+  product,
+  activeColorIdx,
+}: ActionsProductProps) {
   const types = type ? type.split(" ") : ["cart", "heart", "pay", "preview"];
   return (
     <>
       <div className={`${styles.actionsContainer}`}>
-        {types.includes("cart") && <AddToCartProduct product={product} />}
+        {types.includes("cart") && (
+          <AddToCartProduct product={product} activeColorIdx={activeColorIdx} />
+        )}
         {types.includes("heart") && <AddToHeartProduct />}
         {types.includes("pay") && <PayProduct />}
         {types.includes("preview") && <Preview />}
