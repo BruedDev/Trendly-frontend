@@ -1,4 +1,4 @@
-import Preview from "@/components/Actions/cart/Preview";
+import ViewCart from "@/components/Actions/cart/ViewCart";
 import styles from "./Cart.module.scss";
 import { formatPrice } from "@/utils/formatNumber";
 import Pay from "@/components/Actions/cart/Pay";
@@ -15,7 +15,7 @@ export default function CartFooter({ total }: CartFooterProps) {
         <span className={styles.cartTotal}>{formatPrice(total)}</span>
       </div>
       <div className={styles.cartActions}>
-        <Preview className={styles.checkoutBtn} />
+        <ViewCart className={styles.checkoutBtn} />
         <Pay className={styles.checkoutBtn} />
       </div>
     </div>

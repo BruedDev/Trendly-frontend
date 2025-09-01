@@ -1,5 +1,6 @@
 import AddToHeartProduct from "./AddToHeart";
 import AddToCartProduct from "./AddTocart";
+import Preview from "./Preview";
 import styles from "./ProductActions.module.scss";
 import { Product } from "@/types/Products_section";
 
@@ -14,7 +15,7 @@ export default function ActionsProduct({
   product,
   activeColorIdx,
 }: ActionsProductProps) {
-  const types = type ? type.split(" ") : ["cart", "heart"];
+  const types = type ? type.split(" ") : ["cart", "heart", "preview"];
   return (
     <>
       <div className={`${styles.actionsContainer}`}>
@@ -29,6 +30,7 @@ export default function ActionsProduct({
           />
         )}
         {types.includes("heart") && <AddToHeartProduct />}
+        {types.includes("preview") && <Preview />}
       </div>
     </>
   );
