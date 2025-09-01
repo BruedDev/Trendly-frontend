@@ -21,7 +21,14 @@ export default function ActionsProduct({
     <>
       <div className={`${styles.actionsContainer}`}>
         {types.includes("cart") && (
-          <AddToCartProduct product={product} activeColorIdx={activeColorIdx} />
+          <AddToCartProduct
+            product={product}
+            colorCode={
+              activeColorIdx != null && product.colors
+                ? product.colors[activeColorIdx]?.colorCode ?? ""
+                : ""
+            }
+          />
         )}
         {types.includes("heart") && <AddToHeartProduct />}
         {types.includes("pay") && <PayProduct />}

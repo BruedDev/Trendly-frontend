@@ -1,16 +1,23 @@
 import ButtonProduct from "@/ui/ButtonProduct";
-import { useGetCart } from "@/hooks/useGetCart";
+import { useContext } from "react";
+import { CartContext } from "@/contexts/CartContext";
 import { Product } from "@/types/Products_section";
 
-interface AddToCartProductProps {
+type AddToCartProductProps = {
   product: Product;
-}
+  colorCode: string;
+};
 
-export default function AddToCartProduct({ product }: AddToCartProductProps) {
-  const { addProductToCart } = useGetCart();
+export default function AddToCartProduct({
+  product,
+  colorCode,
+}: AddToCartProductProps) {
+  const cartContext = useContext(CartContext);
+  if (!cartContext) return null;
+  const { addProductToCart } = cartContext;
 
   const handleAddToCart = () => {
-    addProductToCart(product);
+    addProductToCart(product, colorCode);
   };
 
   return (

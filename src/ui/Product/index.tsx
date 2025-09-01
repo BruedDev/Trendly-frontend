@@ -37,6 +37,7 @@ export default function Product({
           isHover={isHover}
           activeColorImage={activeColorImage}
           showActions={showActions}
+          activeColor={activeColor}
         />
       </div>
       <div className={styles.productInfo}>

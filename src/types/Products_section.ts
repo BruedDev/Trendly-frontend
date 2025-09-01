@@ -4,7 +4,9 @@ export interface ProductImageProps {
   isHover: boolean;
   activeColorImage?: ProductImage | null;
   showActions?: boolean;
+  activeColor?: number | null;
 }
+
 export interface ProductImageProps {
   product: Product;
   isHover: boolean;
@@ -15,12 +17,14 @@ export interface ProductImageProps {
 export interface ProductPriceProps {
   product: Product;
 }
+
 // Props for ProductColors component
 export interface ProductColorsProps {
   product: Product;
   activeColor: number | null;
   setActiveColor: (idx: number, image?: ProductImage | null) => void;
 }
+
 export interface ProductSectionType {
   _key: string;
   sectionTitle?: string;
@@ -29,7 +33,13 @@ export interface ProductSectionType {
 
 export interface ProductColor {
   colorCode: string;
-  image?: { asset?: { url?: string }; alt?: string };
+  image?: {
+    asset: {
+      url: string;
+      alt?: string;
+    };
+    alt: string;
+  };
 }
 
 export interface ProductCategory {
@@ -80,6 +90,7 @@ export interface ProductCardProps {
   setActiveColor: (colorIdx: number | null, image?: ProductImage | null) => void;
   activeColorImage?: ProductImage | null;
 }
+
 export interface ProductCardProps {
   product: Product;
   isHover: boolean;
@@ -95,8 +106,89 @@ export interface ProductHeaderProps {
   description?: string;
 }
 
+// ===== CART TYPES =====
+
+// Cart selected color interface
+export interface CartSelectedColor {
+  colorCode: string;
+  image?: {
+    asset?: {
+      url: string;
+      alt?: string;
+    };
+    alt?: string;
+  } | null;
+}
+
+// Cart product interface (extends Product but with optional fields)
+export interface CartProduct extends Omit<Product, '_id'> {
+  _id?: string;
+}
+
+// Cart stock information
+export interface CartStockInfo {
+  inStock: boolean;
+  availableQuantity: number;
+}
+
+// Main CartItem interface
 export interface CartItem {
   productId: string;
+  colorCode: string;
   quantity: number;
-  product?: Product;
+  selectedColor?: CartSelectedColor;
+  product?: CartProduct;
+  stockInfo?: CartStockInfo;
+}
+
+// Full Cart interface
+export interface Cart {
+  userId: string;
+  items: CartItem[];
+  total: number;
+}
+
+// Cart API response interface
+export interface CartResponse {
+  cart: CartItem[];
+  total: number;
+}
+
+// Cart API request interfaces
+export interface AddToCartRequest {
+  productId: string;
+  colorCode: string;
+}
+
+export interface UpdateQuantityRequest {
+  productId: string;
+  colorCode: string;
+  quantity: number;
+}
+
+export interface RemoveItemRequest {
+  productId: string;
+  colorCode: string;
+}
+
+// General cart API response
+export interface CartApiResponse {
+  success?: boolean;
+  cart?: Cart | CartItem[];
+  total?: number;
+  error?: string;
+  details?: string;
+  availableQuantity?: number;
+}
+
+// useGetCart hook return type
+export interface UseGetCartReturn {
+  cart: CartItem[] | null;
+  loading: boolean;
+  error: string | null;
+  total: number;
+  increaseQuantity: (productId: string, colorCode: string) => Promise<void>;
+  decreaseQuantity: (productId: string, colorCode: string) => Promise<void>;
+  removeItem: (productId: string, colorCode: string) => Promise<void>;
+  refreshCart: () => Promise<void>;
 }
