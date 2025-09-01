@@ -8,6 +8,7 @@
   color: #000;
   width: 400px;
   border-radius: 6px;
+  pointer-events: auto;
 
   &::before {
     content: "";

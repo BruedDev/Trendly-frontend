@@ -19,14 +19,32 @@ export default function ProductSection({
   const [hoverShowActions, setHoverShowActions] = React.useState<string | null>(
     null
   );
+  // Khởi tạo activeColors mặc định là màu đầu tiên (index 0) cho mỗi sản phẩm có màu
   const [activeColors, setActiveColors] = React.useState<
     Record<string, number | null>
-  >({});
+  >(() => {
+    const initial: Record<string, number | null> = {};
+    products.forEach((product) => {
+      initial[product._id] =
+        product.colors && product.colors.length > 0 ? 0 : null;
+    });
+    return initial;
+  });
 
   // Lưu image của màu đang chọn cho từng product
   const [activeColorImages, setActiveColorImages] = React.useState<
     Record<string, ProductImageType | null>
-  >({});
+  >(() => {
+    const initial: Record<string, ProductImageType | null> = {};
+    products.forEach((product) => {
+      if (product.colors && product.colors.length > 0) {
+        initial[product._id] = product.colors[0].image || null;
+      } else {
+        initial[product._id] = null;
+      }
+    });
+    return initial;
+  });
 
   const handleMouseEnter = (id: string) => setHoveredId(id);
   const handleMouseLeave = () => setHoveredId(null);

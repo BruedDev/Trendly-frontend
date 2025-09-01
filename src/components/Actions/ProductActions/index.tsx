@@ -1,24 +1,34 @@
 import AddToHeartProduct from "./AddToHeart";
 import AddToCartProduct from "./AddTocart";
-import Preview from "./Preview";
 import styles from "./ProductActions.module.scss";
-import PayProduct from "./Pay";
 import { Product } from "@/types/Products_section";
 
 interface ActionsProductProps {
   type?: string;
   product: Product;
+  activeColorIdx?: number | null;
 }
 
-export default function ActionsProduct({ type, product }: ActionsProductProps) {
-  const types = type ? type.split(" ") : ["cart", "heart", "pay", "preview"];
+export default function ActionsProduct({
+  type,
+  product,
+  activeColorIdx,
+}: ActionsProductProps) {
+  const types = type ? type.split(" ") : ["cart", "heart"];
   return (
     <>
       <div className={`${styles.actionsContainer}`}>
-        {types.includes("cart") && <AddToCartProduct product={product} />}
+        {types.includes("cart") && (
+          <AddToCartProduct
+            product={product}
+            colorCode={
+              activeColorIdx != null && product.colors
+                ? product.colors[activeColorIdx]?.colorCode ?? ""
+                : ""
+            }
+          />
+        )}
         {types.includes("heart") && <AddToHeartProduct />}
-        {types.includes("pay") && <PayProduct />}
-        {types.includes("preview") && <Preview />}
       </div>
     </>
   );

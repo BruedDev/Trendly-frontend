@@ -2,6 +2,8 @@
 
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import LogoLight from "../../../public/Icons/logo_light.png";
+import LogoDark from "../../../public/Icons/logo_dark.png";
 
 export default function Logo() {
   const [theme, setTheme] = useState<string | null>(null);
@@ -22,25 +24,14 @@ export default function Logo() {
     return () => observer.disconnect();
   }, []);
 
-  if (!theme) {
-    return (
-      <Image
-        src="/Icons/logo_light.png"
-        alt="Logo"
-        width={100}
-        height={100}
-        style={{ opacity: 0, transition: "opacity 0.2s" }}
-      />
-    );
-  }
-
+  const logoSrc = theme === "light" ? LogoLight : LogoDark;
   return (
     <Image
-      src={theme === "dark" ? "/Icons/logo_dark.png" : "/Icons/logo_light.png"}
+      src={logoSrc}
       alt="Logo"
       width={100}
       height={100}
-      style={{ opacity: 1, transition: "opacity 0.2s" }}
+      style={{ transition: "opacity 0.2s" }}
     />
   );
 }

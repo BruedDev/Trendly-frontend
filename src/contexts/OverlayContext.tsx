@@ -8,11 +8,18 @@ import React, {
   useEffect,
 } from "react";
 
-interface OverlayContextType {
+import { AnimationVariant } from "@/types/Overlay";
+
+interface OverlayState {
   content: ReactNode | null;
+  variant?: AnimationVariant;
+}
+
+interface OverlayContextType {
+  state: OverlayState;
   isOpen: boolean;
   isExiting: boolean;
-  toggleOverlay: (newContent: ReactNode) => void;
+  toggleOverlay: (newContent: ReactNode, variant?: AnimationVariant) => void;
   closeOverlay: () => void;
 }
 
@@ -21,7 +28,7 @@ export const OverlayContext = createContext<OverlayContextType | undefined>(
 );
 
 export const OverlayProvider = ({ children }: { children: ReactNode }) => {
-  const [content, setContent] = useState<ReactNode | null>(null);
+  const [state, setState] = useState<OverlayState>({ content: null });
   const [isExiting, setIsExiting] = useState(false);
   const closeTimer = React.useRef<NodeJS.Timeout | null>(null);
 
@@ -31,22 +38,21 @@ export const OverlayProvider = ({ children }: { children: ReactNode }) => {
     }
     setIsExiting(true);
     closeTimer.current = setTimeout(() => {
-      setContent(null);
+      setState({ content: null });
       setIsExiting(false);
-    }, 400); // Match the animation duration in Overlay.module.scss
+    }, 200); // Match the animation duration in Overlay.module.scss
   }, []);
 
   const toggleOverlay = useCallback(
-    (newContent: ReactNode) => {
-      // Nếu đang có content và timer đang chạy, clear nó
+    (newContent: ReactNode, variant?: AnimationVariant) => {
       if (closeTimer.current) {
         clearTimeout(closeTimer.current);
         closeTimer.current = null;
       }
 
-      if (content) {
+      if (state.content) {
         const isSameContent =
-          (content as React.ReactElement).type ===
+          (state.content as React.ReactElement).type ===
           (newContent as React.ReactElement).type;
 
         if (isSameContent) {
@@ -56,12 +62,12 @@ export const OverlayProvider = ({ children }: { children: ReactNode }) => {
       }
 
       setIsExiting(false);
-      setContent(newContent);
+      setState({ content: newContent, variant });
     },
-    [content, closeOverlay]
+    [state.content, closeOverlay]
   );
 
-  const isOpen = content !== null;
+  const isOpen = state.content !== null;
 
   useEffect(() => {
     return () => {
@@ -73,7 +79,7 @@ export const OverlayProvider = ({ children }: { children: ReactNode }) => {
 
   return (
     <OverlayContext.Provider
-      value={{ content, isOpen, isExiting, toggleOverlay, closeOverlay }}
+      value={{ state, isOpen, isExiting, toggleOverlay, closeOverlay }}
     >
       {children}
     </OverlayContext.Provider>

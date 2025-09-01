@@ -10,6 +10,7 @@ export default function ProductImage({
   isHover,
   activeColorImage,
   showActions,
+  activeColor,
 }: ProductImageProps & { showActions?: boolean }) {
   const defaultImg = activeColorImage || product.thumbnail?.defaultImage;
   const hoverImg = product.thumbnail?.hoverImage;
@@ -65,7 +66,11 @@ export default function ProductImage({
           showActions ? styles.visible : ""
         }`}
       >
-        <ActionsProduct type="cart preview" product={product} />
+        <ActionsProduct
+          type="cart preview"
+          product={product}
+          activeColorIdx={activeColor}
+        />
       </div>
     </div>
   );

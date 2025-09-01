@@ -34,21 +34,19 @@ export default function LayoutClient({
 
 function LayoutContent({
   children,
-  isLoading,
-}: {
+}: // isLoading,
+{
   children: React.ReactNode;
   isLoading: boolean;
 }) {
-  const { content, isOpen, closeOverlay, isExiting } = useOverlay();
+  const { isOpen, closeOverlay, isExiting } = useOverlay();
 
   return (
     <>
       <StatusMessage />
-      <Header isLoading={isLoading} />
+      <Header />
       {(isOpen || isExiting) && (
-        <Overlay onClose={closeOverlay} isExiting={isExiting}>
-          {content}
-        </Overlay>
+        <Overlay onClose={closeOverlay} isExiting={isExiting} />
       )}
 
       {children}

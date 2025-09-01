@@ -3,17 +3,20 @@
 import { useOverlay } from "@/hooks/useOverlay";
 import { ReactNode, forwardRef, ButtonHTMLAttributes } from "react";
 
+import { AnimationVariant } from "@/types/Overlay";
+
 interface IsOpenButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children: ReactNode;
   componentToOpen: ReactNode;
+  variant?: AnimationVariant;
 }
 
 const IsOpenButton = forwardRef<HTMLButtonElement, IsOpenButtonProps>(
-  ({ children, componentToOpen, ...props }, ref) => {
+  ({ children, componentToOpen, variant, ...props }, ref) => {
     const { toggleOverlay } = useOverlay();
 
     const handleToggle = () => {
-      toggleOverlay(componentToOpen);
+      toggleOverlay(componentToOpen, variant);
     };
 
     return (

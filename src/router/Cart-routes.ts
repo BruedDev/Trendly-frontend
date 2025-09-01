@@ -4,4 +4,5 @@ export default createRoutes({
   ADD_TO_CART: "/cart/add",
   GET_CART: "/cart/getCart",
   DELETE_ITEM_CART: "/cart/remove",
+  UPDATE_QUANTITY: "/cart/update-quantity"
 });

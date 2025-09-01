@@ -6,16 +6,20 @@ export default async function getFetchApi<T = unknown, R = unknown>(
 ): Promise<R> {
   const { method, data, headers = {} } = options;
 
-  console.log('=== FRONTEND FETCH DEBUG ===');
-  console.log('URL:', url);
-  console.log('Method:', method);
-  console.log('Cookies before request:', document.cookie);
+  const finalHeaders = { ...headers };
+  if (typeof document !== "undefined" && !finalHeaders["Authorization"]) {
+    const match = document.cookie.match(/token=([^;]+)/);
+    const token = match ? match[1] : "";
+    if (token) {
+      finalHeaders["Authorization"] = `Bearer ${token}`;
+    }
+  }
 
   const fetchOptions: RequestInit = {
     method,
     headers: {
       'Content-Type': 'application/json',
-      ...headers,
+      ...finalHeaders,
     },
     credentials: 'include',
   };
@@ -24,24 +28,13 @@ export default async function getFetchApi<T = unknown, R = unknown>(
     fetchOptions.body = JSON.stringify(data);
   }
 
-  console.log('Fetch options:', fetchOptions);
-
   const res = await fetch(url, fetchOptions);
 
-  console.log('Response status:', res.status);
-  console.log('Response headers:', Object.fromEntries(res.headers.entries()));
-  console.log('Set-Cookie header:', res.headers.get('set-cookie'));
-  console.log('Cookies after response:', document.cookie);
-
   if (!res.ok) {
-    const errorText = await res.text();
-    console.log('Error response:', errorText);
     throw new Error('Fetch API thất bại');
   }
 
   const result = await res.json();
-  console.log('Final cookies after parsing:', document.cookie);
-  console.log('============================');
 
   return result;
 }

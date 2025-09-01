@@ -12,7 +12,6 @@ export function middleware(request: NextRequest) {
   return NextResponse.next();
 }
 
-// Giữ nguyên config này
 export const config = {
   matcher: [
     '/((?!api|_next/static|_next/image|auth|favicon.ico|public).*)',

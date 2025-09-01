@@ -1,5 +1,3 @@
-import {ReactNode} from "react"
-
 export type AnimationVariant =
   | "slideUp"
   | "fadeScale"
@@ -7,10 +5,10 @@ export type AnimationVariant =
   | "softBounce"
   | "smoothSlide"
   | "cleanPop"
-  | "modernLift";
+  | "modernLift"
+  | "cart";
 
 export interface OverlayProps {
   onClose: () => void;
-  children: ReactNode;
   variant?: AnimationVariant;
 }
