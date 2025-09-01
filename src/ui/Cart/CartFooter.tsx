@@ -1,5 +1,7 @@
+import Preview from "@/components/Actions/cart/Preview";
 import styles from "./Cart.module.scss";
 import { formatPrice } from "@/utils/formatNumber";
+import Pay from "@/components/Actions/cart/Pay";
 
 interface CartFooterProps {
   total: number;
@@ -13,8 +15,8 @@ export default function CartFooter({ total }: CartFooterProps) {
         <span className={styles.cartTotal}>{formatPrice(total)}</span>
       </div>
       <div className={styles.cartActions}>
-        <button className={styles.viewCartBtn}>XEM GIỎ HÀNG</button>
-        <button className={styles.checkoutBtn}>THANH TOÁN</button>
+        <Preview className={styles.checkoutBtn} />
+        <Pay className={styles.checkoutBtn} />
       </div>
     </div>
   );

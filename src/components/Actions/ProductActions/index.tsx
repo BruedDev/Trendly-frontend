@@ -1,8 +1,6 @@
 import AddToHeartProduct from "./AddToHeart";
 import AddToCartProduct from "./AddTocart";
-import Preview from "./Preview";
 import styles from "./ProductActions.module.scss";
-import PayProduct from "./Pay";
 import { Product } from "@/types/Products_section";
 
 interface ActionsProductProps {
@@ -16,7 +14,7 @@ export default function ActionsProduct({
   product,
   activeColorIdx,
 }: ActionsProductProps) {
-  const types = type ? type.split(" ") : ["cart", "heart", "pay", "preview"];
+  const types = type ? type.split(" ") : ["cart", "heart"];
   return (
     <>
       <div className={`${styles.actionsContainer}`}>
@@ -31,8 +29,6 @@ export default function ActionsProduct({
           />
         )}
         {types.includes("heart") && <AddToHeartProduct />}
-        {types.includes("pay") && <PayProduct />}
-        {types.includes("preview") && <Preview />}
       </div>
     </>
   );

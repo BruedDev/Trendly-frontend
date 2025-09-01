@@ -1,5 +1,7 @@
 import React, { useContext } from "react";
 import { CartContext } from "@/contexts/CartContext";
+import { IoClose } from "react-icons/io5";
+import Tooltip from "@/ui/Tooltip";
 
 interface DeleteItemCartProps {
   productId: string;
@@ -18,9 +20,11 @@ const DeleteItemCartButton: React.FC<DeleteItemCartProps> = ({
   };
 
   return (
-    <button onClick={handleDelete} title="Xóa sản phẩm">
-      ×
-    </button>
+    <Tooltip title="Xóa sản phẩm" arrow="left">
+      <button onClick={handleDelete} title="Xóa sản phẩm">
+        <IoClose size={24} color="#000" />
+      </button>
+    </Tooltip>
   );
 };
 

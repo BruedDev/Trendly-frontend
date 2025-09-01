@@ -2,15 +2,17 @@
 import { useRef } from "react";
 import styles from "./Overlay.module.scss";
 import { OverlayProps } from "@/types/Overlay";
+import { useOverlay } from "@/hooks/useOverlay";
 
 export default function Overlay({
   onClose,
-  children,
   variant = "slideUp",
   isExiting = false,
 }: OverlayProps & { isExiting?: boolean }) {
+  const { state } = useOverlay();
   const isDragging = useRef(false);
 
+  // Đóng overlay khi click/tap ra ngoài
   const handleMouseDown = () => {
     isDragging.current = false;
   };
@@ -26,18 +28,42 @@ export default function Overlay({
     isDragging.current = false;
   };
 
+  // Đóng overlay khi chạm ra ngoài trên mobile
+  const handleTouchStart = () => {
+    isDragging.current = false;
+  };
+  const handleTouchMove = () => {
+    isDragging.current = true;
+  };
+  const handleTouchEnd = () => {
+    if (!isDragging.current) {
+      onClose();
+    }
+    isDragging.current = false;
+  };
+
+  const effectiveVariant = state.variant || variant;
   return (
     <div
-      className={`${styles.overlay} ${isExiting ? styles.exiting : ""}`}
+      className={`${styles.overlay} ${isExiting ? styles.exiting : ""} ${
+        effectiveVariant === "cart" ? styles.cart : ""
+      }`}
       onMouseDown={handleMouseDown}
       onMouseMove={handleMouseMove}
       onClick={handleClick}
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
     >
       <div
-        className={`${styles.overlay_content} ${styles[variant]}`}
+        className={`${styles.overlay_content} ${styles[effectiveVariant]}`}
+        onMouseDown={(e) => e.stopPropagation()}
         onClick={(e) => e.stopPropagation()}
+        onTouchStart={(e) => e.stopPropagation()}
+        onTouchMove={(e) => e.stopPropagation()}
+        onTouchEnd={(e) => e.stopPropagation()}
       >
-        {children}
+        {state.content}
       </div>
     </div>
   );

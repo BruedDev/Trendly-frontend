@@ -10,7 +10,7 @@ export default function CartComponent() {
 
   return (
     <Tooltip title="Giỏ hàng" arrow="top-center">
-      <IsOpenButton componentToOpen={<Cart />}>
+      <IsOpenButton componentToOpen={<Cart />} variant="cart">
         <CircleQuantity quantity={count} />
         <IoCartOutline />
       </IsOpenButton>

@@ -23,6 +23,11 @@
       animation: contentExit $timing-fast $ease-smooth forwards !important;
     }
   }
+
+  // Nếu variant là cart thì top = 0
+  &.cart {
+    top: 0;
+  }
 }
 
 .overlay_content {
@@ -32,6 +37,13 @@
   align-items: flex-start;
   perspective: 1200px;
   perspective-origin: center center;
+  pointer-events: none;
+
+  // Căn giữa cả dọc cho cart
+  &.cart {
+    align-items: center;
+    min-height: 100dvh;
+  }
 
   // Clean 3D variants for e-commerce
   &.slideUp > * {
