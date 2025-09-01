@@ -3,15 +3,18 @@ import { CartContext } from "@/contexts/CartContext";
 
 interface DeleteItemCartProps {
   productId: string;
+  colorCode: string;
 }
-
-const DeleteItemCartButton: React.FC<DeleteItemCartProps> = ({ productId }) => {
+const DeleteItemCartButton: React.FC<DeleteItemCartProps> = ({
+  productId,
+  colorCode,
+}) => {
   const cartContext = useContext(CartContext);
   if (!cartContext) return null;
   const { deleteItemFromCart } = cartContext;
 
   const handleDelete = async () => {
-    await deleteItemFromCart(productId);
+    await deleteItemFromCart(productId, colorCode);
   };
 
   return (
