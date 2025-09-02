@@ -7,12 +7,6 @@ export interface ProductImageProps {
   activeColor?: number | null;
 }
 
-export interface ProductImageProps {
-  product: Product;
-  isHover: boolean;
-  activeColorImage?: ProductImage | null;
-}
-
 // Props for ProductPrice component
 export interface ProductPriceProps {
   product: Product;
@@ -31,6 +25,7 @@ export interface ProductSectionType {
   products?: Product[];
 }
 
+// CẬP NHẬT: Thêm sizes vào ProductColor
 export interface ProductColor {
   colorCode: string;
   image?: {
@@ -40,6 +35,10 @@ export interface ProductColor {
     };
     alt: string;
   };
+  sizes?: Array<{
+    size: string;
+    quantity: number;
+  }>;
 }
 
 export interface ProductCategory {
@@ -91,16 +90,6 @@ export interface ProductCardProps {
   activeColorImage?: ProductImage | null;
 }
 
-export interface ProductCardProps {
-  product: Product;
-  isHover: boolean;
-  onImageMouseEnter: () => void;
-  onImageMouseLeave: () => void;
-  activeColor: number | null;
-  setActiveColor: (colorIdx: number | null, image?: ProductImage | null) => void;
-  activeColorImage?: ProductImage | null;
-}
-
 export interface ProductHeaderProps {
   title: string;
   description?: string;
@@ -131,10 +120,11 @@ export interface CartStockInfo {
   availableQuantity: number;
 }
 
-// Main CartItem interface
+// CẬP NHẬT: Main CartItem interface - thêm size
 export interface CartItem {
   productId: string;
   colorCode: string;
+  size: string; // THÊM size field
   quantity: number;
   selectedColor?: CartSelectedColor;
   product?: CartProduct;
@@ -154,21 +144,24 @@ export interface CartResponse {
   total: number;
 }
 
-// Cart API request interfaces
+// CẬP NHẬT: Cart API request interfaces - thêm size
 export interface AddToCartRequest {
   productId: string;
   colorCode: string;
+  size?: string; // Optional vì backend sẽ lấy default
 }
 
 export interface UpdateQuantityRequest {
   productId: string;
   colorCode: string;
   quantity: number;
+  size?: string; // Optional
 }
 
 export interface RemoveItemRequest {
   productId: string;
   colorCode: string;
+  size?: string; // Optional
 }
 
 // General cart API response
@@ -181,14 +174,50 @@ export interface CartApiResponse {
   availableQuantity?: number;
 }
 
-// useGetCart hook return type
+// CẬP NHẬT: useGetCart hook return type - thêm size parameters
 export interface UseGetCartReturn {
   cart: CartItem[] | null;
   loading: boolean;
   error: string | null;
   total: number;
-  increaseQuantity: (productId: string, colorCode: string) => Promise<void>;
-  decreaseQuantity: (productId: string, colorCode: string) => Promise<void>;
-  removeItem: (productId: string, colorCode: string) => Promise<void>;
+  increaseQuantity: (productId: string, colorCode: string, size?: string) => Promise<void>;
+  decreaseQuantity: (productId: string, colorCode: string, size?: string) => Promise<void>;
+  removeItem: (productId: string, colorCode: string, size?: string) => Promise<void>;
   refreshCart: () => Promise<void>;
+}
+
+// THÊM: Helper types cho cart operations
+export interface CartItemIdentifier {
+  productId: string;
+  colorCode: string;
+  size?: string;
+}
+
+export interface CartItemWithSize extends CartItemIdentifier {
+  quantity: number;
+  selectedColor?: CartSelectedColor;
+}
+
+// THÊM: Size-related types
+export interface ProductSize {
+  size: string;
+  quantity: number;
+}
+
+export interface ColorSizeOption {
+  colorCode: string;
+  availableSizes: ProductSize[];
+}
+
+// THÊM: Cart state management types
+export interface CartState {
+  items: CartItem[];
+  total: number;
+  loading: boolean;
+  error: string | null;
+}
+
+export interface CartAction {
+  type: 'SET_CART' | 'ADD_ITEM' | 'UPDATE_QUANTITY' | 'REMOVE_ITEM' | 'SET_LOADING' | 'SET_ERROR';
+  payload?: CartItem[] | CartItem | CartItemIdentifier | number | string | null;
 }

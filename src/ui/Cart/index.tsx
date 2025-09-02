@@ -8,6 +8,8 @@ import CartFooter from "./CartFooter";
 export default function Cart() {
   const { cart, increaseQuantity, decreaseQuantity } = useGetCart();
 
+  console.log("DEBUG Cart component cart:", cart);
+
   if (!cart || cart.length === 0) {
     return (
       <div className={styles.cart}>

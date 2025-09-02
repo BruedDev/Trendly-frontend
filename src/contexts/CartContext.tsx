@@ -18,6 +18,7 @@ import { Product } from "@/types/Products_section";
 interface CartItem {
   productId: string;
   colorCode: string;
+  size: string; // THÊM size field
   quantity: number;
   product?: Product;
   selectedColor?: {
@@ -62,17 +63,39 @@ type CartContextType = {
   cart: CartItem[];
   loading: boolean;
   fetchCart: () => Promise<void>;
-  addProductToCart: (product: Product, colorCode: string) => Promise<void>;
-  deleteItemFromCart: (productId: string, colorCode: string) => Promise<void>;
+  addProductToCart: (
+    product: Product,
+    colorCode: string,
+    size?: string
+  ) => Promise<void>;
+  deleteItemFromCart: (
+    productId: string,
+    colorCode: string,
+    size?: string
+  ) => Promise<void>;
   updateProductQuantity: (
     productId: string,
     colorCode: string,
-    quantity: number
+    quantity: number,
+    size?: string
   ) => Promise<void>;
-  increaseQuantity: (productId: string, colorCode: string) => void;
-  decreaseQuantity: (productId: string, colorCode: string) => void;
+  increaseQuantity: (
+    productId: string,
+    colorCode: string,
+    size?: string
+  ) => void;
+  decreaseQuantity: (
+    productId: string,
+    colorCode: string,
+    size?: string
+  ) => void;
   getCartItemCount: () => number;
   getCartItemsByProduct: (productId: string) => CartItem[];
+  getCartItem: (
+    productId: string,
+    colorCode: string,
+    size?: string
+  ) => CartItem | undefined;
 };
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -81,6 +104,15 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   return <CartProviderInner>{children}</CartProviderInner>;
+};
+
+// Helper function để lấy size đầu tiên từ product
+const getDefaultSize = (
+  product: Product,
+  colorCode: string
+): string | undefined => {
+  const selectedColor = product.colors?.find((c) => c.colorCode === colorCode);
+  return selectedColor?.sizes?.[0]?.size;
 };
 
 const CartProviderInner: React.FC<{ children: React.ReactNode }> = ({
@@ -100,12 +132,18 @@ const CartProviderInner: React.FC<{ children: React.ReactNode }> = ({
   const [processingItems, setProcessingItems] = useState<Set<string>>(
     new Set()
   );
-  const { showSuccess, showError } = useStatusMessage();
+  const { showLoading, showSuccess, showError } = useStatusMessage();
   const debounceTimers = useRef<{ [key: string]: NodeJS.Timeout }>({}).current;
 
   useEffect(() => {
     try {
-      localStorage.setItem("cart", JSON.stringify(cart));
+      const minimalCart = cart.map((item) => ({
+        productId: item.productId,
+        colorCode: item.colorCode,
+        size: item.size,
+        quantity: item.quantity,
+      }));
+      localStorage.setItem("cart", JSON.stringify(minimalCart));
     } catch (error) {
       console.error("Failed to save cart to localStorage", error);
     }
@@ -129,14 +167,28 @@ const CartProviderInner: React.FC<{ children: React.ReactNode }> = ({
     fetchCart();
   }, [fetchCart]);
 
-  const addProductToCart = async (product: Product, colorCode: string) => {
-    const itemKey = getCartItemKey(product._id, colorCode);
+  const addProductToCart = async (
+    product: Product,
+    colorCode: string,
+    size?: string
+  ) => {
+    const finalSize = size || getDefaultSize(product, colorCode);
+
+    if (!finalSize) {
+      showError("Không tìm thấy size cho màu này.");
+      return;
+    }
+
+    const itemKey = getCartItemKey(product._id, colorCode, finalSize);
     if (processingItems.has(itemKey)) return;
 
     setProcessingItems((prev) => new Set(prev).add(itemKey));
 
     const existingItem = cart.find(
-      (item) => item.productId === product._id && item.colorCode === colorCode
+      (item) =>
+        item.productId === product._id &&
+        item.colorCode === colorCode &&
+        item.size === finalSize
     );
 
     if (existingItem && existingItem.quantity >= 10) {
@@ -149,45 +201,51 @@ const CartProviderInner: React.FC<{ children: React.ReactNode }> = ({
       return;
     }
 
-    const previousCart = [...cart];
-    if (existingItem) {
-      setCart((prev) =>
-        prev.map((item) =>
-          item.productId === product._id && item.colorCode === colorCode
-            ? { ...item, quantity: item.quantity + 1 }
-            : item
-        )
-      );
-    } else {
-      const foundColor = product.colors?.find((c) => c.colorCode === colorCode);
-      const selectedColor = foundColor
-        ? {
-            colorCode: foundColor.colorCode,
-            image: foundColor.image?.asset?.url
-              ? {
-                  asset: {
-                    url: foundColor.image.asset.url,
-                    alt: foundColor.image.asset.alt ?? "",
-                  },
-                  alt: foundColor.image.alt ?? "",
-                }
-              : undefined,
-          }
-        : undefined;
-      setCart((prev) => [
-        ...prev,
-        {
-          productId: product._id,
-          colorCode,
-          quantity: 1,
-          product,
-          selectedColor,
-        },
-      ]);
-    }
-
     try {
-      await addToCart(product, colorCode);
+      showLoading("Đang thêm vào giỏ hàng...");
+      await addToCart(product, colorCode, finalSize);
+
+      if (existingItem) {
+        setCart((prev) =>
+          prev.map((item) =>
+            item.productId === product._id &&
+            item.colorCode === colorCode &&
+            item.size === finalSize
+              ? { ...item, quantity: item.quantity + 1 }
+              : item
+          )
+        );
+      } else {
+        const foundColor = product.colors?.find(
+          (c) => c.colorCode === colorCode
+        );
+        const selectedColor = foundColor
+          ? {
+              colorCode: foundColor.colorCode,
+              image: foundColor.image?.asset?.url
+                ? {
+                    asset: {
+                      url: foundColor.image.asset.url,
+                      alt: foundColor.image.asset.alt ?? "",
+                    },
+                    alt: foundColor.image.alt ?? "",
+                  }
+                : undefined,
+            }
+          : undefined;
+        setCart((prev) => [
+          ...prev,
+          {
+            productId: product._id,
+            colorCode,
+            size: finalSize,
+            quantity: 1,
+            product,
+            selectedColor,
+          },
+        ]);
+      }
+
       showSuccess("Thêm vào giỏ hàng thành công!");
     } catch (error) {
       if (isApiError(error) && error.response?.data?.error) {
@@ -196,7 +254,6 @@ const CartProviderInner: React.FC<{ children: React.ReactNode }> = ({
         showError("Thêm vào giỏ hàng thất bại!");
       }
       console.error("Lỗi thêm vào giỏ hàng:", error);
-      setCart(previousCart);
     } finally {
       setProcessingItems((prev) => {
         const newSet = new Set(prev);
@@ -206,21 +263,45 @@ const CartProviderInner: React.FC<{ children: React.ReactNode }> = ({
     }
   };
 
-  const deleteItemFromCart = async (productId: string, colorCode: string) => {
-    const itemKey = getCartItemKey(productId, colorCode);
+  const deleteItemFromCart = async (
+    productId: string,
+    colorCode: string,
+    size?: string
+  ) => {
+    let targetItem: CartItem | undefined;
+    if (size) {
+      targetItem = cart.find(
+        (item) =>
+          item.productId === productId &&
+          item.colorCode === colorCode &&
+          item.size === size
+      );
+    } else {
+      targetItem = cart.find(
+        (item) => item.productId === productId && item.colorCode === colorCode
+      );
+    }
+
+    if (!targetItem) return;
+
+    const itemKey = getCartItemKey(productId, colorCode, targetItem.size);
     if (processingItems.has(itemKey)) return;
 
     setProcessingItems((prev) => new Set(prev).add(itemKey));
     setCart((prev) =>
       prev.filter(
         (item) =>
-          !(item.productId === productId && item.colorCode === colorCode)
+          !(
+            item.productId === productId &&
+            item.colorCode === colorCode &&
+            item.size === targetItem!.size
+          )
       )
     );
 
     const tryDelete = async (retries = 3) => {
       try {
-        await deleteItemCart(productId, colorCode);
+        await deleteItemCart(productId, colorCode, targetItem!.size);
       } catch (error) {
         console.error(
           `Failed to delete ${itemKey}. Retries left: ${retries - 1}`,
@@ -248,12 +329,31 @@ const CartProviderInner: React.FC<{ children: React.ReactNode }> = ({
   const updateProductQuantity = async (
     productId: string,
     colorCode: string,
-    quantity: number
+    quantity: number,
+    size?: string
   ) => {
-    const itemKey = getCartItemKey(productId, colorCode);
+    let targetItem: CartItem | undefined;
+    if (size) {
+      targetItem = cart.find(
+        (item) =>
+          item.productId === productId &&
+          item.colorCode === colorCode &&
+          item.size === size
+      );
+    } else {
+      targetItem = cart.find(
+        (item) => item.productId === productId && item.colorCode === colorCode
+      );
+    }
+
+    if (!targetItem) return;
+
+    const itemKey = getCartItemKey(productId, colorCode, targetItem.size);
     setCart((prevCart) =>
       prevCart.map((item) =>
-        item.productId === productId && item.colorCode === colorCode
+        item.productId === productId &&
+        item.colorCode === colorCode &&
+        item.size === targetItem!.size
           ? { ...item, quantity }
           : item
       )
@@ -265,7 +365,7 @@ const CartProviderInner: React.FC<{ children: React.ReactNode }> = ({
 
     debounceTimers[itemKey] = setTimeout(async () => {
       try {
-        await updateQuantity(productId, colorCode, quantity);
+        await updateQuantity(productId, colorCode, quantity, targetItem!.size);
       } catch (error) {
         console.error("Failed to update quantity:", error);
         showError("Cập nhật số lượng thất bại.");
@@ -275,10 +375,25 @@ const CartProviderInner: React.FC<{ children: React.ReactNode }> = ({
     }, 500);
   };
 
-  const increaseQuantity = (productId: string, colorCode: string) => {
-    const cartItem = cart.find(
-      (item) => item.productId === productId && item.colorCode === colorCode
-    );
+  const increaseQuantity = (
+    productId: string,
+    colorCode: string,
+    size?: string
+  ) => {
+    let cartItem: CartItem | undefined;
+    if (size) {
+      cartItem = cart.find(
+        (item) =>
+          item.productId === productId &&
+          item.colorCode === colorCode &&
+          item.size === size
+      );
+    } else {
+      cartItem = cart.find(
+        (item) => item.productId === productId && item.colorCode === colorCode
+      );
+    }
+
     if (!cartItem) return;
 
     const newQuantity = cartItem.quantity + 1;
@@ -295,19 +410,34 @@ const CartProviderInner: React.FC<{ children: React.ReactNode }> = ({
       );
       return;
     }
-    updateProductQuantity(productId, colorCode, newQuantity);
+    updateProductQuantity(productId, colorCode, newQuantity, cartItem.size);
   };
 
-  const decreaseQuantity = (productId: string, colorCode: string) => {
-    const cartItem = cart.find(
-      (item) => item.productId === productId && item.colorCode === colorCode
-    );
+  const decreaseQuantity = (
+    productId: string,
+    colorCode: string,
+    size?: string
+  ) => {
+    let cartItem: CartItem | undefined;
+    if (size) {
+      cartItem = cart.find(
+        (item) =>
+          item.productId === productId &&
+          item.colorCode === colorCode &&
+          item.size === size
+      );
+    } else {
+      cartItem = cart.find(
+        (item) => item.productId === productId && item.colorCode === colorCode
+      );
+    }
+
     if (!cartItem) return;
 
     const newQuantity = cartItem.quantity - 1;
     if (newQuantity < 1) return;
 
-    updateProductQuantity(productId, colorCode, newQuantity);
+    updateProductQuantity(productId, colorCode, newQuantity, cartItem.size);
   };
 
   const getCartItemCount = () => {
@@ -316,6 +446,21 @@ const CartProviderInner: React.FC<{ children: React.ReactNode }> = ({
 
   const getCartItemsByProduct = (productId: string) => {
     return cart.filter((item) => item.productId === productId);
+  };
+
+  const getCartItem = (productId: string, colorCode: string, size?: string) => {
+    if (size) {
+      return cart.find(
+        (item) =>
+          item.productId === productId &&
+          item.colorCode === colorCode &&
+          item.size === size
+      );
+    } else {
+      return cart.find(
+        (item) => item.productId === productId && item.colorCode === colorCode
+      );
+    }
   };
 
   return (
@@ -331,9 +476,10 @@ const CartProviderInner: React.FC<{ children: React.ReactNode }> = ({
         decreaseQuantity,
         getCartItemCount,
         getCartItemsByProduct,
+        getCartItem,
       }}
     >
-      {children}
+            {children}   {" "}
     </CartContext.Provider>
   );
 };

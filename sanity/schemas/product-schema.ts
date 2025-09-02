@@ -8,37 +8,6 @@ export const productSchema = defineType({
  type: "document",
  fields: [
    defineField({
-     name: "colors",
-     title: "Màu sắc",
-     type: "array",
-     of: [
-       {
-         type: "object",
-         fields: [
-           {
-             name: "colorCode",
-             title: "Mã màu",
-             type: "string",
-           },
-           {
-             name: "image",
-             title: "Hình minh họa",
-             type: "image",
-             options: { hotspot: true },
-           },
-           {
-             name: "quantity",
-             title: "Tồn kho màu này (Quantity)",
-             type: "number",
-             validation: (Rule) => Rule.required().min(0).error("Tồn kho màu phải >= 0"),
-             initialValue: 0,
-             description: "Số lượng tồn kho riêng cho màu này.",
-           }
-         ]
-       }
-     ]
-   }),
-   defineField({
      name: "title",
      title: "Product Name",
      type: "string",
@@ -91,6 +60,65 @@ export const productSchema = defineType({
        },
      ],
    }),
+      defineField({
+     name: "colors",
+     title: "Màu sắc",
+     type: "array",
+     of: [
+       {
+         type: "object",
+         fields: [
+           {
+             name: "colorCode",
+             title: "Mã màu",
+             type: "string",
+           },
+           {
+             name: "image",
+             title: "Hình minh họa",
+             type: "image",
+             options: { hotspot: true },
+           },
+           {
+             name: "sizes",
+             title: "Kích cỡ và tồn kho từng size",
+             type: "array",
+             of: [
+               {
+                 type: "object",
+                 fields: [
+                   {
+                     name: "size",
+                     title: "Size",
+                     type: "string",
+                     options: {
+                       list: [
+                         { title: "XS", value: "XS" },
+                         { title: "S", value: "S" },
+                         { title: "M", value: "M" },
+                         { title: "L", value: "L" },
+                         { title: "XL", value: "XL" },
+                         { title: "XXL", value: "XXL" }
+                       ]
+                     }
+                   },
+                   {
+                     name: "quantity",
+                     title: "Tồn kho size này",
+                     type: "number",
+                     validation: (Rule) => Rule.required().min(0).error("Tồn kho phải >= 0"),
+                     initialValue: 0
+                   }
+                 ]
+               }
+             ],
+             description: "Nhập số lượng tồn kho cho từng size của màu này."
+           }
+         ]
+       }
+     ]
+   }),
+  // Trường sizes đã được chuyển vào từng màu, không cần trường riêng ngoài màu nữa
    defineField({
      name: "price",
      title: "Price",

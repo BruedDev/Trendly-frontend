@@ -3,7 +3,6 @@ import { Autoplay, Pagination } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
 import { ReactNode } from "react";
-// import styles from "./SwiperSlide.module.scss";
 
 interface SwiperSlideProps<T> {
   data: T[];

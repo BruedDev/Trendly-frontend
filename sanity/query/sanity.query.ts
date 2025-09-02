@@ -33,7 +33,7 @@ export async function getPage(slug: string = "/") {
             (^.displayType == "all" ||
              (^.displayType == "new" && isNew == true) ||
              (^.displayType == "bestseller" && isBestseller == true))
-          ][0...20] {
+          ] | order(isNew desc, _createdAt desc)[0...20] {
             _id,
             title,
             slug,
@@ -62,6 +62,10 @@ export async function getPage(slug: string = "/") {
               image{
                 asset->{url},
                 alt
+              },
+              sizes[]{
+                size,
+                quantity
               }
             },
             isNew,
@@ -97,7 +101,7 @@ export async function getPage(slug: string = "/") {
                 (^.displayType == "all" ||
                  (^.displayType == "new" && isNew == true) ||
                  (^.displayType == "bestseller" && isBestseller == true))
-              ][0...20] {
+              ] | order(isNew desc, _createdAt desc)[0...20] {
                 _id,
                 title,
                 slug,
@@ -127,6 +131,10 @@ export async function getPage(slug: string = "/") {
                   image{
                     asset->{url},
                     alt
+                  },
+                  sizes[]{
+                    size,
+                    quantity
                   }
                 },
                 isNew,
@@ -159,7 +167,7 @@ export async function getPage(slug: string = "/") {
                 slug,
                 description
               },
-              "products": *[_type == "product" && count(categories[_ref in ^.categories[]._ref]) > 0] {
+              "products": *[_type == "product" && count(categories[_ref in ^.categories[]._ref]) > 0] | order(isNew desc, _createdAt desc) {
                 _id,
                 title,
                 slug,
