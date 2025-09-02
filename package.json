@@ -17,6 +17,7 @@
     "@sanity/table": "^1.1.4",
     "@sanity/vision": "^3.99.0",
     "clsx": "^2.1.1",
+    "js-cookie": "^3.0.5",
     "next": "15.4.5",
     "next-intl": "^4.3.4",
     "next-sanity": "^9.12.3",
@@ -33,6 +34,7 @@
   "devDependencies": {
     "@eslint/eslintrc": "^3",
     "@tailwindcss/postcss": "^4.1.12",
+    "@types/js-cookie": "^3.0.6",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",

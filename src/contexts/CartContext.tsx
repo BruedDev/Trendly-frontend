@@ -157,11 +157,10 @@ const CartProviderInner: React.FC<{ children: React.ReactNode }> = ({
       setCart(cartRes.cart || []);
     } catch (error) {
       console.error("Failed to fetch cart:", error);
-      showError("Không thể tải giỏ hàng. Vui lòng thử lại.");
     } finally {
       setLoading(false);
     }
-  }, [showError]);
+  }, []);
 
   useEffect(() => {
     fetchCart();
@@ -479,7 +478,7 @@ const CartProviderInner: React.FC<{ children: React.ReactNode }> = ({
         getCartItem,
       }}
     >
-            {children}   {" "}
+      {children}
     </CartContext.Provider>
   );
 };

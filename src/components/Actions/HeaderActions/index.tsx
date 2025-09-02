@@ -1,3 +1,5 @@
+"use client";
+
 import CartComponent from "./Cart.action";
 import HeartComponent from "./Heart.action";
 import SearchAction from "./Seach.action";
