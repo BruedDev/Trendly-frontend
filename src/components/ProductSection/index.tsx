@@ -19,7 +19,6 @@ export default function ProductSection({
   const [hoverShowActions, setHoverShowActions] = React.useState<string | null>(
     null
   );
-  // Khởi tạo activeColors mặc định là màu đầu tiên (index 0) cho mỗi sản phẩm có màu
   const [activeColors, setActiveColors] = React.useState<
     Record<string, number | null>
   >(() => {

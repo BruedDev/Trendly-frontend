@@ -1,4 +1,5 @@
 "use client";
+
 import Image from "next/image";
 import SwiperSlide from "@/components/SwiperSlide";
 import { getTimeSpeed } from "@/utils/getTimeSpeed";
