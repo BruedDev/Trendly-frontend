@@ -21,7 +21,6 @@ export default function Product({
   onMouseEnter?: () => void;
   onMouseLeave?: () => void;
 }) {
-  console.log("product sanity", product);
   return (
     <div
       className={styles.product_Item}
