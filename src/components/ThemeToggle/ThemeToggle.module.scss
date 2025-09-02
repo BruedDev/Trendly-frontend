@@ -14,6 +14,7 @@
     background-position: 48px 0;
   }
 }
+
 .toggle {
   display: flex;
   transform: scale(0.7);
@@ -30,34 +31,32 @@
   cursor: pointer;
 }
 
-.label:before,
-.label:after {
+.label:before {
+  content: "";
   display: block;
   position: absolute;
-  content: "";
   width: 18px;
   height: 18px;
   border-radius: 50%;
   top: 4px;
   left: 4px;
-  transition: 0.5s ease;
-}
-
-.label:before {
-  background-color: #ffa41b;
+  background-color: var(--bg-toggle-icon-theme);
+  transition: 1.1s cubic-bezier(0.23, 1, 0.32, 1);
+  z-index: 2;
 }
 
 .label:after {
-  background-color: #000839;
-  left: -16px;
-  transform: scale(0.00001);
-  transition: none;
-
-  @media (prefers-color-scheme: dark) {
-    & {
-      background-color: #fff;
-    }
-  }
+  content: "";
+  display: block;
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  top: 4px;
+  left: 4px;
+  background-color: var(--bg-toggle-theme);
+  transform: scale(0);
+  z-index: 3;
 }
 
 .input[type="checkbox"] {
@@ -65,21 +64,9 @@
 }
 
 .input[type="checkbox"]:checked + .label:before {
-  background-color: #fff;
   transform: translateX(22px);
-
-  @media (prefers-color-scheme: dark) {
-    & {
-      background-color: #000;
-    }
-  }
 }
 
 .input[type="checkbox"]:checked + .label:after {
-  transform: translateX(30px) scale(1);
-  transition: 0.5s ease;
-}
-
-.input[type="checkbox"]:not(:checked) + .label:after {
-  transition: none !important;
+  transform: translateX(10px) scale(1);
 }
