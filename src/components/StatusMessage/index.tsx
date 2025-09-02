@@ -1,5 +1,64 @@
 import { useStatusMessage } from "@/hooks/useStatusMessage";
 import React from "react";
+import styles from "./StatusMessage.module.scss";
+
+type StatusType = "idle" | "success" | "error" | "loading";
+
+const AnimatedIcon = ({ status }: { status: StatusType }) => {
+  return (
+    <div className={`${styles.iconWrapper} ${styles[status]}`}>
+      {/* Spinner base circle */}
+      <div className={styles.spinnerBase}>
+        <div className={styles.spinnerCircle}></div>
+      </div>
+
+      {/* Success checkmark */}
+      {status === "success" && (
+        <div className={styles.successIcon}>
+          <svg viewBox="0 0 52 52" className={styles.successSvg}>
+            <circle
+              className={styles.successCircle}
+              cx="26"
+              cy="26"
+              r="25"
+              fill="none"
+            />
+            <path
+              className={styles.successCheck}
+              fill="none"
+              d="m14.1 27.2l7.1 7.2 16.7-16.8"
+            />
+          </svg>
+        </div>
+      )}
+
+      {/* Error X mark */}
+      {status === "error" && (
+        <div className={styles.errorIcon}>
+          <svg viewBox="0 0 52 52" className={styles.errorSvg}>
+            <circle
+              className={styles.errorCircle}
+              cx="26"
+              cy="26"
+              r="25"
+              fill="none"
+            />
+            <path
+              className={styles.errorLineLeft}
+              fill="none"
+              d="m16 36 20-20"
+            />
+            <path
+              className={styles.errorLineRight}
+              fill="none"
+              d="m36 36-20-20"
+            />
+          </svg>
+        </div>
+      )}
+    </div>
+  );
+};
 
 export default function StatusMessage() {
   const { status, message } = useStatusMessage();
@@ -7,40 +66,12 @@ export default function StatusMessage() {
   if (status === "idle") return null;
 
   return (
-    <div
-      style={{
-        position: "fixed",
-        top: 0,
-        left: 0,
-        width: "100vw",
-        height: "100vh",
-        background: "rgba(0,0,0,0.3)",
-        zIndex: 9999,
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-      }}
-    >
-      <div
-        style={{
-          background: "white",
-          padding: 24,
-          borderRadius: 8,
-          minWidth: 240,
-          textAlign: "center",
-          fontWeight: 500,
-          color:
-            status === "success"
-              ? "#16a34a"
-              : status === "error"
-              ? "#dc2626"
-              : "#0ea5e9",
-        }}
-      >
-        {status === "loading" && <span>⏳</span>}
-        {status === "success" && <span>✅</span>}
-        {status === "error" && <span>❌</span>}
-        <div style={{ marginTop: 8 }}>{message}</div>
+    <div className={styles.overlay}>
+      <div className={`${styles.modal} ${styles[status]}`}>
+        <div className={styles.iconContainer}>
+          <AnimatedIcon status={status} />
+        </div>
+        <div className={styles.message}>{message}</div>
       </div>
     </div>
   );

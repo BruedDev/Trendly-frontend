@@ -70,6 +70,7 @@ export default function ProductImage({
           type="cart preview"
           product={product}
           activeColorIdx={activeColor}
+          selectedSize=""
         />
       </div>
     </div>

@@ -1,5 +1,5 @@
 .container {
-  height: calc(100dvh - 70px);
+  height: calc(100dvh);
   overflow: hidden;
   width: 100%;
 }
@@ -17,13 +17,14 @@
     top: 0;
     left: 0;
     right: 0;
-    bottom: 0;
+    bottom: 30px;
     background: linear-gradient(180deg, rgba(29, 35, 31, 0) 0%, #021d2e 110%);
   }
+
   &::after {
     content: "";
     position: absolute;
-    top: -50px;
+    top: 0;
     left: 0;
     right: 0;
     bottom: 0;

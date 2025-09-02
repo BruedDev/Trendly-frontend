@@ -70,6 +70,7 @@ export default function CartList({
                   : item.colorCode
                   ? ` / ${item.colorCode}`
                   : ""}
+                {` / ${item.size}`}
               </div>
               <div className={styles.cartItemQuantityRow}>
                 <div className={styles.cartItemControls}>
