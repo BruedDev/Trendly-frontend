@@ -5,45 +5,16 @@ import React, {
   useCallback,
   useRef,
 } from "react";
-import { useStatusMessage } from "@/hooks/useStatusMessage";
 import {
   getCart,
   addToCart,
   deleteItemCart,
   updateQuantity,
-  getCartItemKey,
 } from "@/services/cart";
+import { getCartItemKey } from "@/helper/cart";
 import { Product } from "@/types/Products_section";
-
-interface CartItem {
-  productId: string;
-  colorCode: string;
-  size: string; // THÊM size field
-  quantity: number;
-  product?: Product;
-  selectedColor?: {
-    colorCode: string;
-    image?: {
-      asset: {
-        url: string;
-        alt: string;
-      };
-      alt: string;
-    };
-  };
-  stockInfo?: {
-    inStock: boolean;
-    availableQuantity: number;
-  };
-}
-
-interface ApiError {
-  response?: {
-    data?: {
-      error?: string;
-    };
-  };
-}
+import { useStatusMessage } from "@/hooks/useStatusMessage";
+import type { CartItem, ApiError, CartContextType } from "@/types/cart";
 
 function isApiError(error: unknown): error is ApiError {
   return (
@@ -58,45 +29,6 @@ function isApiError(error: unknown): error is ApiError {
     "error" in error.response.data
   );
 }
-
-type CartContextType = {
-  cart: CartItem[];
-  loading: boolean;
-  fetchCart: () => Promise<void>;
-  addProductToCart: (
-    product: Product,
-    colorCode: string,
-    size?: string
-  ) => Promise<void>;
-  deleteItemFromCart: (
-    productId: string,
-    colorCode: string,
-    size?: string
-  ) => Promise<void>;
-  updateProductQuantity: (
-    productId: string,
-    colorCode: string,
-    quantity: number,
-    size?: string
-  ) => Promise<void>;
-  increaseQuantity: (
-    productId: string,
-    colorCode: string,
-    size?: string
-  ) => void;
-  decreaseQuantity: (
-    productId: string,
-    colorCode: string,
-    size?: string
-  ) => void;
-  getCartItemCount: () => number;
-  getCartItemsByProduct: (productId: string) => CartItem[];
-  getCartItem: (
-    productId: string,
-    colorCode: string,
-    size?: string
-  ) => CartItem | undefined;
-};
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
@@ -178,7 +110,11 @@ const CartProviderInner: React.FC<{ children: React.ReactNode }> = ({
       return;
     }
 
-    const itemKey = getCartItemKey(product._id, colorCode, finalSize);
+    const itemKey = getCartItemKey({
+      productId: product._id,
+      colorCode,
+      size: finalSize,
+    });
     if (processingItems.has(itemKey)) return;
 
     setProcessingItems((prev) => new Set(prev).add(itemKey));
@@ -283,7 +219,11 @@ const CartProviderInner: React.FC<{ children: React.ReactNode }> = ({
 
     if (!targetItem) return;
 
-    const itemKey = getCartItemKey(productId, colorCode, targetItem.size);
+    const itemKey = getCartItemKey({
+      productId,
+      colorCode,
+      size: targetItem.size,
+    });
     if (processingItems.has(itemKey)) return;
 
     setProcessingItems((prev) => new Set(prev).add(itemKey));
@@ -347,7 +287,11 @@ const CartProviderInner: React.FC<{ children: React.ReactNode }> = ({
 
     if (!targetItem) return;
 
-    const itemKey = getCartItemKey(productId, colorCode, targetItem.size);
+    const itemKey = getCartItemKey({
+      productId,
+      colorCode,
+      size: targetItem.size,
+    });
     setCart((prevCart) =>
       prevCart.map((item) =>
         item.productId === productId &&

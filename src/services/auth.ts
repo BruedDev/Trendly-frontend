@@ -1,26 +1,17 @@
 import API_ROUTES from "@/router";
 import getFetchApi from "@/utils/getFetchApi";
+import type { LoginResponse, RegisterData, LoginData } from "@/types/auth";
 
 const { REGISTER, LOGIN } = API_ROUTES.auth;
 
-
-export async function register(data: { fullName: string; email: string; address: string; password: string; phone?: string }) {
+export async function register(data: RegisterData) {
   return getFetchApi(REGISTER, {
     method: "POST",
     data,
   });
 }
 
-interface LoginResponse {
-  success: boolean;
-  user: {
-    id: string;
-    email: string;
-  };
-  token?: string;
-}
-
-export async function login(data: { email: string; password: string }) {
+export async function login(data: LoginData) {
   const response = await getFetchApi<unknown, LoginResponse>(LOGIN, {
     method: "POST",
     data,
