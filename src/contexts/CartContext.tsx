@@ -5,45 +5,16 @@ import React, {
   useCallback,
   useRef,
 } from "react";
-import { useStatusMessage } from "@/hooks/useStatusMessage";
 import {
   getCart,
   addToCart,
   deleteItemCart,
   updateQuantity,
-  getCartItemKey,
 } from "@/services/cart";
+import { getCartItemKey } from "@/helper/cart";
 import { Product } from "@/types/Products_section";
-
-interface CartItem {
-  productId: string;
-  colorCode: string;
-  size: string; // THÊM size field
-  quantity: number;
-  product?: Product;
-  selectedColor?: {
-    colorCode: string;
-    image?: {
-      asset: {
-        url: string;
-        alt: string;
-      };
-      alt: string;
-    };
-  };
-  stockInfo?: {
-    inStock: boolean;
-    availableQuantity: number;
-  };
-}
-
-interface ApiError {
-  response?: {
-    data?: {
-      error?: string;
-    };
-  };
-}
+import { useStatusMessage } from "@/hooks/useStatusMessage";
+import type { CartItem, ApiError, CartContextType } from "@/types/cart";
 
 function isApiError(error: unknown): error is ApiError {
   return (
@@ -58,45 +29,6 @@ function isApiError(error: unknown): error is ApiError {
     "error" in error.response.data
   );
 }
-
-type CartContextType = {
-  cart: CartItem[];
-  loading: boolean;
-  fetchCart: () => Promise<void>;
-  addProductToCart: (
-    product: Product,
-    colorCode: string,
-    size?: string
-  ) => Promise<void>;
-  deleteItemFromCart: (
-    productId: string,
-    colorCode: string,
-    size?: string
-  ) => Promise<void>;
-  updateProductQuantity: (
-    productId: string,
-    colorCode: string,
-    quantity: number,
-    size?: string
-  ) => Promise<void>;
-  increaseQuantity: (
-    productId: string,
-    colorCode: string,
-    size?: string
-  ) => void;
-  decreaseQuantity: (
-    productId: string,
-    colorCode: string,
-    size?: string
-  ) => void;
-  getCartItemCount: () => number;
-  getCartItemsByProduct: (productId: string) => CartItem[];
-  getCartItem: (
-    productId: string,
-    colorCode: string,
-    size?: string
-  ) => CartItem | undefined;
-};
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
@@ -118,15 +50,8 @@ const getDefaultSize = (
 const CartProviderInner: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const [cart, setCart] = useState<CartItem[]>(() => {
-    try {
-      const localData = localStorage.getItem("cart");
-      return localData ? JSON.parse(localData) : [];
-    } catch (error) {
-      console.error("Failed to parse cart from localStorage", error);
-      return [];
-    }
-  });
+  // Fix SSR issue: Initialize with empty array
+  const [cart, setCart] = useState<CartItem[]>([]);
 
   const [loading, setLoading] = useState(true);
   const [processingItems, setProcessingItems] = useState<Set<string>>(
@@ -135,17 +60,33 @@ const CartProviderInner: React.FC<{ children: React.ReactNode }> = ({
   const { showLoading, showSuccess, showError } = useStatusMessage();
   const debounceTimers = useRef<{ [key: string]: NodeJS.Timeout }>({}).current;
 
+  // Load cart from localStorage after component mounts (client-side only)
   useEffect(() => {
     try {
-      const minimalCart = cart.map((item) => ({
-        productId: item.productId,
-        colorCode: item.colorCode,
-        size: item.size,
-        quantity: item.quantity,
-      }));
-      localStorage.setItem("cart", JSON.stringify(minimalCart));
+      const localData = localStorage.getItem("cart");
+      if (localData) {
+        setCart(JSON.parse(localData));
+      }
     } catch (error) {
-      console.error("Failed to save cart to localStorage", error);
+      console.error("Failed to parse cart from localStorage", error);
+    }
+  }, []);
+
+  // Save cart to localStorage (client-side only)
+  useEffect(() => {
+    // Only save when component is mounted and we're on client-side
+    if (typeof window !== "undefined" && cart.length >= 0) {
+      try {
+        const minimalCart = cart.map((item) => ({
+          productId: item.productId,
+          colorCode: item.colorCode,
+          size: item.size,
+          quantity: item.quantity,
+        }));
+        localStorage.setItem("cart", JSON.stringify(minimalCart));
+      } catch (error) {
+        console.error("Failed to save cart to localStorage", error);
+      }
     }
   }, [cart]);
 
@@ -178,7 +119,11 @@ const CartProviderInner: React.FC<{ children: React.ReactNode }> = ({
       return;
     }
 
-    const itemKey = getCartItemKey(product._id, colorCode, finalSize);
+    const itemKey = getCartItemKey({
+      productId: product._id,
+      colorCode,
+      size: finalSize,
+    });
     if (processingItems.has(itemKey)) return;
 
     setProcessingItems((prev) => new Set(prev).add(itemKey));
@@ -283,7 +228,11 @@ const CartProviderInner: React.FC<{ children: React.ReactNode }> = ({
 
     if (!targetItem) return;
 
-    const itemKey = getCartItemKey(productId, colorCode, targetItem.size);
+    const itemKey = getCartItemKey({
+      productId,
+      colorCode,
+      size: targetItem.size,
+    });
     if (processingItems.has(itemKey)) return;
 
     setProcessingItems((prev) => new Set(prev).add(itemKey));
@@ -347,7 +296,11 @@ const CartProviderInner: React.FC<{ children: React.ReactNode }> = ({
 
     if (!targetItem) return;
 
-    const itemKey = getCartItemKey(productId, colorCode, targetItem.size);
+    const itemKey = getCartItemKey({
+      productId,
+      colorCode,
+      size: targetItem.size,
+    });
     setCart((prevCart) =>
       prevCart.map((item) =>
         item.productId === productId &&

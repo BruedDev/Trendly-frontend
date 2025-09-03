@@ -6,18 +6,20 @@ import Tooltip from "@/ui/Tooltip";
 import { CiUser } from "react-icons/ci";
 import { useProtectRoute } from "@/hooks/useProtectRoute";
 import { useRouter } from "next/navigation";
+import { useUser } from "@/hooks/useUser";
 
 export default function UserComponent() {
   const router = useRouter();
   const protectRoute = useProtectRoute();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const { user } = useUser();
 
   useEffect(() => {
     const token = Cookies.get("token");
     setIsLoggedIn(!!token);
   }, []);
 
-  const tooltipTitle = isLoggedIn ? "Hi Chào Lộc" : "Đăng nhập";
+  const tooltipTitle = isLoggedIn ? `Hi, ${user?.fullName}` : "Đăng nhập";
 
   const handleAccount = protectRoute(() => {
     router.push("/account");
