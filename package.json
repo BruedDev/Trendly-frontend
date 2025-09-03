@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "concurrently \"next dev --turbopack\" \"npx sanity dev\"",
+    "dev": "concurrently \"next dev\" \"npx sanity dev\"",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
@@ -18,6 +18,7 @@
     "@sanity/vision": "^3.99.0",
     "clsx": "^2.1.1",
     "js-cookie": "^3.0.5",
+    "lightningcss": "^1.30.1",
     "next": "15.4.5",
     "next-intl": "^4.3.4",
     "next-sanity": "^9.12.3",
@@ -33,7 +34,6 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
-    "@tailwindcss/postcss": "^4.1.12",
     "@types/js-cookie": "^3.0.6",
     "@types/node": "^20",
     "@types/react": "^19",
@@ -44,7 +44,7 @@
     "eslint-config-next": "15.4.5",
     "postcss": "^8.5.6",
     "sanity-codegen": "^0.9.8",
-    "tailwindcss": "^4.1.12",
+    "tailwindcss": "^3.4.17",
     "typescript": "^5"
   }
 }

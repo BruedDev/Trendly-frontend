@@ -50,15 +50,8 @@ const getDefaultSize = (
 const CartProviderInner: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const [cart, setCart] = useState<CartItem[]>(() => {
-    try {
-      const localData = localStorage.getItem("cart");
-      return localData ? JSON.parse(localData) : [];
-    } catch (error) {
-      console.error("Failed to parse cart from localStorage", error);
-      return [];
-    }
-  });
+  // Fix SSR issue: Initialize with empty array
+  const [cart, setCart] = useState<CartItem[]>([]);
 
   const [loading, setLoading] = useState(true);
   const [processingItems, setProcessingItems] = useState<Set<string>>(
@@ -67,17 +60,33 @@ const CartProviderInner: React.FC<{ children: React.ReactNode }> = ({
   const { showLoading, showSuccess, showError } = useStatusMessage();
   const debounceTimers = useRef<{ [key: string]: NodeJS.Timeout }>({}).current;
 
+  // Load cart from localStorage after component mounts (client-side only)
   useEffect(() => {
     try {
-      const minimalCart = cart.map((item) => ({
-        productId: item.productId,
-        colorCode: item.colorCode,
-        size: item.size,
-        quantity: item.quantity,
-      }));
-      localStorage.setItem("cart", JSON.stringify(minimalCart));
+      const localData = localStorage.getItem("cart");
+      if (localData) {
+        setCart(JSON.parse(localData));
+      }
     } catch (error) {
-      console.error("Failed to save cart to localStorage", error);
+      console.error("Failed to parse cart from localStorage", error);
+    }
+  }, []);
+
+  // Save cart to localStorage (client-side only)
+  useEffect(() => {
+    // Only save when component is mounted and we're on client-side
+    if (typeof window !== "undefined" && cart.length >= 0) {
+      try {
+        const minimalCart = cart.map((item) => ({
+          productId: item.productId,
+          colorCode: item.colorCode,
+          size: item.size,
+          quantity: item.quantity,
+        }));
+        localStorage.setItem("cart", JSON.stringify(minimalCart));
+      } catch (error) {
+        console.error("Failed to save cart to localStorage", error);
+      }
     }
   }, [cart]);
 
