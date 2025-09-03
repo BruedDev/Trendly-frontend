@@ -1,1 +1,11 @@
-@import "../styles/_theme.scss";
+.swiper-pagination-bullet {
+  background-color: transparent !important;
+  border: 1px solid #dc143c !important;
+  opacity: 1 !important;
+  width: 10px !important;
+  height: 10px !important;
+}
+
+.swiper-pagination-bullet-active {
+  background-color: #dc143c !important;
+}

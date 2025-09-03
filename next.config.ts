@@ -4,7 +4,7 @@ import path from "path";
 const nextConfig: NextConfig = {
   sassOptions: {
     includePaths: [path.join(__dirname, "src/styles")],
-    prependData: `@use "variables" as *; @use "mixins" as *; @use "functions" as *; @use "baseClass" as *; @use "fontFamily" as *;`,
+    prependData: `@use "variables" as *; @use "mixins" as *; @use "functions" as *; @use "baseClass" as *; @use "fontFamily" as *; @use "theme" as *;`,
     outputStyle: 'compressed',
   },
 
