@@ -1,4 +1,3 @@
-// Helper function để build Sanity image URL từ _ref
 export function buildSanityImageUrl(ref: string): string {
   const parts = ref.split("-");
   if (parts.length < 3) return "";
