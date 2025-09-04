@@ -6,9 +6,12 @@ export type AnimationVariant =
   | "smoothSlide"
   | "cleanPop"
   | "modernLift"
-  | "cart";
+  | "global";
 
 export interface OverlayProps {
   onClose: () => void;
   variant?: AnimationVariant;
+  isExiting?: boolean;
+  isOpen?: boolean;
+  content?: React.ReactNode;
 }

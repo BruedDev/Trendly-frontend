@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Cookies from "js-cookie";
-import Tooltip from "@/ui/Tooltip";
+import Tooltip from "@/components/Tooltip";
 import { CiUser } from "react-icons/ci";
 import { useProtectRoute } from "@/hooks/useProtectRoute";
 import { useRouter } from "next/navigation";

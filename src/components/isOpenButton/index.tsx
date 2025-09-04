@@ -9,25 +9,23 @@ interface IsOpenButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children: ReactNode;
   componentToOpen: ReactNode;
   variant?: AnimationVariant;
+  scope?: string;
 }
 
 const IsOpenButton = forwardRef<HTMLButtonElement, IsOpenButtonProps>(
-  ({ children, componentToOpen, variant, ...props }, ref) => {
+  ({ children, componentToOpen, variant, scope, ...props }, ref) => {
     const { toggleOverlay } = useOverlay();
 
     const handleToggle = (e: React.MouseEvent<HTMLButtonElement>) => {
-      // Nếu có onClick từ props, gọi trước
       if (props.onClick) {
-        // Ép kiểu để nhận boolean | void
         const result = (
           props.onClick as (
             e: React.MouseEvent<HTMLButtonElement>
           ) => boolean | void
         )(e);
-        // Nếu onClick trả về false, không mở overlay
         if (result === false) return;
       }
-      toggleOverlay(componentToOpen, variant);
+      toggleOverlay(componentToOpen, variant, scope);
     };
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -38,7 +36,7 @@ const IsOpenButton = forwardRef<HTMLButtonElement, IsOpenButtonProps>(
         ref={ref}
         onClick={handleToggle}
         {...restProps}
-        className="relative"
+        className={`relative ${restProps.className ?? ""}`}
       >
         {children}
       </button>

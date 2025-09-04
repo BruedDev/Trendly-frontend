@@ -19,6 +19,11 @@
   display: inline-block;
   transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
   font-size: 0.9rem;
+
+  @include respond(lg) {
+    font-size: 16px;
+    transition: none;
+  }
 }
 
 .nav-text::after {

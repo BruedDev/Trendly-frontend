@@ -1,5 +1,5 @@
 import CircleQuantity from "@/ui/CirclesCount";
-import Tooltip from "@/ui/Tooltip";
+import Tooltip from "@/components/Tooltip";
 import { IoCartOutline } from "react-icons/io5";
 import { useCartCount } from "@/hooks/useCartCount";
 import IsOpenButton from "@/components/isOpenButton";
@@ -18,7 +18,7 @@ export default function CartComponent() {
     <Tooltip title="Giỏ hàng" arrow="top-center">
       <IsOpenButton
         componentToOpen={<Cart />}
-        variant="cart"
+        scope="global visible"
         onClick={handleOpenCart}
       >
         <CircleQuantity quantity={count} />

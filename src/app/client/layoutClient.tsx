@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Header from "@/components/Header";
-import Overlay from "@/ui/Overlay";
+import Overlay from "@/components/Overlay";
 import ContextProvider from "@/contexts/index";
 import { StatusMessageProvider } from "@/contexts/StatusMessageContext";
 import { useOverlay } from "@/hooks/useOverlay";

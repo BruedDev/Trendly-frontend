@@ -1,5 +1,9 @@
 .wrapper_header {
   margin-bottom: 30px;
+
+  @include respond(md) {
+    margin-top: 10px;
+  }
 }
 
 .product_Item {
@@ -18,9 +22,13 @@
 .imageContainer {
   position: relative;
   width: 100%;
-  height: 300px;
+  aspect-ratio: 3/4;
   margin-bottom: 8px;
   overflow: hidden;
+
+  @include respond(md) {
+    aspect-ratio: 4/5;
+  }
 
   img {
     width: 100%;
@@ -43,6 +51,7 @@
     transition: opacity 0.3s, transform 0.3s;
     pointer-events: none;
   }
+
   .actionsOverlay.visible {
     opacity: 1;
     transform: translateY(0);
@@ -87,6 +96,7 @@
     overflow: hidden;
     text-overflow: ellipsis;
     max-width: 100%;
+    text-transform: capitalize;
   }
 }
 

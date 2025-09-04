@@ -1,5 +1,5 @@
 import Image from "next/image";
-import Tooltip from "@/ui/Tooltip";
+import Tooltip from "@/components/Tooltip";
 import { getSanityImageUrl } from "@/utils/getSanityImageUrl";
 import { ProductColorsProps } from "@/types/Products_section";
 import styles from "./Product.module.scss";

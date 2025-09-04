@@ -1,6 +1,6 @@
 "use client";
 
-import Tooltip from "@/ui/Tooltip";
+import Tooltip from "@/components/Tooltip";
 import { IoIosSearch } from "react-icons/io";
 import Search from "@/ui/Search";
 import IsOpenButton from "@/components/isOpenButton";

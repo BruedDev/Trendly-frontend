@@ -101,22 +101,21 @@
   }
 }
 
+$breakpoints: (
+  xs: 375px,
+  sm: 480px,
+  md: 768px,
+  lg: 1024px,
+  xl: 1280px,
+);
+
 @mixin respond($breakpoint) {
-  @if $breakpoint == xs {
-    @media (max-width: 480px) {
+  $size: map-get($breakpoints, $breakpoint);
+  @if $size {
+    @media (max-width: $size) {
       @content;
     }
-  } @else if $breakpoint == sm {
-    @media (max-width: 768px) {
-      @content;
-    }
-  } @else if $breakpoint == md {
-    @media (max-width: 1150px) {
-      @content;
-    }
-  } @else if $breakpoint == lg {
-    @media (max-width: 1280px) {
-      @content;
-    }
+  } @else {
+    @warn "Breakpoint #{$breakpoint} not found in $breakpoints map.";
   }
 }
