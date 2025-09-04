@@ -1,0 +1,45 @@
+.navMenu {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 400px;
+  height: 100vh;
+  background: linear-gradient(110deg, #021d2e 0%, rgba(29, 35, 31, 0) 120%);
+  pointer-events: auto;
+
+  @include respond(md) {
+    width: 100%;
+  }
+}
+
+.navMenu.open {
+  display: block;
+}
+
+.closeButton {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: inherit;
+  z-index: 10;
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover {
+    opacity: 0.7;
+    background-color: rgba(0, 0, 0, 0.1);
+  }
+
+  &:focus {
+    outline: 2px solid currentColor;
+    outline-offset: 2px;
+  }
+}

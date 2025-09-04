@@ -1,5 +1,6 @@
 import MuiTooltip from "@mui/material/Tooltip";
 import { TooltipProps } from "@/types/Tooltip";
+import { useMediaQuery } from "@/hooks/useMediaQuery";
 
 const placementMap: Record<string, string> = {
   "top-left": "top-start",
@@ -17,7 +18,11 @@ export default function Tooltip({
   children,
   arrow = "top-center",
 }: TooltipProps) {
+  const isMobile = useMediaQuery("(max-width: 768px)");
   const muiPlacement = placementMap[arrow] || "top";
+  if (isMobile) {
+    return <>{children}</>;
+  }
   return (
     <MuiTooltip
       title={title}

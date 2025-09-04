@@ -13,13 +13,18 @@ import { AnimationVariant } from "@/types/Overlay";
 interface OverlayState {
   content: ReactNode | null;
   variant?: AnimationVariant;
+  scope?: string;
 }
 
 interface OverlayContextType {
   state: OverlayState;
   isOpen: boolean;
   isExiting: boolean;
-  toggleOverlay: (newContent: ReactNode, variant?: AnimationVariant) => void;
+  toggleOverlay: (
+    newContent: ReactNode,
+    variant?: AnimationVariant,
+    scope?: string
+  ) => void;
   closeOverlay: () => void;
 }
 
@@ -40,11 +45,11 @@ export const OverlayProvider = ({ children }: { children: ReactNode }) => {
     closeTimer.current = setTimeout(() => {
       setState({ content: null });
       setIsExiting(false);
-    }, 200); // Match the animation duration in Overlay.module.scss
+    }, 200);
   }, []);
 
   const toggleOverlay = useCallback(
-    (newContent: ReactNode, variant?: AnimationVariant) => {
+    (newContent: ReactNode, variant?: AnimationVariant, scope?: string) => {
       if (closeTimer.current) {
         clearTimeout(closeTimer.current);
         closeTimer.current = null;
@@ -62,7 +67,7 @@ export const OverlayProvider = ({ children }: { children: ReactNode }) => {
       }
 
       setIsExiting(false);
-      setState({ content: newContent, variant });
+      setState({ content: newContent, variant, scope });
     },
     [state.content, closeOverlay]
   );

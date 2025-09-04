@@ -1,5 +1,5 @@
 import CircleQuantity from "@/ui/CirclesCount";
-import Tooltip from "@/ui/Tooltip";
+import Tooltip from "@/components/Tooltip";
 import { IoIosHeartEmpty } from "react-icons/io";
 import { useProtectRoute } from "@/hooks/useProtectRoute";
 import { useRouter } from "next/navigation";

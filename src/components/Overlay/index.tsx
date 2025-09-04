@@ -1,4 +1,5 @@
 "use client";
+
 import { useRef } from "react";
 import styles from "./Overlay.module.scss";
 import { OverlayProps } from "@/types/Overlay";
@@ -8,11 +9,15 @@ export default function Overlay({
   onClose,
   variant = "slideUp",
   isExiting = false,
-}: OverlayProps & { isExiting?: boolean }) {
+  scope: _scope,
+}: OverlayProps & {
+  isExiting?: boolean;
+  scope?: string;
+  isCentered?: boolean;
+}) {
   const { state } = useOverlay();
   const isDragging = useRef(false);
 
-  // Đóng overlay khi click/tap ra ngoài
   const handleMouseDown = () => {
     isDragging.current = false;
   };
@@ -28,13 +33,14 @@ export default function Overlay({
     isDragging.current = false;
   };
 
-  // Đóng overlay khi chạm ra ngoài trên mobile
   const handleTouchStart = () => {
     isDragging.current = false;
   };
+
   const handleTouchMove = () => {
     isDragging.current = true;
   };
+
   const handleTouchEnd = () => {
     if (!isDragging.current) {
       onClose();
@@ -43,11 +49,24 @@ export default function Overlay({
   };
 
   const effectiveVariant = state.variant || variant;
+  const effectiveScope = state.scope || _scope;
+
+  const isCentered =
+    typeof effectiveScope === "string" && effectiveScope.includes("visible");
+
+  const overlayClass = [
+    styles.overlay,
+    isExiting ? styles.exiting : "",
+    effectiveScope && effectiveScope.includes("global")
+      ? isCentered
+        ? `${styles.global} ${styles.visible}`
+        : styles.global
+      : "",
+  ].join(" ");
+
   return (
     <div
-      className={`${styles.overlay} ${isExiting ? styles.exiting : ""} ${
-        effectiveVariant === "cart" ? styles.cart : ""
-      }`}
+      className={overlayClass}
       onMouseDown={handleMouseDown}
       onMouseMove={handleMouseMove}
       onClick={handleClick}

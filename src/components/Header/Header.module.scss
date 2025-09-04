@@ -7,12 +7,16 @@
   background-color: var(--background);
   z-index: 999;
 
-  @include respond(lg) {
+  @include respond(xl) {
     padding: 0 60px;
   }
 
-  @include respond(md) {
+  @include respond(lg) {
     padding: 0 30px;
+  }
+
+  @include respond(md) {
+    padding: 0 15px;
   }
 }
 
@@ -31,12 +35,40 @@
     height: 100%;
     object-fit: contain;
   }
+
+  @include respond(lg) {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  @include respond(xs) {
+    left: 47%;
+  }
 }
 
 .nav {
   display: flex;
   gap: 30px;
   position: relative;
+
+  @include respond(lg) {
+    :global {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0;
+      height: 100vh;
+      color: #fff;
+    }
+  }
+}
+
+.desktopNavBar {
+  @include respond(lg) {
+    display: none !important;
+  }
 }
 
 .nav-underline {
@@ -49,4 +81,19 @@
   transform-origin: left;
   transition: left 0.35s cubic-bezier(0.25, 0.8, 0.25, 1),
     width 0.35s cubic-bezier(0.25, 0.8, 0.25, 1), opacity 0.35s ease-in-out;
+
+  @include respond(md) {
+    display: none;
+  }
+}
+
+.menuButton {
+  display: none;
+  font-size: 30px;
+  position: absolute;
+  left: -5px;
+
+  @include respond(lg) {
+    display: block;
+  }
 }

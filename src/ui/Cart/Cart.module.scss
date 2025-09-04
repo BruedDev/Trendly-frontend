@@ -1,16 +1,37 @@
-// Cart container
 .cart {
+  position: relative;
   background: #fff;
   border-radius: 16px;
   padding: 20px;
   width: 520px;
   max-width: 550px;
   max-height: 80vh;
-  overflow: hidden;
+  overflow: visible;
   z-index: 999;
   display: flex;
   flex-direction: column;
   pointer-events: auto;
+}
+
+.closeButton {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  width: 30px;
+  height: 30px;
+  background: #000;
+  border: 2px solid #000;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 1000;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+
+  svg {
+    color: #fff;
+  }
 }
 
 .header {
@@ -288,5 +309,53 @@
 
   &:hover {
     background: #f5f5f5;
+  }
+}
+
+@media (max-width: 525px) {
+  .cart {
+    width: 95vw;
+    max-width: 95vw;
+    padding: 16px;
+  }
+
+  .closeButton {
+    top: -9px;
+    right: -8px;
+    width: 28px;
+    height: 28px;
+
+    svg {
+      width: 20px;
+      height: 20px;
+    }
+  }
+
+  .cartItem {
+    gap: 12px;
+  }
+
+  .cartItemImageWrapper {
+    width: 60px;
+    height: 80px;
+  }
+
+  .cartItemTitle {
+    font-size: 14px;
+  }
+
+  .cartItemCode,
+  .cartItemCategory {
+    font-size: 12px;
+  }
+
+  .cartActions {
+    gap: 8px;
+  }
+
+  .viewCartBtn,
+  .checkoutBtn {
+    padding: 12px 14px;
+    font-size: 13px;
   }
 }

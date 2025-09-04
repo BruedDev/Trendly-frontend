@@ -1,16 +1,21 @@
 import styles from "./Cart.module.scss";
 import { useGetCart } from "@/hooks/useGetCart";
-import { IoCartOutline } from "react-icons/io5";
+import { useOverlay } from "@/hooks/useOverlay";
+import { IoCartOutline, IoClose } from "react-icons/io5";
 import CartHeader from "./CartHeader";
 import CartList from "./CartList";
 import CartFooter from "./CartFooter";
 
 export default function Cart() {
   const { cart, increaseQuantity, decreaseQuantity } = useGetCart();
+  const { closeOverlay } = useOverlay();
 
   if (!cart || cart.length === 0) {
     return (
       <div className={styles.cart}>
+        <button className={styles.closeButton} onClick={closeOverlay}>
+          <IoClose size={20} />
+        </button>
         <CartHeader />
         <div className={styles.emptyCart}>
           <div className={styles.emptyCartIcon}>
@@ -31,6 +36,9 @@ export default function Cart() {
 
   return (
     <div className={styles.cart}>
+      <button className={styles.closeButton} onClick={closeOverlay}>
+        <IoClose size={20} />
+      </button>
       <CartHeader />
       <CartList
         cart={cart}
