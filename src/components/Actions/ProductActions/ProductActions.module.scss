@@ -3,3 +3,27 @@
   width: 100%;
   gap: 8px;
 }
+.addToCart__icon {
+  @include respond(md) {
+    @include flex-center;
+  }
+
+  svg {
+    width: 42px;
+    height: 42px;
+    padding: 3px;
+  }
+}
+.addToHeart__icon {
+  @include respond(md) {
+    @include flex-center;
+  }
+
+  svg {
+    @include respond(md) {
+      width: 32px;
+      height: 32px;
+      padding: 3px;
+    }
+  }
+}

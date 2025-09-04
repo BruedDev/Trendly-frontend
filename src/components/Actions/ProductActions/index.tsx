@@ -8,28 +8,30 @@ interface ActionsProductProps {
   type?: string;
   product: Product;
   activeColorIdx?: number | null;
-  selectedSize?: string; // THÊM selectedSize prop
+  selectedSize?: string;
 }
 
 export default function ActionsProduct({
   type,
   product,
   activeColorIdx,
-  selectedSize, // THÊM selectedSize
+  selectedSize,
 }: ActionsProductProps) {
   const types = type ? type.split(" ") : ["cart", "heart", "preview"];
+  const colorCode =
+    activeColorIdx != null && product.colors
+      ? product.colors[activeColorIdx]?.colorCode ?? ""
+      : "";
+  const size = selectedSize;
+
   return (
     <>
       <div className={`${styles.actionsContainer}`}>
         {types.includes("cart") && (
           <AddToCartProduct
             product={product}
-            colorCode={
-              activeColorIdx != null && product.colors
-                ? product.colors[activeColorIdx]?.colorCode ?? ""
-                : ""
-            }
-            size={selectedSize} // TRUYỀN size xuống
+            colorCode={colorCode}
+            size={size}
           />
         )}
         {types.includes("heart") && <AddToHeartProduct />}

@@ -1,18 +1,14 @@
 "use client";
-
 import { useEffect, useState } from "react";
 import styles from "./ThemeToggle.module.scss";
-import { saveTheme } from "@/services/data-theme";
 
 const THEME_KEY = "data-theme";
-const UUID_KEY = "trendly_uuid";
 
 export default function ThemeToggle() {
   const [isDark, setIsDark] = useState(false);
   const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
-    // Helper lấy giá trị từ cookie
     function getCookie(name: string) {
       const value = `; ${document.cookie}`;
       const parts = value.split(`; ${name}=`);
@@ -20,13 +16,11 @@ export default function ThemeToggle() {
       return undefined;
     }
 
-    // Helper ghi giá trị vào cookie (1 năm)
     function setCookie(name: string, value: string) {
       document.cookie = `${name}=${value}; path=/; max-age=31536000`;
     }
 
     const savedTheme = getCookie(THEME_KEY);
-    const savedUUID = getCookie(UUID_KEY);
     const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
 
     const applyTheme = (theme: "dark" | "light") => {
@@ -35,15 +29,6 @@ export default function ThemeToggle() {
       setCookie(THEME_KEY, theme);
       setIsReady(true);
     };
-
-    // Lấy hoặc tạo uuid, chỉ dùng cookie, nếu chưa có thì tạo mới
-    let uuid = savedUUID;
-    if (!uuid) {
-      uuid = crypto.randomUUID();
-      setCookie(UUID_KEY, uuid);
-    } else {
-      setCookie(UUID_KEY, uuid); // refresh cookie
-    }
 
     if (savedTheme === "dark" || savedTheme === "light") {
       applyTheme(savedTheme);
@@ -61,33 +46,16 @@ export default function ThemeToggle() {
     }
   }, []);
 
-  // Xử lý khi người dùng toggle
-  const handleToggle = async () => {
+  const handleToggle = () => {
     const newTheme = isDark ? "light" : "dark";
     setIsDark(!isDark);
     document.documentElement.setAttribute("data-theme", newTheme);
 
-    // Helper ghi giá trị vào cookie (1 năm)
     function setCookie(name: string, value: string) {
       document.cookie = `${name}=${value}; path=/; max-age=31536000`;
     }
 
     setCookie(THEME_KEY, newTheme);
-
-    // Lấy hoặc tạo uuid, chỉ dùng cookie, nếu chưa có thì tạo mới
-    const uuid = (function () {
-      const cookieUUID = document.cookie
-        .split("; ")
-        .find((row) => row.startsWith(UUID_KEY + "="))
-        ?.split("=")[1];
-      if (cookieUUID) return cookieUUID;
-      const newUUID = crypto.randomUUID();
-      setCookie(UUID_KEY, newUUID);
-      return newUUID;
-    })();
-
-    // Gửi theme và uuid lên backend (không chặn UI)
-    saveTheme(uuid, newTheme).catch(() => {});
   };
 
   if (!isReady)
