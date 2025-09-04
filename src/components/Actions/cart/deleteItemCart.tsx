@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { CartContext } from "@/contexts/CartContext";
 import { IoClose } from "react-icons/io5";
-import Tooltip from "@/ui/Tooltip";
+import Tooltip from "@/components/Tooltip";
 
 interface DeleteItemCartProps {
   productId: string;

@@ -1,3 +1,5 @@
+@use "mixins" as *;
+
 .relative {
   position: relative;
 }
@@ -5,6 +7,18 @@
   margin: 0 auto;
   padding: 30px 120px;
   width: 100%;
+
+  @include respond(xl) {
+    padding: 30px 60px;
+  }
+
+  @include respond(lg) {
+    padding: 30px;
+  }
+
+  @include respond(md) {
+    padding: 15px;
+  }
 }
 .title-center {
   text-align: center;

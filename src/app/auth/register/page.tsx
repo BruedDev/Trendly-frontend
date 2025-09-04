@@ -64,10 +64,9 @@ export default function AuthRegister() {
         />
         <input
           type="text"
-          placeholder="Địa chỉ"
+          placeholder="Địa chỉ  (tùy chọn)"
           value={address}
           onChange={(e) => setAddress(e.target.value)}
-          required
           style={{ width: "100%", marginBottom: 8, padding: 8 }}
         />
         <input

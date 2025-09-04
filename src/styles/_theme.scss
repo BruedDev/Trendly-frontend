@@ -1,3 +1,5 @@
+@use "variables" as *;
+
 :root {
   --background: #{$background-light};
   --foreground: #{$foreground-light};

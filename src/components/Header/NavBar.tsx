@@ -5,7 +5,7 @@ import styles from "./Header.module.scss";
 import Skeleton from "@/ui/Skeleton";
 import { useRef, useEffect, useState } from "react";
 
-export default function NavBar({ isLoading = false }) {
+export default function NavBar({ isLoading = false, className = "" }) {
   const navItems = useNavItems();
   const navRef = useRef<HTMLDivElement>(null);
   const [underlineStyle, setUnderlineStyle] = useState({
@@ -138,7 +138,7 @@ export default function NavBar({ isLoading = false }) {
 
   if (isLoading) {
     return (
-      <nav className={styles.nav} ref={navRef}>
+      <nav className={`${styles.nav} ${className}`.trim()} ref={navRef}>
         <div
           style={{
             display: "flex",
@@ -194,7 +194,7 @@ export default function NavBar({ isLoading = false }) {
   }
 
   return (
-    <nav className={styles.nav} ref={navRef}>
+    <nav className={`${styles.nav} ${className}`.trim()} ref={navRef}>
       {navItems.map((item, idx) => (
         <NavigationLink
           key={item.path}

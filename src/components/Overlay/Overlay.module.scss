@@ -24,9 +24,14 @@
     }
   }
 
-  // Nếu variant là cart thì top = 0
-  &.cart {
+  // Nếu variant là global thì top = 0, còn global.visible mới căn giữa bằng flexbox
+  &.global {
     top: 0;
+  }
+  &.global.visible {
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 }
 
@@ -39,8 +44,8 @@
   perspective-origin: center center;
   pointer-events: none;
 
-  // Căn giữa cả dọc cho cart
-  &.cart {
+  // Căn giữa cả dọc cho global
+  &.global {
     align-items: center;
     min-height: 100dvh;
   }

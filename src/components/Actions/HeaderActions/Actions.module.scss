@@ -16,5 +16,11 @@
     button {
       cursor: pointer;
     }
+
+    &.hide-on-mobile {
+      @media (max-width: 1150px) {
+        display: none !important;
+      }
+    }
   }
 }
