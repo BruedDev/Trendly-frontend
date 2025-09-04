@@ -3,8 +3,8 @@ import { Noto_Sans, Roboto, Lora } from "next/font/google";
 import { cookies } from "next/headers";
 import ThemeScript from "@/components/ThemeScript";
 import LayoutClient from "./layoutClient";
-import "../globals.scss";
 import "../globals.css";
+import "../globals.scss";
 
 const notoSans = Noto_Sans({
   variable: "--font-noto-sans",

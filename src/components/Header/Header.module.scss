@@ -7,11 +7,11 @@
   background-color: var(--background);
   z-index: 999;
 
-  @media (max-width: 1280px) {
+  @include respond(lg) {
     padding: 0 60px;
   }
 
-  @media (max-width: 1150px) {
+  @include respond(md) {
     padding: 0 30px;
   }
 }

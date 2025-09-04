@@ -111,11 +111,11 @@
       @content;
     }
   } @else if $breakpoint == md {
-    @media (max-width: 1024px) {
+    @media (max-width: 1150px) {
       @content;
     }
   } @else if $breakpoint == lg {
-    @media (max-width: 1200px) {
+    @media (max-width: 1280px) {
       @content;
     }
   }

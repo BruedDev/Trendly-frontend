@@ -1,3 +1,5 @@
+@use "mixins" as *;
+
 .relative {
   position: relative;
 }
@@ -6,11 +8,11 @@
   padding: 30px 120px;
   width: 100%;
 
-  @media (max-width: 1280px) {
+  @include respond(lg) {
     padding: 30px 60px;
   }
 
-  @media (max-width: 1150px) {
+  @include respond(md) {
     padding: 30px;
   }
 }
