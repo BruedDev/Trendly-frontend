@@ -35,10 +35,23 @@ export default function ProductImage({
   }
 
   // Crossfade effect khi có cả 2 ảnh
+  // Responsive: chỉ render nút cart ở heartIcon cho mobile, ở actionsOverlay cho desktop
+  const isMobile =
+    typeof window !== "undefined" &&
+    window.matchMedia("(max-width: 768px)").matches;
+
   return (
     <div className={styles.imageContainer}>
       <div className={styles.heartIcon}>
         <AddToHeartProduct />
+        {isMobile && (
+          <ActionsProduct
+            type="cart"
+            product={product}
+            activeColorIdx={activeColor}
+            selectedSize=""
+          />
+        )}
       </div>
       {/* Default Image */}
       <Image
@@ -66,12 +79,14 @@ export default function ProductImage({
           showActions ? styles.visible : ""
         }`}
       >
-        <ActionsProduct
-          type="cart preview"
-          product={product}
-          activeColorIdx={activeColor}
-          selectedSize=""
-        />
+        {!isMobile && (
+          <ActionsProduct
+            type="cart preview"
+            product={product}
+            activeColorIdx={activeColor}
+            selectedSize=""
+          />
+        )}
       </div>
     </div>
   );
