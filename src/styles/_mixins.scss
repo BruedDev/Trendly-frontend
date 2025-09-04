@@ -1,4 +1,5 @@
 @use "sass:math";
+@use "sass:map";
 
 @mixin flex-column {
   display: flex;
@@ -110,7 +111,7 @@ $breakpoints: (
 );
 
 @mixin respond($breakpoint) {
-  $size: map-get($breakpoints, $breakpoint);
+  $size: map.get($breakpoints, $breakpoint);
   @if $size {
     @media (max-width: $size) {
       @content;
