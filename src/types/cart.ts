@@ -62,11 +62,12 @@ export type CartContextType = {
 	cart: CartItem[];
 	loading: boolean;
 	fetchCart: () => Promise<void>;
-	addProductToCart: (
-		product: import("@/types/Products_section").Product,
-		colorCode: string,
-		size?: string
-	) => Promise<void>;
+		addProductToCart: (
+			product: import("@/types/Products_section").Product,
+			colorCode: string,
+			size?: string,
+			onSuccessAddToCart?: () => void
+		) => Promise<void>;
 	deleteItemFromCart: (
 		productId: string,
 		colorCode: string,

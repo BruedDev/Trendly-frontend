@@ -1,3 +1,4 @@
+// components/CartComponent.tsx (hoặc file tương ứng)
 import CircleQuantity from "@/ui/CirclesCount";
 import Tooltip from "@/components/Tooltip";
 import { IoCartOutline } from "react-icons/io5";
@@ -16,14 +17,19 @@ export default function CartComponent() {
 
   return (
     <Tooltip title="Giỏ hàng" arrow="top-center">
-      <IsOpenButton
-        componentToOpen={<Cart />}
-        scope="global visible"
-        onClick={handleOpenCart}
+      <div
+        id="cart-icon-target"
+        className="relative w-full h-full flex items-center"
       >
-        <CircleQuantity quantity={count} />
-        <IoCartOutline />
-      </IsOpenButton>
+        <IsOpenButton
+          componentToOpen={<Cart />}
+          scope="global visible"
+          onClick={handleOpenCart}
+        >
+          <CircleQuantity quantity={count} />
+          <IoCartOutline />
+        </IsOpenButton>
+      </div>
     </Tooltip>
   );
 }

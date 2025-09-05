@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import type { Position, DistanceCalculation } from '@/types/postionXY';
+import { Position, DistanceCalculation } from '@/types/FlyToCart';
 
 const usePositionXY = () => {
   const getElementPosition = useCallback((element: HTMLElement | null): Position | null => {
