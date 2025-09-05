@@ -24,6 +24,8 @@ export default function ActionsProduct({
       : "";
   const size = selectedSize;
 
+  console.log("activeColorIdx:", activeColorIdx);
+
   return (
     <>
       <div className={`${styles.actionsContainer}`}>
