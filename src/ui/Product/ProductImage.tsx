@@ -4,6 +4,7 @@ import { ProductImageProps } from "@/types/Products_section";
 import ActionsProduct from "@/components/Actions/ProductActions";
 import styles from "./Product.module.scss";
 import AddToHeartProduct from "@/components/Actions/ProductActions/AddToHeart";
+import { useMediaQuery } from "@/hooks/useMediaQuery";
 
 export default function ProductImage({
   product,
@@ -12,6 +13,7 @@ export default function ProductImage({
   showActions,
   activeColor,
 }: ProductImageProps & { showActions?: boolean }) {
+  const isMobile = useMediaQuery("(max-width: 768px)");
   const defaultImg = activeColorImage || product.thumbnail?.defaultImage;
   const hoverImg = product.thumbnail?.hoverImage;
   const defaultUrl = getSanityImageUrl(defaultImg);
@@ -19,7 +21,6 @@ export default function ProductImage({
 
   if (!defaultUrl) return null;
 
-  // Nếu không có hoverImage thì hiển thị bình thường
   if (!hoverUrl) {
     return (
       <div className={styles.imageContainer}>
@@ -34,12 +35,6 @@ export default function ProductImage({
     );
   }
 
-  // Crossfade effect khi có cả 2 ảnh
-  // Responsive: chỉ render nút cart ở heartIcon cho mobile, ở actionsOverlay cho desktop
-  const isMobile =
-    typeof window !== "undefined" &&
-    window.matchMedia("(max-width: 768px)").matches;
-
   return (
     <div className={styles.imageContainer}>
       <div className={styles.heartIcon}>
@@ -53,6 +48,7 @@ export default function ProductImage({
           />
         )}
       </div>
+
       {/* Default Image */}
       <Image
         src={defaultUrl}
