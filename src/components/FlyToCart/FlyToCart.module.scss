@@ -1,16 +1,101 @@
 // components/FlyToCart/FlyToCart.module.scss
+
 .flyToCartElement {
-  position: fixed !important;
-  z-index: 9999 !important;
-  pointer-events: none !important;
-  border-radius: 8px;
+  position: fixed;
+  z-index: 9999;
+  pointer-events: none;
+  border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transition: all 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
+
+  // Clean white background với subtle shadow
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+
+  // Soft, elegant shadow
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.1);
 
   img {
     width: 100% !important;
     height: 100% !important;
     object-fit: cover;
-    display: block;
+    border-radius: 10px;
+
+    // Subtle image enhancement
+    filter: brightness(1.02) contrast(1.05);
+    transition: filter 0.3s ease;
+  }
+
+  // Simple entrance animation
+  animation: gentleEntrance 0.25s ease-out;
+}
+
+// Gentle cart receiving effect
+.cartReceiving {
+  animation: softBounce 0.4s ease-out;
+}
+
+// Keyframe animations - Simple và smooth
+@keyframes gentleEntrance {
+  0% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes softBounce {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.08);
+  }
+}
+
+// Dark mode - Clean và simple
+@media (prefers-color-scheme: dark) {
+  .flyToCartElement {
+    background: #2a2a2a;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3), 0 1px 3px rgba(0, 0, 0, 0.4);
+
+    img {
+      filter: brightness(1.05) contrast(1.08);
+    }
+  }
+}
+
+// Mobile responsive
+@media (max-width: 768px) {
+  .flyToCartElement {
+    border-radius: 8px;
+
+    img {
+      border-radius: 6px;
+    }
+  }
+}
+
+// Performance optimization
+.flyToCartElement {
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+}
+
+// Reduced motion support
+@media (prefers-reduced-motion: reduce) {
+  .flyToCartElement {
+    animation-duration: 0.1s;
+    transition-duration: 0.2s;
+  }
+
+  .cartReceiving {
+    animation-duration: 0.1s;
   }
 }

@@ -13,12 +13,21 @@ export default function ProductImage({
   activeColorImage,
   showActions,
   activeColor,
-}: ProductImageProps & { showActions?: boolean }) {
+  sectionId, // Thêm sectionId prop
+}: ProductImageProps & {
+  showActions?: boolean;
+  sectionId?: string; // Thêm type
+}) {
   const isMobile = useMediaQuery("(max-width: 768px)");
   const defaultImg = activeColorImage || product.thumbnail?.defaultImage;
   const hoverImg = product.thumbnail?.hoverImage;
   const defaultUrl = getSanityImageUrl(defaultImg);
   const hoverUrl = getSanityImageUrl(hoverImg);
+
+  // Tạo unique ID với sectionId
+  const imageId = sectionId
+    ? `product-image-${sectionId}-${product._id}`
+    : `product-image-${product._id}`;
 
   if (!defaultUrl) return null;
 
@@ -26,7 +35,7 @@ export default function ProductImage({
     return (
       <div
         className={styles.imageContainer}
-        id={`product-image-${product._id}`}
+        id={imageId} // Sử dụng unique ID
       >
         <Image
           src={defaultUrl}
@@ -40,7 +49,9 @@ export default function ProductImage({
   }
 
   return (
-    <div className={styles.imageContainer} id={`product-image-${product._id}`}>
+    <div className={styles.imageContainer} id={imageId}>
+      {" "}
+      {/* Sử dụng unique ID */}
       <div className={styles.heartIcon}>
         <AddToHeartProduct />
         {isMobile && (
@@ -50,10 +61,10 @@ export default function ProductImage({
             activeColorIdx={activeColor}
             selectedSize=""
             activeColorImage={activeColorImage}
+            sectionId={sectionId} // Truyền sectionId xuống
           />
         )}
       </div>
-
       {/* Default Image */}
       <Image
         src={defaultUrl}
@@ -64,7 +75,6 @@ export default function ProductImage({
         width={1000}
         height={1000}
       />
-
       {/* Hover Image */}
       <Image
         src={hoverUrl}
@@ -75,7 +85,6 @@ export default function ProductImage({
         width={1000}
         height={1000}
       />
-
       <div
         className={`${styles.actionsOverlay} ${
           showActions ? styles.visible : ""
@@ -88,6 +97,7 @@ export default function ProductImage({
             activeColorIdx={activeColor}
             selectedSize=""
             activeColorImage={activeColorImage}
+            sectionId={sectionId} // Truyền sectionId xuống
           />
         )}
       </div>
