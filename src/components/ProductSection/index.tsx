@@ -71,6 +71,7 @@ export default function ProductSection({
       <div className={styles.wrapper_productList}>
         <SwiperSlide
           data={products}
+          transitionSpeed={800}
           swiperProps={{
             slidesPerView: 1,
             slidesPerGroup: 1,
