@@ -7,6 +7,8 @@ import ContextProvider from "@/contexts/index";
 import { StatusMessageProvider } from "@/contexts/StatusMessageContext";
 import { useOverlay } from "@/hooks/useOverlay";
 import StatusMessage from "@/components/StatusMessage";
+import FlyToCart from "@/components/FlyToCart";
+import { useFlyToCart } from "@/hooks/useFlyToCartContext";
 
 export default function LayoutClient({
   children,
@@ -39,6 +41,7 @@ function LayoutContent({
   isLoading: boolean;
 }) {
   const { isOpen, closeOverlay, isExiting } = useOverlay();
+  const { flyToCartData, completeFlyToCart } = useFlyToCart();
 
   return (
     <>
@@ -47,6 +50,19 @@ function LayoutContent({
       {(isOpen || isExiting) && (
         <Overlay onClose={closeOverlay} isExiting={isExiting} />
       )}
+
+      <FlyToCart
+        isActive={flyToCartData.isActive}
+        productImage={flyToCartData.productImage}
+        startElementId={
+          flyToCartData.productId
+            ? `product-image-${flyToCartData.productId}`
+            : ""
+        }
+        targetElementId="cart-icon-target"
+        onComplete={completeFlyToCart}
+      />
+
       {children}
     </>
   );

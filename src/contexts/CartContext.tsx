@@ -60,7 +60,6 @@ const CartProviderInner: React.FC<{ children: React.ReactNode }> = ({
   const { showLoading, showSuccess, showError } = useStatusMessage();
   const debounceTimers = useRef<{ [key: string]: NodeJS.Timeout }>({}).current;
 
-  // Load cart from localStorage after component mounts (client-side only)
   useEffect(() => {
     try {
       const localData = localStorage.getItem("cart");
@@ -110,7 +109,8 @@ const CartProviderInner: React.FC<{ children: React.ReactNode }> = ({
   const addProductToCart = async (
     product: Product,
     colorCode: string,
-    size?: string
+    size?: string,
+    onSuccessAddToCart?: () => void
   ) => {
     const finalSize = size || getDefaultSize(product, colorCode);
 
@@ -191,6 +191,11 @@ const CartProviderInner: React.FC<{ children: React.ReactNode }> = ({
       }
 
       showSuccess("Thêm vào giỏ hàng thành công!");
+      if (onSuccessAddToCart) {
+        setTimeout(() => {
+          onSuccessAddToCart();
+        }, 1500); // Đợi StatusMessage chuyển về idle
+      }
     } catch (error) {
       if (isApiError(error) && error.response?.data?.error) {
         showError(error.response.data.error);

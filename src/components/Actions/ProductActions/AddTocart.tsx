@@ -1,7 +1,11 @@
 import ButtonProduct from "@/ui/ButtonProduct";
 import { useContext, useEffect, useState } from "react";
 import { CartContext } from "@/contexts/CartContext";
-import { Product } from "@/types/Products_section";
+import { useFlyToCart } from "@/contexts/FlyToCartContext";
+import {
+  Product,
+  ProductImage as ProductImageType,
+} from "@/types/Products_section";
 import { useProtectRoute } from "@/hooks/useProtectRoute";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
 import BagIcon from "../../../../public/Icons/bag.svg";
@@ -11,15 +15,18 @@ type AddToCartProductProps = {
   product: Product;
   colorCode: string;
   size?: string;
+  activeColorImage?: ProductImageType | null;
 };
 
 export default function AddToCartProduct({
   product,
   colorCode,
   size,
+  activeColorImage,
 }: AddToCartProductProps) {
   const [isClient, setIsClient] = useState(false);
   const cartContext = useContext(CartContext);
+  const { triggerFlyToCart } = useFlyToCart();
   const protectAction = useProtectRoute();
   const isMobile = useMediaQuery("(max-width: 768px)");
 
@@ -32,7 +39,13 @@ export default function AddToCartProduct({
   const { addProductToCart } = cartContext;
 
   const handleAddToCart = protectAction(() => {
-    addProductToCart(product, colorCode, size);
+    const imageToFly = activeColorImage || product.thumbnail?.defaultImage;
+
+    addProductToCart(product, colorCode, size, () => {
+      if (imageToFly) {
+        triggerFlyToCart(product._id, imageToFly);
+      }
+    });
   });
 
   return (

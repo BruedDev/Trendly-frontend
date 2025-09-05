@@ -1,3 +1,4 @@
+// ui/Product/ProductImage.tsx
 import Image from "next/image";
 import { getSanityImageUrl } from "@/utils/getSanityImageUrl";
 import { ProductImageProps } from "@/types/Products_section";
@@ -23,7 +24,10 @@ export default function ProductImage({
 
   if (!hoverUrl) {
     return (
-      <div className={styles.imageContainer}>
+      <div
+        className={styles.imageContainer}
+        id={`product-image-${product._id}`}
+      >
         <Image
           src={defaultUrl}
           alt={defaultImg?.alt || product.title}
@@ -36,7 +40,7 @@ export default function ProductImage({
   }
 
   return (
-    <div className={styles.imageContainer}>
+    <div className={styles.imageContainer} id={`product-image-${product._id}`}>
       <div className={styles.heartIcon}>
         <AddToHeartProduct />
         {isMobile && (
@@ -45,6 +49,7 @@ export default function ProductImage({
             product={product}
             activeColorIdx={activeColor}
             selectedSize=""
+            activeColorImage={activeColorImage}
           />
         )}
       </div>
@@ -70,6 +75,7 @@ export default function ProductImage({
         width={1000}
         height={1000}
       />
+
       <div
         className={`${styles.actionsOverlay} ${
           showActions ? styles.visible : ""
@@ -81,6 +87,7 @@ export default function ProductImage({
             product={product}
             activeColorIdx={activeColor}
             selectedSize=""
+            activeColorImage={activeColorImage}
           />
         )}
       </div>
