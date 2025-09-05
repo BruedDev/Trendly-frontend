@@ -19,18 +19,21 @@ export default function HeroSection({ data }: { data?: BannerSection }) {
     <div className={styles.container}>
       <SwiperSlide
         data={images}
-        renderItem={(image: any, index: number) => (
-          <div className={styles.imageWrapper}>
-            <Image
-              src={image.asset?.url || ""}
-              alt={image.alt || `slide ${index + 1}`}
-              width={1000}
-              height={1000}
-              priority={index === 0}
-              className={styles.image}
-            />
-          </div>
-        )}
+        renderItem={(image, index) => {
+          const img = image as import("@/types/Hero_section").ImageType;
+          return (
+            <div className={styles.imageWrapper}>
+              <Image
+                src={img.asset?.url || ""}
+                alt={img.alt || `slide ${index + 1}`}
+                width={1000}
+                height={1000}
+                priority={index === 0}
+                className={styles.image}
+              />
+            </div>
+          );
+        }}
         swiperProps={{
           slidesPerView: 1,
           loop: true,

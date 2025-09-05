@@ -1,4 +1,4 @@
- type ImageType = {
+export type ImageType = {
   asset?: { url?: string };
   alt?: string;
 };

@@ -74,7 +74,7 @@ export default function ProductSection({
       <ProductHeader title={title} description={description} />
       <div className={styles.wrapper_productList}>
         <SwiperSlide
-          data={products}
+          data={products as import("@/types/Products_section").Product[]}
           transitionSpeed={800}
           swiperProps={{
             slidesPerView: 1,
@@ -108,23 +108,26 @@ export default function ProductSection({
               },
             },
           }}
-          renderItem={(product: any) => (
-            <ProductUi
-              key={product._id}
-              product={product}
-              isHover={hoveredId === product._id}
-              showActions={hoverShowActions === product._id}
-              onMouseEnter={() => handleSetHoverShowActions(product._id)}
-              onMouseLeave={() => handleSetHoverShowActions(null)}
-              onImageMouseEnter={() => handleMouseEnter(product._id)}
-              onImageMouseLeave={handleMouseLeave}
-              activeColor={activeColors[product._id] ?? null}
-              setActiveColor={(colorIdx, image) =>
-                handleSetActiveColor(product._id, colorIdx, image)
-              }
-              activeColorImage={activeColorImages[product._id] ?? null}
-            />
-          )}
+          renderItem={(product) => {
+            const prod = product as import("@/types/Products_section").Product;
+            return (
+              <ProductUi
+                key={prod._id}
+                product={prod}
+                isHover={hoveredId === prod._id}
+                showActions={hoverShowActions === prod._id}
+                onMouseEnter={() => handleSetHoverShowActions(prod._id)}
+                onMouseLeave={() => handleSetHoverShowActions(null)}
+                onImageMouseEnter={() => handleMouseEnter(prod._id)}
+                onImageMouseLeave={handleMouseLeave}
+                activeColor={activeColors[prod._id] ?? null}
+                setActiveColor={(colorIdx, image) =>
+                  handleSetActiveColor(prod._id, colorIdx, image)
+                }
+                activeColorImage={activeColorImages[prod._id] ?? null}
+              />
+            );
+          }}
         />
       </div>
     </div>
