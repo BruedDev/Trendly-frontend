@@ -44,6 +44,16 @@ export default function ThemeToggle() {
         mediaQuery.removeEventListener("change", handleSystemThemeChange);
       };
     }
+
+    // Listen for custom theme change event
+    const handleThemeChanged = () => {
+      const theme = getCookie(THEME_KEY);
+      setIsDark(theme === "dark");
+    };
+    window.addEventListener("theme-changed", handleThemeChanged);
+    return () => {
+      window.removeEventListener("theme-changed", handleThemeChanged);
+    };
   }, []);
 
   const handleToggle = () => {
@@ -56,6 +66,8 @@ export default function ThemeToggle() {
     }
 
     setCookie(THEME_KEY, newTheme);
+    // Dispatch custom event to notify other components
+    window.dispatchEvent(new Event("theme-changed"));
   };
 
   if (!isReady)
