@@ -24,6 +24,7 @@ body {
   font-family: var(--font-noto-sans);
   font-weight: 500;
   transition: background-color 0.4s ease-in-out, color 0.4s ease-in-out;
+  overflow-x: hidden;
 }
 
 h1,
@@ -33,4 +34,18 @@ h4,
 h5,
 h6 {
   font-family: var(--font-lora);
+}
+
+@media (max-width: 768px) {
+
+  html,
+  body {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  html::-webkit-scrollbar,
+  body::-webkit-scrollbar {
+    display: none;
+  }
 }

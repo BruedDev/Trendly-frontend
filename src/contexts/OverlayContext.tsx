@@ -38,6 +38,18 @@ export const OverlayProvider = ({ children }: { children: ReactNode }) => {
   const closeTimer = React.useRef<NodeJS.Timeout | null>(null);
   const pathname = usePathname();
 
+  // Prevent body scroll when overlay is open
+  useEffect(() => {
+    if (state.content) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [state.content]);
+
   const closeOverlay = useCallback(() => {
     if (closeTimer.current) {
       clearTimeout(closeTimer.current);
