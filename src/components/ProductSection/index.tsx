@@ -6,7 +6,11 @@ import {
   ProductImage as ProductImageType,
 } from "@/types/Products_section";
 import ProductUi from "@/ui/Product";
-import SwiperSlide from "@/components/SwiperSlide";
+import dynamic from "next/dynamic";
+const SwiperSlide = dynamic(() => import("@/components/SwiperSlide"), {
+  ssr: false,
+  loading: () => <div>Loading...</div>,
+});
 import ProductHeader from "@/ui/Product/ProductHeader";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
 import styles from "./ProductSection.module.scss";
@@ -104,7 +108,7 @@ export default function ProductSection({
               },
             },
           }}
-          renderItem={(product) => (
+          renderItem={(product: any) => (
             <ProductUi
               key={product._id}
               product={product}

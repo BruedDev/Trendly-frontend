@@ -1,7 +1,11 @@
 "use client";
 
 import Image from "next/image";
-import SwiperSlide from "@/components/SwiperSlide";
+import dynamic from "next/dynamic";
+const SwiperSlide = dynamic(() => import("@/components/SwiperSlide"), {
+  ssr: false,
+  loading: () => <div>Loading...</div>,
+});
 import { getTimeSpeed } from "@/utils/getTimeSpeed";
 import styles from "./HeroSection.module.scss";
 import { BannerSection } from "@/types/Hero_section";
@@ -15,10 +19,10 @@ export default function HeroSection({ data }: { data?: BannerSection }) {
     <div className={styles.container}>
       <SwiperSlide
         data={images}
-        renderItem={(image, index) => (
+        renderItem={(image: any, index: number) => (
           <div className={styles.imageWrapper}>
             <Image
-              src={image.asset!.url!}
+              src={image.asset?.url || ""}
               alt={image.alt || `slide ${index + 1}`}
               width={1000}
               height={1000}
