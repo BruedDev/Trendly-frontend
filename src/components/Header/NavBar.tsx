@@ -1,9 +1,5 @@
 "use client";
-import dynamic from "next/dynamic";
-const NavigationLink = dynamic(() => import("../NavigationLink"), {
-  ssr: false,
-  loading: () => <span />,
-});
+import NavigationLink from "../NavigationLink";
 import useNavItems from "@/hooks/useNavItems";
 import styles from "./Header.module.scss";
 import Skeleton from "@/ui/Skeleton";

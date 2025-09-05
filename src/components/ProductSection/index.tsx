@@ -6,11 +6,7 @@ import {
   ProductImage as ProductImageType,
 } from "@/types/Products_section";
 import ProductUi from "@/ui/Product";
-import dynamic from "next/dynamic";
-const SwiperSlide = dynamic(() => import("@/components/SwiperSlide"), {
-  ssr: false,
-  loading: () => <div>Loading...</div>,
-});
+import SwiperSlide from "@/components/SwiperSlide";
 import ProductHeader from "@/ui/Product/ProductHeader";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
 import styles from "./ProductSection.module.scss";
@@ -74,7 +70,7 @@ export default function ProductSection({
       <ProductHeader title={title} description={description} />
       <div className={styles.wrapper_productList}>
         <SwiperSlide
-          data={products as import("@/types/Products_section").Product[]}
+          data={products}
           transitionSpeed={800}
           swiperProps={{
             slidesPerView: 1,
@@ -108,26 +104,23 @@ export default function ProductSection({
               },
             },
           }}
-          renderItem={(product) => {
-            const prod = product as import("@/types/Products_section").Product;
-            return (
-              <ProductUi
-                key={prod._id}
-                product={prod}
-                isHover={hoveredId === prod._id}
-                showActions={hoverShowActions === prod._id}
-                onMouseEnter={() => handleSetHoverShowActions(prod._id)}
-                onMouseLeave={() => handleSetHoverShowActions(null)}
-                onImageMouseEnter={() => handleMouseEnter(prod._id)}
-                onImageMouseLeave={handleMouseLeave}
-                activeColor={activeColors[prod._id] ?? null}
-                setActiveColor={(colorIdx, image) =>
-                  handleSetActiveColor(prod._id, colorIdx, image)
-                }
-                activeColorImage={activeColorImages[prod._id] ?? null}
-              />
-            );
-          }}
+          renderItem={(product) => (
+            <ProductUi
+              key={product._id}
+              product={product}
+              isHover={hoveredId === product._id}
+              showActions={hoverShowActions === product._id}
+              onMouseEnter={() => handleSetHoverShowActions(product._id)}
+              onMouseLeave={() => handleSetHoverShowActions(null)}
+              onImageMouseEnter={() => handleMouseEnter(product._id)}
+              onImageMouseLeave={handleMouseLeave}
+              activeColor={activeColors[product._id] ?? null}
+              setActiveColor={(colorIdx, image) =>
+                handleSetActiveColor(product._id, colorIdx, image)
+              }
+              activeColorImage={activeColorImages[product._id] ?? null}
+            />
+          )}
         />
       </div>
     </div>
