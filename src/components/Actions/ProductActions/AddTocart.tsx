@@ -1,7 +1,7 @@
 import ButtonProduct from "@/ui/ButtonProduct";
 import { useContext, useEffect, useState } from "react";
 import { CartContext } from "@/contexts/CartContext";
-import { useFlyToCart } from "@/contexts/FlyToCartContext";
+import { useFlyToCart } from "@/hooks/useFlyToCart";
 import {
   Product,
   ProductImage as ProductImageType,
@@ -16,6 +16,7 @@ type AddToCartProductProps = {
   colorCode: string;
   size?: string;
   activeColorImage?: ProductImageType | null;
+  sectionId?: string;
 };
 
 export default function AddToCartProduct({
@@ -23,6 +24,7 @@ export default function AddToCartProduct({
   colorCode,
   size,
   activeColorImage,
+  sectionId,
 }: AddToCartProductProps) {
   const [isClient, setIsClient] = useState(false);
   const cartContext = useContext(CartContext);
@@ -43,7 +45,7 @@ export default function AddToCartProduct({
 
     addProductToCart(product, colorCode, size, () => {
       if (imageToFly) {
-        triggerFlyToCart(product._id, imageToFly);
+        triggerFlyToCart(product._id, imageToFly, sectionId);
       }
     });
   });

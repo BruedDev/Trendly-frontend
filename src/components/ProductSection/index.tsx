@@ -11,11 +11,16 @@ import ProductHeader from "@/ui/Product/ProductHeader";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
 import styles from "./ProductSection.module.scss";
 
+interface ExtendedProductSectionProps extends ProductSectionProps {
+  sectionId?: string; // Thêm sectionId prop
+}
+
 export default function ProductSection({
   title,
   products,
   description,
-}: ProductSectionProps) {
+  sectionId, // Thêm sectionId
+}: ExtendedProductSectionProps) {
   const [hoveredId, setHoveredId] = React.useState<string | null>(null);
   const [hoverShowActions, setHoverShowActions] = React.useState<string | null>(
     null
@@ -119,6 +124,7 @@ export default function ProductSection({
                 handleSetActiveColor(product._id, colorIdx, image)
               }
               activeColorImage={activeColorImages[product._id] ?? null}
+              sectionId={sectionId} // Truyền sectionId xuống
             />
           )}
         />
