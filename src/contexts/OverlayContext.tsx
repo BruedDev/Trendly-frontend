@@ -7,7 +7,7 @@ import React, {
   useCallback,
   useEffect,
 } from "react";
-
+import { usePathname } from "next/navigation";
 import { AnimationVariant } from "@/types/Overlay";
 
 interface OverlayState {
@@ -36,6 +36,7 @@ export const OverlayProvider = ({ children }: { children: ReactNode }) => {
   const [state, setState] = useState<OverlayState>({ content: null });
   const [isExiting, setIsExiting] = useState(false);
   const closeTimer = React.useRef<NodeJS.Timeout | null>(null);
+  const pathname = usePathname();
 
   const closeOverlay = useCallback(() => {
     if (closeTimer.current) {
@@ -75,12 +76,16 @@ export const OverlayProvider = ({ children }: { children: ReactNode }) => {
   const isOpen = state.content !== null;
 
   useEffect(() => {
+    if (closeTimer.current) {
+      clearTimeout(closeTimer.current);
+    }
+    closeOverlay();
     return () => {
       if (closeTimer.current) {
         clearTimeout(closeTimer.current);
       }
     };
-  }, []);
+  }, [pathname, closeOverlay]);
 
   return (
     <OverlayContext.Provider
