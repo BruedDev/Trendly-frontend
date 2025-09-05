@@ -7,6 +7,7 @@ import {
   HeroSection as HeroSectionType,
   ProductSection as ProductSectionType,
 } from "../../../sanity/types/sanity-codegen";
+
 type ProductSectionWithProducts = ProductSectionType & { products?: Product[] };
 
 export default async function Home() {
@@ -59,8 +60,6 @@ export default async function Home() {
       : [],
   };
 
-  // console.log("BestsellerProductSections:", BestsellerProductSections);
-
   return (
     <main>
       {/* Hero Section */}
@@ -68,7 +67,7 @@ export default async function Home() {
         <HeroSection data={heroSectionProps} />
       </section>
 
-      {/* Product Section (new product)  */}
+      {/* Product Section (new product) */}
       <section
         id="newProducts"
         aria-label="New Products"
@@ -79,6 +78,7 @@ export default async function Home() {
             title={newProductSections.sectionTitle || "Sản phẩm mới"}
             description={newProductSections.description}
             products={newProductSections.products ?? []}
+            sectionId="newProducts" // Truyền sectionId
           />
         )}
       </section>
@@ -95,6 +95,7 @@ export default async function Home() {
             }
             description={BestsellerProductSections.description}
             products={BestsellerProductSections.products ?? []}
+            sectionId="bestsellerProducts" // Truyền sectionId
           />
         )}
       </section>

@@ -8,7 +8,7 @@ import { StatusMessageProvider } from "@/contexts/StatusMessageContext";
 import { useOverlay } from "@/hooks/useOverlay";
 import StatusMessage from "@/components/StatusMessage";
 import FlyToCart from "@/components/FlyToCart";
-import { useFlyToCart } from "@/hooks/useFlyToCartContext";
+import { useFlyToCart } from "@/hooks/useFlyToCart";
 
 export default function LayoutClient({
   children,
@@ -43,6 +43,17 @@ function LayoutContent({
   const { isOpen, closeOverlay, isExiting } = useOverlay();
   const { flyToCartData, completeFlyToCart } = useFlyToCart();
 
+  // Tạo startElementId với sectionId
+  const createStartElementId = () => {
+    if (!flyToCartData.productId) return "";
+
+    if (flyToCartData.sectionId) {
+      return `product-image-${flyToCartData.sectionId}-${flyToCartData.productId}`;
+    }
+
+    return `product-image-${flyToCartData.productId}`;
+  };
+
   return (
     <>
       <Header />
@@ -54,11 +65,7 @@ function LayoutContent({
       <FlyToCart
         isActive={flyToCartData.isActive}
         productImage={flyToCartData.productImage}
-        startElementId={
-          flyToCartData.productId
-            ? `product-image-${flyToCartData.productId}`
-            : ""
-        }
+        startElementId={createStartElementId()}
         targetElementId="cart-icon-target"
         onComplete={completeFlyToCart}
       />

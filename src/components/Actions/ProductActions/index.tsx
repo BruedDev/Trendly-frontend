@@ -14,6 +14,7 @@ interface ActionsProductProps {
   activeColorIdx?: number | null;
   selectedSize?: string;
   activeColorImage?: ProductImageType | null;
+  sectionId?: string; // Thêm sectionId prop
 }
 
 export default function ActionsProduct({
@@ -22,6 +23,7 @@ export default function ActionsProduct({
   activeColorIdx,
   selectedSize,
   activeColorImage,
+  sectionId, // Thêm sectionId
 }: ActionsProductProps) {
   const types = type ? type.split(" ") : ["cart", "heart", "preview"];
   const colorCode =
@@ -39,6 +41,7 @@ export default function ActionsProduct({
             colorCode={colorCode}
             size={size}
             activeColorImage={activeColorImage}
+            sectionId={sectionId}
           />
         )}
         {types.includes("heart") && <AddToHeartProduct />}

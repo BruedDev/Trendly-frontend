@@ -16,10 +16,12 @@ export default function Product({
   activeColor,
   setActiveColor,
   activeColorImage,
+  sectionId, // Thêm sectionId prop
 }: ProductCardProps & {
   showActions?: boolean;
   onMouseEnter?: () => void;
   onMouseLeave?: () => void;
+  sectionId?: string; // Thêm type
 }) {
   return (
     <div
@@ -38,6 +40,7 @@ export default function Product({
           activeColorImage={activeColorImage}
           showActions={showActions}
           activeColor={activeColor}
+          sectionId={sectionId} // Truyền sectionId xuống
         />
       </div>
       <div className={styles.productInfo}>
