@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Noto_Sans, Roboto, Lora } from "next/font/google";
-import ThemeScript from "@/components/ThemeScript";
 import LayoutClient from "./layoutClient";
 import "../globals.css";
 import "../globals.scss";
@@ -37,10 +36,34 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        <ThemeScript />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                function getCookie(name) {
+                  const value = "; " + document.cookie;
+                  const parts = value.split("; " + name + "=");
+                  if (parts.length === 2) return parts.pop().split(';').shift();
+                  return undefined;
+                }
+
+                var dataTheme = getCookie('data-theme');
+                if (dataTheme) {
+                  document.documentElement.setAttribute('data-theme', dataTheme);
+                } else {
+                  var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+                  var theme = prefersDark ? 'dark' : 'light';
+                  document.documentElement.setAttribute('data-theme', theme);
+                  document.cookie = 'data-theme=' + theme + '; path=/; max-age=31536000';
+                }
+              })();
+            `,
+          }}
+        />
       </head>
       <body
         className={`${notoSans.variable} ${roboto.variable} ${lora.variable} antialiased`}
+        suppressHydrationWarning
       >
         <LayoutClient>{children}</LayoutClient>
       </body>

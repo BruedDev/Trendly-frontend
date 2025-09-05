@@ -21,7 +21,7 @@ const DeleteItemCartButton: React.FC<DeleteItemCartProps> = ({
 
   return (
     <Tooltip title="Xóa sản phẩm" arrow="left">
-      <button onClick={handleDelete} title="Xóa sản phẩm">
+      <button onClick={handleDelete}>
         <IoClose size={24} color="#000" />
       </button>
     </Tooltip>

@@ -1,9 +1,11 @@
+// ui/Product/ProductImage.tsx
 import Image from "next/image";
 import { getSanityImageUrl } from "@/utils/getSanityImageUrl";
 import { ProductImageProps } from "@/types/Products_section";
 import ActionsProduct from "@/components/Actions/ProductActions";
 import styles from "./Product.module.scss";
 import AddToHeartProduct from "@/components/Actions/ProductActions/AddToHeart";
+import { useMediaQuery } from "@/hooks/useMediaQuery";
 
 export default function ProductImage({
   product,
@@ -12,6 +14,7 @@ export default function ProductImage({
   showActions,
   activeColor,
 }: ProductImageProps & { showActions?: boolean }) {
+  const isMobile = useMediaQuery("(max-width: 768px)");
   const defaultImg = activeColorImage || product.thumbnail?.defaultImage;
   const hoverImg = product.thumbnail?.hoverImage;
   const defaultUrl = getSanityImageUrl(defaultImg);
@@ -19,10 +22,12 @@ export default function ProductImage({
 
   if (!defaultUrl) return null;
 
-  // Nếu không có hoverImage thì hiển thị bình thường
   if (!hoverUrl) {
     return (
-      <div className={styles.imageContainer}>
+      <div
+        className={styles.imageContainer}
+        id={`product-image-${product._id}`}
+      >
         <Image
           src={defaultUrl}
           alt={defaultImg?.alt || product.title}
@@ -34,14 +39,8 @@ export default function ProductImage({
     );
   }
 
-  // Crossfade effect khi có cả 2 ảnh
-  // Responsive: chỉ render nút cart ở heartIcon cho mobile, ở actionsOverlay cho desktop
-  const isMobile =
-    typeof window !== "undefined" &&
-    window.matchMedia("(max-width: 768px)").matches;
-
   return (
-    <div className={styles.imageContainer}>
+    <div className={styles.imageContainer} id={`product-image-${product._id}`}>
       <div className={styles.heartIcon}>
         <AddToHeartProduct />
         {isMobile && (
@@ -50,9 +49,11 @@ export default function ProductImage({
             product={product}
             activeColorIdx={activeColor}
             selectedSize=""
+            activeColorImage={activeColorImage}
           />
         )}
       </div>
+
       {/* Default Image */}
       <Image
         src={defaultUrl}
@@ -74,6 +75,7 @@ export default function ProductImage({
         width={1000}
         height={1000}
       />
+
       <div
         className={`${styles.actionsOverlay} ${
           showActions ? styles.visible : ""
@@ -85,6 +87,7 @@ export default function ProductImage({
             product={product}
             activeColorIdx={activeColor}
             selectedSize=""
+            activeColorImage={activeColorImage}
           />
         )}
       </div>

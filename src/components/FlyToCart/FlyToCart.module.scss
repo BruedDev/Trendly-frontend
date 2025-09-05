@@ -1,0 +1,16 @@
+// components/FlyToCart/FlyToCart.module.scss
+.flyToCartElement {
+  position: fixed !important;
+  z-index: 9999 !important;
+  pointer-events: none !important;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+
+  img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover;
+    display: block;
+  }
+}
