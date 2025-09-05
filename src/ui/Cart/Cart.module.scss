@@ -238,7 +238,7 @@
 }
 
 .cartItemPrice {
-  color: #e53935;
+  color: $price-color;
   font-weight: 600;
   font-size: 15px;
 }
@@ -253,15 +253,13 @@
 }
 
 .cartTotalLabel {
-  font-weight: 600;
   font-size: 15px;
   color: #333;
   text-transform: uppercase;
 }
 
 .cartTotal {
-  color: #e53935;
-  font-weight: 700;
+  color: $price-color;
   font-size: 20px;
   letter-spacing: 0.5px;
 }

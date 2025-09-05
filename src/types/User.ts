@@ -6,6 +6,7 @@ export interface User {
   address: string;
   role: "user" | "admin";
   createdAt: string;
+  avatar: string;
 }
 
 // Response for fetching the account user

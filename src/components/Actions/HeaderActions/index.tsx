@@ -16,12 +16,22 @@ const ACTIONS = [
 ];
 
 export default function ActionsHeader({
-  removeResponsive = [],
-}: { removeResponsive?: string[] } = {}) {
+  removeResponsive,
+  type,
+}: { removeResponsive?: string[]; type?: string } = {}) {
+  let actionsToRender = ACTIONS;
+  if (type) {
+    const keys = type
+      .split(/\s+/)
+      .map((k) => k.trim())
+      .filter(Boolean);
+    actionsToRender = ACTIONS.filter(({ key }) => keys.includes(key));
+  }
   return (
     <ul className={styles.headerActions} aria-label="User actions">
-      {ACTIONS.map(({ key, component: Component }) => {
-        const hideOnMobile = removeResponsive.includes(key);
+      {actionsToRender.map(({ key, component: Component }) => {
+        const hideOnMobile =
+          Array.isArray(removeResponsive) && removeResponsive.includes(key);
         return (
           <li
             className={
