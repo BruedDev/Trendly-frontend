@@ -18,7 +18,7 @@ export default function ProductColors({
           title={color.colorCode}
           arrow="bottom-center"
         >
-          <span
+          <button
             className={
               styles.productColorItem +
               (activeColor === idx ? " " + styles.active : "")
@@ -34,7 +34,7 @@ export default function ProductColors({
                 className={styles.productColorImage}
               />
             )}
-          </span>
+          </button>
         </Tooltip>
       ))}
     </div>

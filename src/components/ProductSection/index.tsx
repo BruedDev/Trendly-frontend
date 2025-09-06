@@ -6,21 +6,25 @@ import {
   ProductImage as ProductImageType,
 } from "@/types/Products_section";
 import ProductUi from "@/ui/Product";
+import { getSlug } from "@/utils/getSlug";
+import { useRouter } from "next/navigation";
 import SwiperSlide from "@/components/SwiperSlide";
 import ProductHeader from "@/ui/Product/ProductHeader";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
 import styles from "./ProductSection.module.scss";
+import { Product } from "@/types/Products_section";
 
 interface ExtendedProductSectionProps extends ProductSectionProps {
-  sectionId?: string; // Thêm sectionId prop
+  sectionId?: string;
 }
 
 export default function ProductSection({
   title,
   products,
   description,
-  sectionId, // Thêm sectionId
+  sectionId,
 }: ExtendedProductSectionProps) {
+  const router = useRouter();
   const [hoveredId, setHoveredId] = React.useState<string | null>(null);
   const [hoverShowActions, setHoverShowActions] = React.useState<string | null>(
     null
@@ -70,6 +74,19 @@ export default function ProductSection({
     setActiveColorImages((prev) => ({ ...prev, [id]: image || null }));
   };
 
+  const handleProductClick = (product: Product, event: React.MouseEvent) => {
+    const target = event.target as HTMLElement;
+
+    if (target.closest("button") || target.closest('[role="button"]')) {
+      return;
+    }
+
+    const slug = getSlug(product);
+    if (slug) {
+      router.push(`/products/${slug}`);
+    }
+  };
+
   return (
     <div className={`${styles.wrapper} ${styles.responsiveHover}`}>
       <ProductHeader title={title} description={description} />
@@ -110,22 +127,27 @@ export default function ProductSection({
             },
           }}
           renderItem={(product) => (
-            <ProductUi
-              key={product._id}
-              product={product}
-              isHover={hoveredId === product._id}
-              showActions={hoverShowActions === product._id}
-              onMouseEnter={() => handleSetHoverShowActions(product._id)}
-              onMouseLeave={() => handleSetHoverShowActions(null)}
-              onImageMouseEnter={() => handleMouseEnter(product._id)}
-              onImageMouseLeave={handleMouseLeave}
-              activeColor={activeColors[product._id] ?? null}
-              setActiveColor={(colorIdx, image) =>
-                handleSetActiveColor(product._id, colorIdx, image)
-              }
-              activeColorImage={activeColorImages[product._id] ?? null}
-              sectionId={sectionId} // Truyền sectionId xuống
-            />
+            <div
+              onClick={(e) => handleProductClick(product, e)}
+              style={{ cursor: "pointer" }}
+            >
+              <ProductUi
+                key={product._id}
+                product={product}
+                isHover={hoveredId === product._id}
+                showActions={hoverShowActions === product._id}
+                onMouseEnter={() => handleSetHoverShowActions(product._id)}
+                onMouseLeave={() => handleSetHoverShowActions(null)}
+                onImageMouseEnter={() => handleMouseEnter(product._id)}
+                onImageMouseLeave={handleMouseLeave}
+                activeColor={activeColors[product._id] ?? null}
+                setActiveColor={(colorIdx, image) =>
+                  handleSetActiveColor(product._id, colorIdx, image)
+                }
+                activeColorImage={activeColorImages[product._id] ?? null}
+                sectionId={sectionId}
+              />
+            </div>
           )}
         />
       </div>
