@@ -95,7 +95,7 @@ export default async function Home() {
             }
             description={BestsellerProductSections.description}
             products={BestsellerProductSections.products ?? []}
-            sectionId="bestsellerProducts" // Truyền sectionId
+            sectionId="bestsellerProducts"
           />
         )}
       </section>
