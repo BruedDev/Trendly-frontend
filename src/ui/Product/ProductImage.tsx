@@ -13,10 +13,10 @@ export default function ProductImage({
   activeColorImage,
   showActions,
   activeColor,
-  sectionId, // Thêm sectionId prop
+  sectionId,
 }: ProductImageProps & {
   showActions?: boolean;
-  sectionId?: string; // Thêm type
+  sectionId?: string;
 }) {
   const isMobile = useMediaQuery("(max-width: 768px)");
   const defaultImg = activeColorImage || product.thumbnail?.defaultImage;
@@ -33,10 +33,7 @@ export default function ProductImage({
 
   if (!hoverUrl) {
     return (
-      <div
-        className={styles.imageContainer}
-        id={imageId} // Sử dụng unique ID
-      >
+      <div className={styles.imageContainer} id={imageId}>
         <Image
           src={defaultUrl}
           alt={defaultImg?.alt || product.title}
@@ -50,7 +47,6 @@ export default function ProductImage({
 
   return (
     <div className={styles.imageContainer} id={imageId}>
-      {" "}
       {/* Sử dụng unique ID */}
       <div className={styles.heartIcon}>
         <AddToHeartProduct />
@@ -61,7 +57,7 @@ export default function ProductImage({
             activeColorIdx={activeColor}
             selectedSize=""
             activeColorImage={activeColorImage}
-            sectionId={sectionId} // Truyền sectionId xuống
+            sectionId={sectionId}
           />
         )}
       </div>
@@ -97,7 +93,7 @@ export default function ProductImage({
             activeColorIdx={activeColor}
             selectedSize=""
             activeColorImage={activeColorImage}
-            sectionId={sectionId} // Truyền sectionId xuống
+            sectionId={sectionId}
           />
         )}
       </div>

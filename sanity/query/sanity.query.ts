@@ -1,5 +1,5 @@
 import { groq } from "next-sanity";
-import { client } from "../lib/index"
+import { client } from "../lib/index";
 
 export async function getPage(slug: string = "/") {
   return client.fetch(
@@ -202,6 +202,42 @@ export async function getPage(slug: string = "/") {
           }
         }
       }
+    }`,
+    { slug }
+  );
+}
+
+// Lấy 1 sản phẩm theo slug
+export async function getProductSlug(slug: string) {
+  return client.fetch(
+    groq`*[_type == "product" && slug.current == $slug][0]{
+      _id,
+      title,
+      slug,
+      price,
+      originalPrice,
+      thumbnail {
+        defaultImage { asset->{url}, alt },
+        hoverImage { asset->{url}, alt }
+      },
+      categories[]->{
+        title,
+        slug,
+        image{ asset->{url}, alt }
+      },
+      colors[]{
+        colorCode,
+        image{ asset->{url}, alt },
+        detailImages[]{ asset->{url}, alt },
+        sizes[]{
+          size,
+          quantity
+        }
+      },
+      isNew,
+      isBestseller,
+      inStock,
+      msp
     }`,
     { slug }
   );

@@ -45,41 +45,6 @@ export interface Product extends SanityDocument {
   _type: "product";
 
   /**
-   * Màu sắc — `array`
-   *
-   *
-   */
-  colors?: Array<
-    SanityKeyed<{
-      /**
-       * Mã màu — `string`
-       *
-       *
-       */
-      colorCode?: string;
-
-      /**
-       * Hình minh họa — `image`
-       *
-       *
-       */
-      image?: {
-        _type: "image";
-        asset: SanityReference<SanityImageAsset>;
-        crop?: SanityImageCrop;
-        hotspot?: SanityImageHotspot;
-      };
-
-      /**
-       * Tồn kho màu này (Quantity) — `number`
-       *
-       * Số lượng tồn kho riêng cho màu này.
-       */
-      quantity?: number;
-    }>
-  >;
-
-  /**
    * Product Name — `string`
    *
    *
@@ -138,6 +103,78 @@ export interface Product extends SanityDocument {
       alt?: string;
     };
   };
+
+  /**
+   * Màu sắc — `array`
+   *
+   *
+   */
+  colors?: Array<
+    SanityKeyed<{
+      /**
+       * Mã màu — `string`
+       *
+       *
+       */
+      colorCode?: string;
+
+      /**
+       * Hình minh họa — `image`
+       *
+       *
+       */
+      image?: {
+        _type: "image";
+        asset: SanityReference<SanityImageAsset>;
+        crop?: SanityImageCrop;
+        hotspot?: SanityImageHotspot;
+      };
+
+      /**
+       * Hình chi tiết cho màu này — `array`
+       *
+       * Upload nhiều hình cho từng màu.
+       */
+      detailImages?: Array<
+        SanityKeyed<{
+          _type: "image";
+          asset: SanityReference<SanityImageAsset>;
+          crop?: SanityImageCrop;
+          hotspot?: SanityImageHotspot;
+
+          /**
+           * Mô tả hình ảnh — `string`
+           *
+           * Mô tả ngắn cho hình ảnh chi tiết sản phẩm.
+           */
+          alt?: string;
+        }>
+      >;
+
+      /**
+       * Kích cỡ và tồn kho từng size — `array`
+       *
+       * Nhập số lượng tồn kho cho từng size của màu này.
+       */
+      sizes?: Array<
+        SanityKeyed<{
+          /**
+           * Size — `string`
+           *
+           *
+           */
+          size?: "XS" | "S" | "M" | "L" | "XL" | "XXL";
+
+          /**
+           * Tồn kho size này — `number`
+           *
+           *
+           */
+          quantity?: number;
+        }>
+      >;
+    }>
+  >;
 
   /**
    * Price — `number`
