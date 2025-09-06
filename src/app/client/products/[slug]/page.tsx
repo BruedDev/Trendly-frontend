@@ -3,12 +3,13 @@ import { getProductSlug } from "../../../../../sanity/query/sanity.query";
 import { Product } from "@/types/Products_section";
 
 type Props = {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
 };
 
 export default async function ProductPage({ params }: Props) {
+  // Await params trước khi destructure
   const { slug } = await params;
 
   const product: Product | null = await getProductSlug(slug);
