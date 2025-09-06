@@ -1,15 +1,28 @@
-"use client";
+import { notFound } from "next/navigation";
+import { getProductSlug } from "../../../../../sanity/query/sanity.query";
+import { Product } from "@/types/Products_section";
 
-import { useParams } from "next/navigation";
+type Props = {
+  params: {
+    slug: string;
+  };
+};
 
-export default function ProductPage() {
-  const params = useParams();
-  const slug =
-    typeof params?.slug === "string"
-      ? params.slug
-      : Array.isArray(params?.slug)
-      ? params.slug[0]
-      : "";
+export default async function ProductPage({ params }: Props) {
+  const { slug } = await params;
 
-  return <div>Demo title: {slug}</div>;
+  const product: Product | null = await getProductSlug(slug);
+
+  if (!product) {
+    notFound();
+  }
+
+  // console.log("Product Data:", product);
+
+  return (
+    <div>
+      <h1>{product.title}</h1>
+      <span>Giá: {product.price} VND</span>
+    </div>
+  );
 }
