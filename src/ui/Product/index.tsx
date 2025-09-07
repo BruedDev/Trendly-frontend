@@ -24,7 +24,7 @@ export default function Product({
   sectionId?: string;
 }) {
   return (
-    <div
+    <article
       className={styles.product_Item}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
@@ -54,6 +54,6 @@ export default function Product({
           setActiveColor={setActiveColor}
         />
       </div>
-    </div>
+    </article>
   );
 }

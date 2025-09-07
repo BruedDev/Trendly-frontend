@@ -29,6 +29,7 @@ export default function ProductSection({
   const [hoverShowActions, setHoverShowActions] = React.useState<string | null>(
     null
   );
+  const [swiperReady, setSwiperReady] = React.useState(false);
   const isMobile = useMediaQuery("(max-width: 768px)");
 
   const [activeColors, setActiveColors] = React.useState<
@@ -55,6 +56,15 @@ export default function ProductSection({
     });
     return initial;
   });
+
+  // Effect to handle swiper initialization
+  React.useEffect(() => {
+    const timer = setTimeout(() => {
+      setSwiperReady(true);
+    }, 10);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   const handleMouseEnter = (id: string) => !isMobile && setHoveredId(id);
   const handleMouseLeave = () => !isMobile && setHoveredId(null);
@@ -87,69 +97,82 @@ export default function ProductSection({
     }
   };
 
+  const handleSwiperInit = () => {
+    setSwiperReady(true);
+  };
+
   return (
     <div className={`${styles.wrapper} ${styles.responsiveHover}`}>
       <ProductHeader title={title} description={description} />
       <div className={styles.wrapper_productList}>
-        <SwiperSlide
-          data={products}
-          transitionSpeed={800}
-          swiperProps={{
-            slidesPerView: 1,
-            slidesPerGroup: 1,
-            spaceBetween: 20,
-            pagination: {
-              clickable: true,
-            },
-            breakpoints: {
-              480: {
-                slidesPerView: 2,
-                slidesPerGroup: 2,
-                spaceBetween: 10,
-              },
-              768: {
-                slidesPerView: 3,
-                slidesPerGroup: 3,
-                spaceBetween: 10,
-              },
-              1110: {
-                slidesPerView: 3,
-                slidesPerGroup: 3,
-              },
-              1210: {
-                slidesPerView: 4,
-                slidesPerGroup: 4,
-              },
-              1280: {
-                slidesPerView: 5,
-                slidesPerGroup: 5,
-              },
-            },
+        <div
+          style={{
+            opacity: swiperReady ? 1 : 0,
+            transition: "opacity 0.2s ease-in-out",
           }}
-          renderItem={(product) => (
-            <div
-              onClick={(e) => handleProductClick(product, e)}
-              style={{ cursor: "pointer" }}
-            >
-              <ProductUi
-                key={product._id}
-                product={product}
-                isHover={hoveredId === product._id}
-                showActions={hoverShowActions === product._id}
-                onMouseEnter={() => handleSetHoverShowActions(product._id)}
-                onMouseLeave={() => handleSetHoverShowActions(null)}
-                onImageMouseEnter={() => handleMouseEnter(product._id)}
-                onImageMouseLeave={handleMouseLeave}
-                activeColor={activeColors[product._id] ?? null}
-                setActiveColor={(colorIdx, image) =>
-                  handleSetActiveColor(product._id, colorIdx, image)
-                }
-                activeColorImage={activeColorImages[product._id] ?? null}
-                sectionId={sectionId}
-              />
-            </div>
-          )}
-        />
+        >
+          <SwiperSlide
+            data={products}
+            transitionSpeed={800}
+            swiperProps={{
+              slidesPerView: 1,
+              slidesPerGroup: 1,
+              spaceBetween: 20,
+              pagination: {
+                clickable: true,
+              },
+              onInit: handleSwiperInit,
+              onSwiper: handleSwiperInit,
+              breakpoints: {
+                480: {
+                  slidesPerView: 2,
+                  slidesPerGroup: 2,
+                  spaceBetween: 10,
+                },
+                768: {
+                  slidesPerView: 3,
+                  slidesPerGroup: 3,
+                  spaceBetween: 10,
+                },
+                1110: {
+                  slidesPerView: 3,
+                  slidesPerGroup: 3,
+                },
+                1210: {
+                  slidesPerView: 4,
+                  slidesPerGroup: 4,
+                },
+                1280: {
+                  slidesPerView: 5,
+                  slidesPerGroup: 5,
+                },
+              },
+            }}
+            renderItem={(product) => (
+              <div
+                onClick={(e) => handleProductClick(product, e)}
+                style={{ cursor: "pointer" }}
+              >
+                <ProductUi
+                  key={product._id}
+                  product={product}
+                  isHover={hoveredId === product._id}
+                  showActions={hoverShowActions === product._id}
+                  onMouseEnter={() => handleSetHoverShowActions(product._id)}
+                  onMouseLeave={() => handleSetHoverShowActions(null)}
+                  onImageMouseEnter={() => handleMouseEnter(product._id)}
+                  onImageMouseLeave={handleMouseLeave}
+                  activeColor={activeColors[product._id] ?? null}
+                  setActiveColor={(colorIdx, image) =>
+                    handleSetActiveColor(product._id, colorIdx, image)
+                  }
+                  activeColorImage={activeColorImages[product._id] ?? null}
+                  sectionId={sectionId}
+                />
+              </div>
+            )}
+          />
+        </div>
       </div>
     </div>
   );

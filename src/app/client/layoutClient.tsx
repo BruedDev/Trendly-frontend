@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import Header from "@/components/Header";
 import Overlay from "@/components/Overlay";
 import ContextProvider from "@/contexts/index";
@@ -15,35 +15,25 @@ export default function LayoutClient({
 }: {
   children: React.ReactNode;
 }) {
-  const [isLoading, setIsLoading] = useState(true);
-
   useEffect(() => {
     requestAnimationFrame(() => {
-      setTimeout(() => {
-        setIsLoading(false);
-      }, 200);
+      setTimeout(() => {}, 200);
     });
   }, []);
 
   return (
     <StatusMessageProvider>
       <ContextProvider>
-        <LayoutContent isLoading={isLoading}>{children}</LayoutContent>
+        <LayoutContent>{children}</LayoutContent>
       </ContextProvider>
     </StatusMessageProvider>
   );
 }
 
-function LayoutContent({
-  children,
-}: {
-  children: React.ReactNode;
-  isLoading: boolean;
-}) {
+function LayoutContent({ children }: { children: React.ReactNode }) {
   const { isOpen, closeOverlay, isExiting } = useOverlay();
   const { flyToCartData, completeFlyToCart } = useFlyToCart();
 
-  // Tạo startElementId với sectionId
   const createStartElementId = () => {
     if (!flyToCartData.productId) return "";
 
@@ -58,6 +48,7 @@ function LayoutContent({
     <>
       <Header />
       <StatusMessage />
+
       {(isOpen || isExiting) && (
         <Overlay onClose={closeOverlay} isExiting={isExiting} />
       )}

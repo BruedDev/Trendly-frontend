@@ -38,9 +38,8 @@ export const OverlayProvider = ({ children }: { children: ReactNode }) => {
   const [isExiting, setIsExiting] = useState(false);
   const closeTimer = useRef<NodeJS.Timeout | null>(null);
   const pathname = usePathname();
-  const isInitialMount = useRef(true);
+  const prevPathnameRef = useRef(pathname);
 
-  // Prevent body scroll when overlay is open
   useEffect(() => {
     if (state.content) {
       document.body.style.overflow = "hidden";
@@ -90,22 +89,22 @@ export const OverlayProvider = ({ children }: { children: ReactNode }) => {
   const isOpen = state.content !== null;
 
   useEffect(() => {
-    if (isInitialMount.current) {
-      isInitialMount.current = false;
-      return;
+    // CHỈ CLOSE KHI PATHNAME THAY ĐỔI VÀ OVERLAY ĐANG MỞ
+    if (prevPathnameRef.current !== pathname && state.content !== null) {
+      if (closeTimer.current) {
+        clearTimeout(closeTimer.current);
+      }
+      closeOverlay();
     }
 
-    if (closeTimer.current) {
-      clearTimeout(closeTimer.current);
-    }
-    closeOverlay();
+    prevPathnameRef.current = pathname;
 
     return () => {
       if (closeTimer.current) {
         clearTimeout(closeTimer.current);
       }
     };
-  }, [pathname, closeOverlay]);
+  }, [pathname, closeOverlay, state.content]);
 
   return (
     <OverlayContext.Provider
