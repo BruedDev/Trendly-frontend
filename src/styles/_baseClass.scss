@@ -33,3 +33,13 @@
   background-clip: text;
   color: transparent;
 }
+.fontMobile {
+  @include respond(md) {
+    font-size: 14px;
+  }
+}
+.fontMobileDesc {
+  @include respond(md) {
+    font-size: 13.5px;
+  }
+}

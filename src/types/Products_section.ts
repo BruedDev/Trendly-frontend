@@ -35,6 +35,13 @@ export interface ProductColor {
     };
     alt: string;
   };
+  detailImages?: Array<{
+    asset?: {
+      url: string;
+      alt?: string;
+    };
+    alt?: string;
+  }>;
   sizes?: Array<{
     size: string;
     quantity: number;
@@ -45,6 +52,8 @@ export interface ProductCategory {
   title: string;
   slug: { current: string };
   image?: { asset?: { url?: string }; alt?: string };
+  type?: string;
+  material?: string;
 }
 
 export interface ProductImage {
@@ -70,6 +79,7 @@ export interface Product {
   isNew?: boolean;
   isBestseller?: boolean;
   inStock?: boolean;
+  type?: string;
 }
 
 export interface ProductSectionProps {
