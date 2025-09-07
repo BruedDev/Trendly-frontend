@@ -17,6 +17,8 @@ type AddToCartProductProps = {
   size?: string;
   activeColorImage?: ProductImageType | null;
   sectionId?: string;
+  noneReponsive?: boolean;
+  className?: string;
 };
 
 export default function AddToCartProduct({
@@ -25,6 +27,8 @@ export default function AddToCartProduct({
   size,
   activeColorImage,
   sectionId,
+  noneReponsive = false,
+  className,
 }: AddToCartProductProps) {
   const [isClient, setIsClient] = useState(false);
   const cartContext = useContext(CartContext);
@@ -50,15 +54,19 @@ export default function AddToCartProduct({
     });
   });
 
+  const shouldShowIcon = noneReponsive ? false : isMobile;
+
   return (
     <>
       {isClient && (
         <ButtonProduct
           variant="addToCart"
           onClick={handleAddToCart}
-          {...(isMobile ? { className: styles.addToCart__icon } : {})}
+          className={
+            className || (shouldShowIcon ? styles.addToCart__icon : undefined)
+          }
         >
-          {isMobile ? <BagIcon /> : "Thêm vào giỏ"}
+          {shouldShowIcon ? <BagIcon /> : "Thêm vào giỏ"}
         </ButtonProduct>
       )}
     </>

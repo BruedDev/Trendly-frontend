@@ -1,0 +1,51 @@
+.container {
+  display: flex;
+  gap: 20px;
+  overflow: hidden;
+  position: relative;
+}
+
+.siderBar {
+  flex: 0 0 80px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.imageMain {
+  flex: 0 0 45%;
+  max-width: 400px;
+}
+
+.info {
+  flex: 1;
+  min-width: 350px;
+  padding-left: 20px;
+  position: relative;
+}
+
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .siderBar {
+    flex-direction: row;
+    order: 2;
+  }
+
+  .imageMain {
+    flex: none;
+    max-width: 100%;
+    order: 1;
+  }
+
+  .info {
+    flex: none;
+    min-width: auto;
+    padding-left: 0;
+    order: 3;
+    margin-bottom: 70px;
+  }
+}

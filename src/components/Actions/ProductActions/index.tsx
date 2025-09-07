@@ -1,4 +1,3 @@
-// components/Actions/ProductActions/index.tsx
 import AddToHeartProduct from "./AddToHeart";
 import AddToCartProduct from "./AddTocart";
 import Preview from "./Preview";
@@ -15,6 +14,9 @@ interface ActionsProductProps {
   selectedSize?: string;
   activeColorImage?: ProductImageType | null;
   sectionId?: string;
+  noneReponsive?: boolean;
+  className?: string; // Thêm prop className
+  buttonClassName?: string; // Thêm prop cho custom button
 }
 
 export default function ActionsProduct({
@@ -24,6 +26,9 @@ export default function ActionsProduct({
   selectedSize,
   activeColorImage,
   sectionId,
+  noneReponsive = false,
+  className, // Nhận className prop
+  buttonClassName, // Nhận buttonClassName prop
 }: ActionsProductProps) {
   const types = type ? type.split(" ") : ["cart", "heart", "preview"];
   const colorCode =
@@ -32,9 +37,14 @@ export default function ActionsProduct({
       : "";
   const size = selectedSize;
 
+  // Combine default class với custom className
+  const containerClass = className
+    ? `${styles.actionsContainer} ${className}`
+    : styles.actionsContainer;
+
   return (
     <>
-      <div className={`${styles.actionsContainer}`}>
+      <div className={containerClass}>
         {types.includes("cart") && (
           <AddToCartProduct
             product={product}
@@ -42,10 +52,12 @@ export default function ActionsProduct({
             size={size}
             activeColorImage={activeColorImage}
             sectionId={sectionId}
+            noneReponsive={noneReponsive}
+            className={buttonClassName}
           />
         )}
         {types.includes("heart") && <AddToHeartProduct />}
-        {types.includes("preview") && <Preview />}
+        {types.includes("preview") && <Preview className={buttonClassName} />}
       </div>
     </>
   );

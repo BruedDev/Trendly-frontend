@@ -1,0 +1,69 @@
+.imageMain {
+  width: 100%;
+  max-width: 600px;
+
+  @include respond(md) {
+    max-width: 100%;
+  }
+}
+
+.mainImageContainer {
+  width: 100%;
+  max-width: 600px;
+  aspect-ratio: 3 / 4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+
+  @include respond(md) {
+    aspect-ratio: 1 / 1.2;
+    max-width: 100%;
+  }
+}
+
+.imageWrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  cursor: crosshair;
+  overflow: hidden;
+  border-radius: 8px;
+
+  &.zoomed {
+    .productImage {
+      transform: scale(3.5);
+      transition: transform 0.3s ease;
+    }
+  }
+}
+
+.productImage {
+  border-radius: 8px;
+  height: 100% !important;
+  width: 100% !important;
+  transition: transform 0.3s ease, object-fit 0.3s ease;
+  position: relative;
+  z-index: 1;
+}
+
+.zoomOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: 200% 200%;
+  background-repeat: no-repeat;
+  pointer-events: none;
+  z-index: 2;
+  border-radius: 8px;
+  opacity: 0;
+  animation: fadeIn 0.3s ease forwards;
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}

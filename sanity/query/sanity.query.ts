@@ -223,6 +223,8 @@ export async function getProductSlug(slug: string) {
       categories[]->{
         title,
         slug,
+        type,
+        material,
         image{ asset->{url}, alt }
       },
       colors[]{
