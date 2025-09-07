@@ -18,7 +18,7 @@ export async function login(data: LoginData) {
   });
 
   if (response.success && response.token) {
-    document.cookie = `token=${response.token}; path=/; max-age=86400; secure; samesite=none`;
+    document.cookie = `token=${response.token}; path=/; max-age=31536000; secure; samesite=none`;
   }
 
   return response;
