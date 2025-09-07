@@ -9,7 +9,8 @@ export const categorySchema = defineType({
       name: "title",
       title: "Tên danh mục nhỏ",
       type: "string",
-      validation: (Rule) => Rule.required().error("Tên danh mục nhỏ là bắt buộc"),
+      validation: (Rule) =>
+        Rule.required().error("Tên danh mục nhỏ là bắt buộc"),
     }),
     defineField({
       name: "slug",
@@ -22,9 +23,21 @@ export const categorySchema = defineType({
       validation: (Rule) => Rule.required().error("Đường dẫn là bắt buộc"),
     }),
     defineField({
+      name: "type",
+      title: "Loại sản phẩm",
+      type: "string",
+      validation: (Rule) => Rule.required().error("Loại sản phẩm là bắt buộc"),
+    }),
+    defineField({
+      name: "material",
+      title: "Vật liệu",
+      type: "string",
+      validation: (Rule) => Rule.required().error("Vật liệu là bắt buộc"),
+    }),
+    defineField({
       name: "description",
       title: "Mô tả",
       type: "text",
-    })
+    }),
   ],
 });

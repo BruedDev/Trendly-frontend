@@ -9,12 +9,18 @@ interface ButtonProductProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 const ButtonProduct = forwardRef<HTMLButtonElement, ButtonProductProps>(
-  ({ children, onClick, variant, ...props }, ref) => {
+  ({ children, onClick, variant, className, ...props }, ref) => {
     const buttonClass =
       variant === "addToHeart" ? styles.buttonHeart : styles.button;
+    const mergedClassName = className || buttonClass;
 
     return (
-      <button ref={ref} className={buttonClass} onClick={onClick} {...props}>
+      <button
+        ref={ref}
+        className={mergedClassName}
+        onClick={onClick}
+        {...props}
+      >
         <span className={styles.text}>{children}</span>
         {variant !== "addToHeart" && (
           <>
