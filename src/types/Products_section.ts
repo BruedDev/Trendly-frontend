@@ -8,7 +8,7 @@ export interface ProductImageProps {
 }
 
 // Props for ProductPrice component
-export interface ProductPriceProps {
+export interface ProductProps {
   product: Product;
 }
 
@@ -86,7 +86,10 @@ export interface ProductCardProps {
   onImageMouseEnter: () => void;
   onImageMouseLeave: () => void;
   activeColor: number | null;
-  setActiveColor: (colorIdx: number | null, image?: ProductImage | null) => void;
+  setActiveColor: (
+    colorIdx: number | null,
+    image?: ProductImage | null
+  ) => void;
   activeColorImage?: ProductImage | null;
 }
 
@@ -110,7 +113,7 @@ export interface CartSelectedColor {
 }
 
 // Cart product interface (extends Product but with optional fields)
-export interface CartProduct extends Omit<Product, '_id'> {
+export interface CartProduct extends Omit<Product, "_id"> {
   _id?: string;
 }
 
@@ -180,9 +183,21 @@ export interface UseGetCartReturn {
   loading: boolean;
   error: string | null;
   total: number;
-  increaseQuantity: (productId: string, colorCode: string, size?: string) => Promise<void>;
-  decreaseQuantity: (productId: string, colorCode: string, size?: string) => Promise<void>;
-  removeItem: (productId: string, colorCode: string, size?: string) => Promise<void>;
+  increaseQuantity: (
+    productId: string,
+    colorCode: string,
+    size?: string
+  ) => Promise<void>;
+  decreaseQuantity: (
+    productId: string,
+    colorCode: string,
+    size?: string
+  ) => Promise<void>;
+  removeItem: (
+    productId: string,
+    colorCode: string,
+    size?: string
+  ) => Promise<void>;
   refreshCart: () => Promise<void>;
 }
 
@@ -218,6 +233,12 @@ export interface CartState {
 }
 
 export interface CartAction {
-  type: 'SET_CART' | 'ADD_ITEM' | 'UPDATE_QUANTITY' | 'REMOVE_ITEM' | 'SET_LOADING' | 'SET_ERROR';
+  type:
+    | "SET_CART"
+    | "ADD_ITEM"
+    | "UPDATE_QUANTITY"
+    | "REMOVE_ITEM"
+    | "SET_LOADING"
+    | "SET_ERROR";
   payload?: CartItem[] | CartItem | CartItemIdentifier | number | string | null;
 }
