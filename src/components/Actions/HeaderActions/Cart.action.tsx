@@ -1,4 +1,3 @@
-// components/CartComponent.tsx (hoặc file tương ứng)
 import CircleQuantity from "@/ui/CirclesCount";
 import Tooltip from "@/components/Tooltip";
 import { IoCartOutline } from "react-icons/io5";
