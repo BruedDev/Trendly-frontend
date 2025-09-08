@@ -1,4 +1,3 @@
-// ui/Product/ProductImage.tsx
 import Image from "next/image";
 import { getSanityImageUrl } from "@/utils/getSanityImageUrl";
 import { ProductImageProps } from "@/types/Products_section";
@@ -6,6 +5,7 @@ import ActionsProduct from "@/components/Actions/ProductActions";
 import styles from "./Product.module.scss";
 import AddToHeartProduct from "@/components/Actions/ProductActions/AddToHeart";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
+import { useState } from "react";
 
 export default function ProductImage({
   product,
@@ -18,7 +18,10 @@ export default function ProductImage({
   showActions?: boolean;
   sectionId?: string;
 }) {
+  const [imageLoaded, setImageLoaded] = useState(false);
+  const [hoverImageLoaded, setHoverImageLoaded] = useState(false);
   const isMobile = useMediaQuery("(max-width: 768px)");
+
   const defaultImg = activeColorImage || product.thumbnail?.defaultImage;
   const hoverImg = product.thumbnail?.hoverImage;
   const defaultUrl = getSanityImageUrl(defaultImg);
@@ -31,6 +34,17 @@ export default function ProductImage({
 
   if (!defaultUrl) return null;
 
+  const handleDefaultImageLoad = () => {
+    setImageLoaded(true);
+  };
+
+  const handleHoverImageLoad = () => {
+    setHoverImageLoaded(true);
+  };
+
+  // Đảm bảo actions chỉ hiện khi image đã load
+  const canShowActions = imageLoaded && (!hoverUrl || hoverImageLoaded);
+
   if (!hoverUrl) {
     return (
       <div className={styles.imageContainer} id={imageId}>
@@ -40,27 +54,48 @@ export default function ProductImage({
           className={styles.productImage}
           width={1000}
           height={1000}
+          onLoad={handleDefaultImageLoad}
+          priority
         />
+        {/* Actions chỉ hiện khi image đã load */}
+        {canShowActions && (
+          <div className={styles.heartIcon}>
+            <AddToHeartProduct />
+            {isMobile && (
+              <ActionsProduct
+                type="cart"
+                product={product}
+                activeColorIdx={activeColor}
+                selectedSize=""
+                activeColorImage={activeColorImage}
+                sectionId={sectionId}
+              />
+            )}
+          </div>
+        )}
       </div>
     );
   }
 
   return (
     <div className={styles.imageContainer} id={imageId}>
-      {/* Sử dụng unique ID */}
-      <div className={styles.heartIcon}>
-        <AddToHeartProduct />
-        {isMobile && (
-          <ActionsProduct
-            type="cart"
-            product={product}
-            activeColorIdx={activeColor}
-            selectedSize=""
-            activeColorImage={activeColorImage}
-            sectionId={sectionId}
-          />
-        )}
-      </div>
+      {/* Actions overlay */}
+      {canShowActions && (
+        <div className={styles.heartIcon}>
+          <AddToHeartProduct />
+          {isMobile && (
+            <ActionsProduct
+              type="cart"
+              product={product}
+              activeColorIdx={activeColor}
+              selectedSize=""
+              activeColorImage={activeColorImage}
+              sectionId={sectionId}
+            />
+          )}
+        </div>
+      )}
+
       {/* Default Image */}
       <Image
         src={defaultUrl}
@@ -70,7 +105,10 @@ export default function ProductImage({
         }`}
         width={1000}
         height={1000}
+        onLoad={handleDefaultImageLoad}
+        priority
       />
+
       {/* Hover Image */}
       <Image
         src={hoverUrl}
@@ -80,13 +118,17 @@ export default function ProductImage({
         }`}
         width={1000}
         height={1000}
+        onLoad={handleHoverImageLoad}
+        priority
       />
+
+      {/* Desktop Actions Overlay */}
       <div
         className={`${styles.actionsOverlay} ${
           showActions ? styles.visible : ""
         }`}
       >
-        {!isMobile && (
+        {!isMobile && canShowActions && (
           <ActionsProduct
             type="cart preview"
             product={product}

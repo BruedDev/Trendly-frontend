@@ -45,12 +45,29 @@ export default function AddToCartProduct({
   const { addProductToCart } = cartContext;
 
   const handleAddToCart = protectAction(() => {
+    // Đảm bảo lấy đúng image theo activeColor
     const imageToFly = activeColorImage || product.thumbnail?.defaultImage;
 
+    // Log để debug (có thể xóa sau khi fix xong)
+    console.log("Flying image:", {
+      activeColorImage,
+      defaultImage: product.thumbnail?.defaultImage,
+      imageToFly,
+      productId: product._id,
+      sectionId,
+    });
+
+    if (!imageToFly) {
+      console.warn("No image found for flying animation");
+      addProductToCart(product, colorCode, size);
+      return;
+    }
+
     addProductToCart(product, colorCode, size, () => {
-      if (imageToFly) {
+      // Delay nhỏ để đảm bảo image đã được render và DOM đã update
+      setTimeout(() => {
         triggerFlyToCart(product._id, imageToFly, sectionId);
-      }
+      }, 150);
     });
   });
 
