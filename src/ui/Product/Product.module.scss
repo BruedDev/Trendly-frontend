@@ -144,17 +144,14 @@
     align-items: center;
     justify-content: center;
 
+    &.active {
+      border: 2px solid var(--bg-CircleQuantity);
+    }
+
     @include respond(sm) {
       width: 30px;
       height: 30px;
     }
-  }
-
-  .productColorActive {
-    border: 2px solid #000 !important;
-  }
-  .productColorInactive {
-    border: 2px solid #888 !important;
   }
 
   .productColorImage {
