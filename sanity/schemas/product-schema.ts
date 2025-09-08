@@ -167,12 +167,97 @@ export const productSchema = defineType({
       validation: (Rule) =>
         Rule.min(1).error("At least one category section is required"),
     }),
+
+    // ===== PHẦN MỚI: DESCRIPTION ĐƯỢC NÂNG CẤP =====
     defineField({
       name: "description",
-      title: "Description",
-      type: "text",
-      rows: 3,
+      title: "Product Description",
+      type: "object",
+      fields: [
+        {
+          name: "subtitle",
+          title: "Phụ đề sản phẩm",
+          type: "string",
+          description: "VD: Thanh lịch – Thời trang – Dễ phối đồ",
+          placeholder: "Thanh lịch – Thời trang – Dễ phối đồ",
+        },
+        {
+          name: "mainDescription",
+          title: "Mô tả chính",
+          type: "text",
+          rows: 4,
+          description:
+            "Mô tả chi tiết về sản phẩm, có thể sử dụng **text** để in đậm",
+          placeholder:
+            "Chiếc áo thun có bẻ tay ngắn với 2 gam màu cơ bản: **đen** và **kem**...",
+        },
+        {
+          name: "details",
+          title: "Chi tiết sản phẩm",
+          type: "array",
+          of: [
+            {
+              type: "object",
+              fields: [
+                {
+                  name: "label",
+                  title: "Tên thuộc tính",
+                  type: "string",
+                  options: {
+                    list: [
+                      { title: "Chất liệu", value: "Chất liệu" },
+                      { title: "Form dáng", value: "Form dáng" },
+                      { title: "Màu sắc", value: "Màu sắc" },
+                      { title: "Size", value: "Size" },
+                      { title: "Chi tiết", value: "Chi tiết" },
+                      { title: "Xuất xứ", value: "Xuất xứ" },
+                      { title: "Thương hiệu", value: "Thương hiệu" },
+                    ],
+                  },
+                },
+                {
+                  name: "value",
+                  title: "Giá trị",
+                  type: "string",
+                },
+              ],
+              preview: {
+                select: {
+                  title: "label",
+                  subtitle: "value",
+                },
+              },
+            },
+          ],
+          description: "Thông tin chi tiết dạng danh sách",
+        },
+        {
+          name: "styling",
+          title: "Phong cách gợi ý",
+          type: "array",
+          of: [{ type: "string" }],
+          description: "Cách phối đồ, mix & match",
+          options: {
+            layout: "list",
+          },
+        },
+        {
+          name: "tags",
+          title: "Tags/Hashtags",
+          type: "array",
+          of: [{ type: "string" }],
+          description: "Các hashtags cho sản phẩm",
+          options: {
+            layout: "tags",
+          },
+        },
+      ],
+      options: {
+        collapsible: true,
+        collapsed: false,
+      },
     }),
+
     defineField({
       name: "isNew",
       title: "New Product",

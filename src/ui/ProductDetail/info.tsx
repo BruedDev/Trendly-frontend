@@ -1,4 +1,3 @@
-// Định nghĩa type cho activeColor
 type ActiveColor = number | null;
 import type { ProductProps } from "@/types/Products_section";
 import { ProductImage as ProductImageType } from "@/types/Products_section";
@@ -16,6 +15,7 @@ export default function Info({
   activeColor,
   setActiveColor,
   activeColorImage,
+  isPreview = false,
 }: ProductProps & {
   sizes?: string[];
   selectedSize?: string | null;
@@ -26,15 +26,18 @@ export default function Info({
     image?: ProductImageType | null
   ) => void;
   activeColorImage?: ProductImageType | null;
+  selectedImageIndex?: number;
+  onThumbnailClick?: (index: number) => void;
+  isPreview?: boolean;
 }) {
   return (
     <article className={styles.info}>
-      <h3 className={`${styles.title}`}>
+      <h3 className={`${styles.title} ${isPreview ? styles.black : ""}`}>
         <strong>
           {product.title} <span className={`${styles.msp}`}>{product.msp}</span>
         </strong>
       </h3>
-      <div className={styles.type}>
+      <div className={`${styles.type} ${isPreview ? styles.black : ""}`}>
         <strong className="fontMobile">Thương hiệu:</strong>
         <span className="fontMobile">Trendly</span> |<strong>Loại: </strong>
         <span className="fontMobileDesc">{product.categories?.[0]?.type}</span>|
@@ -43,7 +46,7 @@ export default function Info({
       </div>
       <div className={styles.priceContainer}>
         <span className={styles.price}>{formatPrice(product.price)}</span>
-        <strong className={styles.stock}>
+        <strong className={`${styles.stock} ${isPreview ? styles.black : ""}`}>
           <span className="fontMobile">Tình trạng:</span>
           <span>
             {product.inStock ? (
@@ -54,7 +57,7 @@ export default function Info({
           </span>
         </strong>
       </div>
-      <div className={styles.material}>
+      <div className={`${styles.material} ${isPreview ? styles.black : ""}`}>
         <strong className="fontMobile">Vật liệu:</strong>
         <span className="fontMobileDesc">
           {product.categories?.[0]?.material}
@@ -63,7 +66,9 @@ export default function Info({
 
       {/* Phần màu sắc - sử dụng component ProductColors */}
       <div className={styles.colorContainer}>
-        <div className={styles.colorLabel}>
+        <div
+          className={`${styles.colorLabel} ${isPreview ? styles.black : ""}`}
+        >
           <strong className="fontMobile">Màu sắc:</strong>
           {typeof activeColor === "number" &&
           product.colors &&
@@ -79,10 +84,13 @@ export default function Info({
           product={product}
           activeColor={activeColor ?? null}
           setActiveColor={setActiveColor || (() => {})}
+          classButton={styles.colorBtn}
         />
       </div>
 
-      <div className={styles.sizeContainer}>
+      <div
+        className={`${styles.sizeContainer} ${isPreview ? styles.black : ""}`}
+      >
         <div className={styles.size}>
           <strong className="fontMobile">Kích thước:</strong>
           {selectedSize && (
@@ -96,9 +104,15 @@ export default function Info({
               <button
                 key={size}
                 type="button"
-                className={
-                  selectedSize === size ? styles.sizeActive : styles.sizeBtn
-                }
+                className={`${
+                  selectedSize === size
+                    ? `${styles.sizeActive} ${
+                        isPreview ? styles.sizePreviewActive : ""
+                      }`
+                    : `${styles.sizeBtn} ${
+                        isPreview ? styles.sizePreviewBtn : ""
+                      }`
+                }`}
                 onClick={() => onSizeClick && onSizeClick(size)}
               >
                 {size}
@@ -111,7 +125,7 @@ export default function Info({
       {/* Thêm ActionsProduct */}
       <div className={styles.actionsContainer}>
         <ActionsProduct
-          type="cart preview"
+          type="cart pay"
           product={product}
           activeColorIdx={activeColor}
           selectedSize={selectedSize || ""}

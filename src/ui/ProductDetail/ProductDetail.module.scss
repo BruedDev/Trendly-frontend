@@ -1,4 +1,9 @@
 .container {
+  overflow: hidden;
+  position: relative;
+}
+
+.content {
   display: flex;
   gap: 20px;
   overflow: hidden;
@@ -24,8 +29,12 @@
   position: relative;
 }
 
+.describe {
+  margin-top: 30px;
+}
+
 @media (max-width: 768px) {
-  .container {
+  .content {
     flex-direction: column;
     gap: 15px;
   }
@@ -46,6 +55,8 @@
     min-width: auto;
     padding-left: 0;
     order: 3;
-    margin-bottom: 70px;
+  }
+  .describe {
+    margin-bottom: 30px;
   }
 }

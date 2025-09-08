@@ -1,7 +1,7 @@
 import ViewCart from "@/components/Actions/cart/ViewCart";
 import styles from "./Cart.module.scss";
 import { formatPrice } from "@/utils/formatNumber";
-import Pay from "@/components/Actions/cart/Pay";
+import Pay from "@/components/Actions/ProductActions/Pay";
 
 interface CartFooterProps {
   total: number;
