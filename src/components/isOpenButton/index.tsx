@@ -37,7 +37,7 @@ const IsOpenButton = forwardRef<HTMLDivElement, IsOpenButtonProps>(
         onClick={handleToggle}
         {...restProps}
         className={`relative ${restProps.className ?? ""}`}
-        style={{ width: "100%" }}
+        style={{ width: "100%", cursor: "pointer" }}
       >
         {children}
       </div>
