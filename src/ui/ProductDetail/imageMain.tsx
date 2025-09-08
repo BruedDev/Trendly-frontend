@@ -8,12 +8,14 @@ interface ImageMainProps {
   currentImages: string[];
   selectedImageIndex: number;
   onImageChange: (index: number) => void;
+  classImage?: string;
 }
 
 export default function ImageMain({
   currentImages,
   selectedImageIndex,
   onImageChange,
+  classImage,
 }: ImageMainProps) {
   const swiperRef = useRef<SwiperType | null>(null);
   const [isZoomed, setIsZoomed] = useState(false);
@@ -93,7 +95,7 @@ export default function ImageMain({
   };
 
   const renderMainImage = (imageUrl: string, index: number) => (
-    <div className={styles.mainImageContainer}>
+    <div className={classImage ? classImage : styles.mainImageContainer}>
       <div
         className={`${styles.imageWrapper} ${isZoomed ? styles.zoomed : ""}`}
         onMouseMove={handleMouseMove}
@@ -109,7 +111,6 @@ export default function ImageMain({
           className={styles.productImage}
         />
 
-        {/* Zoom overlay - shows zoomed version only when hovering */}
         {isZoomed && (
           <div
             className={styles.zoomOverlay}

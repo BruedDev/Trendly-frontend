@@ -1,5 +1,6 @@
 import AddToHeartProduct from "./AddToHeart";
 import AddToCartProduct from "./AddTocart";
+import Pay from "./Pay";
 import Preview from "./Preview";
 import styles from "./ProductActions.module.scss";
 import {
@@ -15,8 +16,8 @@ interface ActionsProductProps {
   activeColorImage?: ProductImageType | null;
   sectionId?: string;
   noneReponsive?: boolean;
-  className?: string; // Thêm prop className
-  buttonClassName?: string; // Thêm prop cho custom button
+  className?: string;
+  buttonClassName?: string;
 }
 
 export default function ActionsProduct({
@@ -27,17 +28,16 @@ export default function ActionsProduct({
   activeColorImage,
   sectionId,
   noneReponsive = false,
-  className, // Nhận className prop
-  buttonClassName, // Nhận buttonClassName prop
+  className,
+  buttonClassName,
 }: ActionsProductProps) {
-  const types = type ? type.split(" ") : ["cart", "heart", "preview"];
+  const types = type ? type.split(" ") : ["cart", "heart", "preview", "pay"];
   const colorCode =
     activeColorIdx != null && product.colors && product.colors[activeColorIdx]
       ? product.colors[activeColorIdx].colorCode ?? ""
       : "";
   const size = selectedSize;
 
-  // Combine default class với custom className
   const containerClass = className
     ? `${styles.actionsContainer} ${className}`
     : styles.actionsContainer;
@@ -57,7 +57,10 @@ export default function ActionsProduct({
           />
         )}
         {types.includes("heart") && <AddToHeartProduct />}
-        {types.includes("preview") && <Preview className={buttonClassName} />}
+        {types.includes("preview") && (
+          <Preview className={buttonClassName} product={product} />
+        )}
+        {types.includes("pay") && <Pay className={buttonClassName} />}
       </div>
     </>
   );

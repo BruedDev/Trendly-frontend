@@ -1,3 +1,6 @@
+// ===== CUSTOM TYPES =====
+export type ActiveColor = number | null;
+
 // Props for ProductImage component
 export interface ProductImageProps {
   product: Product;
@@ -17,6 +20,7 @@ export interface ProductColorsProps {
   product: Product;
   activeColor: number | null;
   setActiveColor: (idx: number, image?: ProductImage | null) => void;
+  classButton?: string;
 }
 
 export interface ProductSectionType {
@@ -80,6 +84,16 @@ export interface Product {
   isBestseller?: boolean;
   inStock?: boolean;
   type?: string;
+  description?: {
+    subtitle?: string;
+    mainDescription?: string;
+    details?: Array<{
+      label: string;
+      value: string;
+    }>;
+    styling?: string[];
+    tags?: string[];
+  };
 }
 
 export interface ProductSectionProps {

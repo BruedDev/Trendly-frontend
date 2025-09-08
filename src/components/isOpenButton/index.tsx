@@ -1,26 +1,26 @@
 "use client";
 
 import { useOverlay } from "@/hooks/useOverlay";
-import { ReactNode, forwardRef, ButtonHTMLAttributes } from "react";
+import { ReactNode, forwardRef, HTMLAttributes } from "react";
 
 import { AnimationVariant } from "@/types/Overlay";
 
-interface IsOpenButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+interface IsOpenButtonProps extends HTMLAttributes<HTMLDivElement> {
   children: ReactNode;
   componentToOpen: ReactNode;
   variant?: AnimationVariant;
   scope?: string;
 }
 
-const IsOpenButton = forwardRef<HTMLButtonElement, IsOpenButtonProps>(
+const IsOpenButton = forwardRef<HTMLDivElement, IsOpenButtonProps>(
   ({ children, componentToOpen, variant, scope, ...props }, ref) => {
     const { toggleOverlay } = useOverlay();
 
-    const handleToggle = (e: React.MouseEvent<HTMLButtonElement>) => {
+    const handleToggle = (e: React.MouseEvent<HTMLDivElement>) => {
       if (props.onClick) {
         const result = (
           props.onClick as (
-            e: React.MouseEvent<HTMLButtonElement>
+            e: React.MouseEvent<HTMLDivElement>
           ) => boolean | void
         )(e);
         if (result === false) return;
@@ -32,14 +32,15 @@ const IsOpenButton = forwardRef<HTMLButtonElement, IsOpenButtonProps>(
     const { onClick, ...restProps } = props;
 
     return (
-      <button
+      <div
         ref={ref}
         onClick={handleToggle}
         {...restProps}
         className={`relative ${restProps.className ?? ""}`}
+        style={{ width: "100%" }}
       >
         {children}
-      </button>
+      </div>
     );
   }
 );

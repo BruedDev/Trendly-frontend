@@ -131,3 +131,24 @@
     gap: 10px;
   }
 }
+
+.colorBtn {
+  width: 36px !important;
+  height: 36px !important;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px !important;
+}
+
+.black {
+  color: #000 !important;
+}
+.sizePreviewBtn {
+  border: 1.5px solid #000 !important;
+}
+.sizePreviewActive {
+  background-color: #000 !important;
+  color: #fff !important;
+}

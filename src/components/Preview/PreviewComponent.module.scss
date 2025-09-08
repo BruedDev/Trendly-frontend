@@ -1,0 +1,20 @@
+.container {
+  display: flex;
+  max-width: 800px;
+  background-color: #fff;
+  pointer-events: auto;
+  gap: 20px;
+
+  .imageMain {
+    flex: 1 !important;
+  }
+
+  .info {
+    flex: 2 !important;
+    margin-right: 20px;
+  }
+}
+.imageMain {
+  width: 400px;
+  aspect-ratio: 3 / 4;
+}
