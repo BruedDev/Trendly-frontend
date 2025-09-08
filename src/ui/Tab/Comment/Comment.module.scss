@@ -1,0 +1,58 @@
+.container {
+  margin: 0 auto;
+}
+
+.tabPane {
+  h3 {
+    margin-bottom: 16px;
+    font-weight: 600;
+    font-size: 1.2rem;
+    text-transform: capitalize;
+  }
+  p {
+    line-height: 1.6;
+    margin-bottom: 12px;
+  }
+}
+
+.tabHeader {
+  display: flex;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+  position: relative;
+  background: transparent;
+}
+
+.tabButton {
+  padding: 14px 28px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 400;
+  transition: all 0.2s ease;
+  position: relative;
+  margin-right: 2px;
+
+  &:hover:not(.active) {
+    opacity: 0.8;
+  }
+
+  &.active {
+    font-weight: 500;
+
+    &::after {
+      content: "";
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: #ff6b35;
+    }
+  }
+}
+
+.tabContent {
+  padding: 24px 0;
+  min-height: 200px;
+}

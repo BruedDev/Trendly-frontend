@@ -1,7 +1,5 @@
-"use client";
-
 import React from "react";
-import type {
+import {
   ProductProps,
   ProductImage as ProductImageType,
 } from "@/types/Products_section";
@@ -12,16 +10,11 @@ import {
   getAllSizes,
   getActiveColorImage,
 } from "@/helper/ProductDetail";
-import ProductDetail_UI from "@/ui/ProductDetail";
+import styles from "./PreviewComponent.module.scss";
+import ImageMain from "@/ui/ProductDetail/imageMain";
+import Info from "@/ui/ProductDetail/info";
 
-interface ProductDetailProps extends ProductProps {
-  isPreview?: boolean;
-}
-
-export default function ProductDetail({
-  product,
-  isPreview = false,
-}: ProductDetailProps) {
+export default function PreviewComponent({ product }: ProductProps) {
   const [selectedImageIndex, setSelectedImageIndex] = React.useState(0);
 
   const [activeColor, setActiveColor] = React.useState<number | null>(() => {
@@ -70,20 +63,29 @@ export default function ProductDetail({
   };
 
   return (
-    <div className="container_section">
-      <ProductDetail_UI
-        product={product}
-        currentImages={getCurrentImages(product)}
-        selectedImageIndex={selectedImageIndex}
-        onThumbnailClick={handleThumbnailClick}
-        sizes={allSizes}
-        selectedSize={selectedSize}
-        onSizeClick={handleSizeClick}
-        activeColor={activeColor}
-        setActiveColor={handleSetActiveColor}
-        activeColorImage={activeColorImage}
-        isPreview={isPreview}
-      />
+    <div className={styles.container}>
+      <div className={styles.imageMain}>
+        <ImageMain
+          currentImages={getCurrentImages(product)}
+          selectedImageIndex={selectedImageIndex}
+          onImageChange={handleThumbnailClick}
+          classImage={styles.imageMain}
+        />
+      </div>
+      <div className={styles.info}>
+        <Info
+          product={product}
+          selectedImageIndex={selectedImageIndex}
+          onThumbnailClick={handleThumbnailClick}
+          sizes={allSizes}
+          selectedSize={selectedSize}
+          onSizeClick={handleSizeClick}
+          activeColor={activeColor}
+          setActiveColor={handleSetActiveColor}
+          activeColorImage={activeColorImage}
+          isPreview={true}
+        />
+      </div>
     </div>
   );
 }

@@ -8,7 +8,8 @@ export default function ProductColors({
   product,
   activeColor,
   setActiveColor,
-}: ProductColorsProps) {
+  classButton,
+}: ProductColorsProps & { classButton?: string }) {
   if (!product.colors || product.colors.length === 0) return null;
   return (
     <div className={styles.ProductColorsContainer}>
@@ -20,8 +21,11 @@ export default function ProductColors({
         >
           <button
             className={
+              (classButton ? classButton + " " : "") +
               styles.productColorItem +
-              (activeColor === idx ? " " + styles.active : "")
+              (activeColor === idx
+                ? " " + styles.productColorActive
+                : " " + styles.productColorInactive)
             }
             onClick={() => setActiveColor(idx, color.image)}
           >

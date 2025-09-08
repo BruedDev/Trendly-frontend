@@ -39,6 +39,17 @@ export async function getPage(slug: string = "/") {
             slug,
             price,
             originalPrice,
+            msp,
+            description {
+              subtitle,
+              mainDescription,
+              details[] {
+                label,
+                value
+              },
+              styling[],
+              tags[]
+            },
             thumbnail {
               defaultImage {
                 asset->{url},
@@ -52,6 +63,8 @@ export async function getPage(slug: string = "/") {
             categories[]->{
               title,
               slug,
+              type,
+              material,
               image{
                 asset->{url},
                 alt
@@ -60,6 +73,10 @@ export async function getPage(slug: string = "/") {
             colors[]{
               colorCode,
               image{
+                asset->{url},
+                alt
+              },
+              detailImages[]{
                 asset->{url},
                 alt
               },
@@ -108,6 +125,16 @@ export async function getPage(slug: string = "/") {
                 msp,
                 price,
                 originalPrice,
+                description {
+                  subtitle,
+                  mainDescription,
+                  details[] {
+                    label,
+                    value
+                  },
+                  styling[],
+                  tags[]
+                },
                 thumbnail {
                   defaultImage {
                     asset->{url},
@@ -121,6 +148,8 @@ export async function getPage(slug: string = "/") {
                 categories[]->{
                   title,
                   slug,
+                  type,
+                  material,
                   image{
                     asset->{url},
                     alt
@@ -129,6 +158,10 @@ export async function getPage(slug: string = "/") {
                 colors[]{
                   colorCode,
                   image{
+                    asset->{url},
+                    alt
+                  },
+                  detailImages[]{
                     asset->{url},
                     alt
                   },
@@ -173,6 +206,17 @@ export async function getPage(slug: string = "/") {
                 slug,
                 price,
                 originalPrice,
+                msp,
+                description {
+                  subtitle,
+                  mainDescription,
+                  details[] {
+                    label,
+                    value
+                  },
+                  styling[],
+                  tags[]
+                },
                 thumbnail {
                   defaultImage {
                     asset->{url},
@@ -185,13 +229,27 @@ export async function getPage(slug: string = "/") {
                 },
                 categories[]->{
                   title,
-                  slug
+                  slug,
+                  type,
+                  material,
+                  image{
+                    asset->{url},
+                    alt
+                  }
                 },
                 colors[]{
                   colorCode,
                   image{
                     asset->{url},
                     alt
+                  },
+                  detailImages[]{
+                    asset->{url},
+                    alt
+                  },
+                  sizes[]{
+                    size,
+                    quantity
                   }
                 },
                 isNew,
@@ -216,6 +274,16 @@ export async function getProductSlug(slug: string) {
       slug,
       price,
       originalPrice,
+      description {
+        subtitle,
+        mainDescription,
+        details[] {
+          label,
+          value
+        },
+        styling[],
+        tags[]
+      },
       thumbnail {
         defaultImage { asset->{url}, alt },
         hoverImage { asset->{url}, alt }
