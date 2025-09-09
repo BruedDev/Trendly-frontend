@@ -1,0 +1,794 @@
+[
+  {
+    "fields": [
+      {
+        "of": [
+          {
+            "type": "string"
+          }
+        ],
+        "name": "cells",
+        "type": "array"
+      }
+    ],
+    "name": "tableRow",
+    "type": "object"
+  },
+  {
+    "fields": [
+      {
+        "of": [
+          {
+            "type": "tableRow"
+          }
+        ],
+        "name": "rows",
+        "type": "array"
+      }
+    ],
+    "name": "table",
+    "type": "object"
+  },
+  {
+    "fields": [
+      {
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ],
+            "level": "error",
+            "message": "Product name is required"
+          }
+        ],
+        "name": "title",
+        "type": "string",
+        "title": "Product Name"
+      },
+      {
+        "options": {
+          "source": "title",
+          "maxLength": 96
+        },
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "custom"
+              },
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ],
+            "level": "error",
+            "message": "Slug is required"
+          }
+        ],
+        "name": "slug",
+        "type": "slug"
+      },
+      {
+        "fields": [
+          {
+            "options": {
+              "hotspot": true
+            },
+            "validation": [
+              {
+                "rules": [
+                  {
+                    "flag": "presence",
+                    "constraint": "required"
+                  }
+                ],
+                "level": "error",
+                "message": "Default image is required"
+              }
+            ],
+            "fields": [
+              {
+                "description": "Important for accessibility and SEO",
+                "name": "alt",
+                "type": "string",
+                "title": "Alternative Text"
+              }
+            ],
+            "name": "defaultImage",
+            "type": "image"
+          },
+          {
+            "options": {
+              "hotspot": true
+            },
+            "fields": [
+              {
+                "description": "Important for accessibility and SEO",
+                "name": "alt",
+                "type": "string",
+                "title": "Alternative Text"
+              }
+            ],
+            "hidden": "conditional",
+            "name": "hoverImage",
+            "type": "image"
+          }
+        ],
+        "name": "thumbnail",
+        "type": "object",
+        "title": "Product Image"
+      },
+      {
+        "of": [
+          {
+            "fields": [
+              {
+                "name": "colorCode",
+                "type": "string",
+                "title": "Mã màu"
+              },
+              {
+                "options": {
+                  "hotspot": true
+                },
+                "name": "image",
+                "type": "image",
+                "title": "Hình minh họa"
+              },
+              {
+                "description": "Upload nhiều hình cho từng màu.",
+                "of": [
+                  {
+                    "options": {
+                      "hotspot": true
+                    },
+                    "fields": [
+                      {
+                        "description": "Mô tả ngắn cho hình ảnh chi tiết sản phẩm.",
+                        "name": "alt",
+                        "type": "string",
+                        "title": "Mô tả hình ảnh"
+                      }
+                    ],
+                    "type": "image"
+                  }
+                ],
+                "name": "detailImages",
+                "type": "array",
+                "title": "Hình chi tiết cho màu này"
+              },
+              {
+                "description": "Nhập số lượng tồn kho cho từng size của màu này.",
+                "of": [
+                  {
+                    "fields": [
+                      {
+                        "options": {
+                          "list": [
+                            {
+                              "title": "XS",
+                              "value": "XS"
+                            },
+                            {
+                              "title": "S",
+                              "value": "S"
+                            },
+                            {
+                              "title": "M",
+                              "value": "M"
+                            },
+                            {
+                              "title": "L",
+                              "value": "L"
+                            },
+                            {
+                              "title": "XL",
+                              "value": "XL"
+                            },
+                            {
+                              "title": "XXL",
+                              "value": "XXL"
+                            }
+                          ]
+                        },
+                        "name": "size",
+                        "type": "string"
+                      },
+                      {
+                        "initialValue": 0,
+                        "validation": [
+                          {
+                            "rules": [
+                              {
+                                "flag": "presence",
+                                "constraint": "required"
+                              },
+                              {
+                                "flag": "min",
+                                "constraint": 0
+                              }
+                            ],
+                            "level": "error",
+                            "message": "Tồn kho phải >= 0"
+                          }
+                        ],
+                        "name": "quantity",
+                        "type": "number",
+                        "title": "Tồn kho size này"
+                      }
+                    ],
+                    "type": "object"
+                  }
+                ],
+                "name": "sizes",
+                "type": "array",
+                "title": "Kích cỡ và tồn kho từng size"
+              }
+            ],
+            "type": "object"
+          }
+        ],
+        "name": "colors",
+        "type": "array",
+        "title": "Màu sắc"
+      },
+      {
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              },
+              {
+                "flag": "min",
+                "constraint": 0
+              }
+            ],
+            "level": "error",
+            "message": "Valid price is required"
+          }
+        ],
+        "name": "price",
+        "type": "number"
+      },
+      {
+        "description": "Price before discount (optional)",
+        "name": "originalPrice",
+        "type": "number"
+      },
+      {
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "min",
+                "constraint": 1
+              }
+            ],
+            "level": "error",
+            "message": "At least one category section is required"
+          }
+        ],
+        "of": [
+          {
+            "to": [
+              {
+                "type": "category"
+              }
+            ],
+            "type": "reference",
+            "title": "Reference to category"
+          }
+        ],
+        "name": "categories",
+        "type": "array"
+      },
+      {
+        "options": {
+          "collapsible": true,
+          "collapsed": false
+        },
+        "fields": [
+          {
+            "placeholder": "Thanh lịch – Thời trang – Dễ phối đồ",
+            "description": "VD: Thanh lịch – Thời trang – Dễ phối đồ",
+            "name": "subtitle",
+            "type": "string",
+            "title": "Phụ đề sản phẩm"
+          },
+          {
+            "rows": 4,
+            "placeholder": "Chiếc áo thun có bẻ tay ngắn với 2 gam màu cơ bản: **đen** và **kem**...",
+            "description": "Mô tả chi tiết về sản phẩm, có thể sử dụng **text** để in đậm",
+            "name": "mainDescription",
+            "type": "text",
+            "title": "Mô tả chính"
+          },
+          {
+            "description": "Thông tin chi tiết dạng danh sách",
+            "of": [
+              {
+                "fields": [
+                  {
+                    "options": {
+                      "list": [
+                        {
+                          "title": "Chất liệu",
+                          "value": "Chất liệu"
+                        },
+                        {
+                          "title": "Form dáng",
+                          "value": "Form dáng"
+                        },
+                        {
+                          "title": "Màu sắc",
+                          "value": "Màu sắc"
+                        },
+                        {
+                          "title": "Size",
+                          "value": "Size"
+                        },
+                        {
+                          "title": "Chi tiết",
+                          "value": "Chi tiết"
+                        },
+                        {
+                          "title": "Xuất xứ",
+                          "value": "Xuất xứ"
+                        },
+                        {
+                          "title": "Thương hiệu",
+                          "value": "Thương hiệu"
+                        }
+                      ]
+                    },
+                    "name": "label",
+                    "type": "string",
+                    "title": "Tên thuộc tính"
+                  },
+                  {
+                    "name": "value",
+                    "type": "string",
+                    "title": "Giá trị"
+                  }
+                ],
+                "type": "object"
+              }
+            ],
+            "name": "details",
+            "type": "array",
+            "title": "Chi tiết sản phẩm"
+          },
+          {
+            "options": {
+              "layout": "list"
+            },
+            "description": "Cách phối đồ, mix & match",
+            "of": [
+              {
+                "type": "string"
+              }
+            ],
+            "name": "styling",
+            "type": "array",
+            "title": "Phong cách gợi ý"
+          },
+          {
+            "options": {
+              "layout": "tags"
+            },
+            "description": "Các hashtags cho sản phẩm",
+            "of": [
+              {
+                "type": "string"
+              }
+            ],
+            "name": "tags",
+            "type": "array",
+            "title": "Tags/Hashtags"
+          }
+        ],
+        "name": "description",
+        "type": "object",
+        "title": "Product Description"
+      },
+      {
+        "initialValue": false,
+        "name": "isNew",
+        "type": "boolean",
+        "title": "New Product"
+      },
+      {
+        "initialValue": false,
+        "name": "isBestseller",
+        "type": "boolean",
+        "title": "Bestseller"
+      },
+      {
+        "initialValue": true,
+        "name": "inStock",
+        "type": "boolean"
+      },
+      {
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "custom"
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "description": "Mã sản phẩm gồm 8 số, tự động sinh khi tạo mới.",
+        "readOnly": true,
+        "name": "msp",
+        "type": "string",
+        "title": "Mã sản phẩm (MSP)"
+      }
+    ],
+    "name": "product",
+    "type": "document"
+  },
+  {
+    "fields": [
+      {
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ],
+            "level": "error",
+            "message": "Tên nhóm danh mục là bắt buộc"
+          }
+        ],
+        "name": "title",
+        "type": "string",
+        "title": "Tên nhóm danh mục"
+      },
+      {
+        "options": {
+          "source": "title",
+          "maxLength": 96
+        },
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "custom"
+              },
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ],
+            "level": "error",
+            "message": "Đường dẫn là bắt buộc"
+          }
+        ],
+        "name": "slug",
+        "type": "slug",
+        "title": "Đường dẫn"
+      },
+      {
+        "name": "description",
+        "type": "text",
+        "title": "Mô tả"
+      },
+      {
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "min",
+                "constraint": 1
+              }
+            ],
+            "level": "error",
+            "message": "Phải có ít nhất một danh mục section"
+          }
+        ],
+        "of": [
+          {
+            "to": [
+              {
+                "type": "category"
+              }
+            ],
+            "type": "reference",
+            "title": "Reference to category"
+          }
+        ],
+        "name": "categories",
+        "type": "array",
+        "title": "Danh sách danh mục con"
+      }
+    ],
+    "name": "categoryGroup",
+    "type": "document"
+  },
+  {
+    "fields": [
+      {
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ],
+            "level": "error",
+            "message": "Tên danh mục nhỏ là bắt buộc"
+          }
+        ],
+        "name": "title",
+        "type": "string",
+        "title": "Tên danh mục nhỏ"
+      },
+      {
+        "options": {
+          "source": "title",
+          "maxLength": 96
+        },
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "custom"
+              },
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ],
+            "level": "error",
+            "message": "Đường dẫn là bắt buộc"
+          }
+        ],
+        "name": "slug",
+        "type": "slug",
+        "title": "Đường dẫn"
+      },
+      {
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ],
+            "level": "error",
+            "message": "Loại sản phẩm là bắt buộc"
+          }
+        ],
+        "name": "type",
+        "type": "string",
+        "title": "Loại sản phẩm"
+      },
+      {
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ],
+            "level": "error",
+            "message": "Vật liệu là bắt buộc"
+          }
+        ],
+        "name": "material",
+        "type": "string",
+        "title": "Vật liệu"
+      },
+      {
+        "name": "description",
+        "type": "text",
+        "title": "Mô tả"
+      }
+    ],
+    "name": "category",
+    "type": "document"
+  },
+  {
+    "fields": [
+      {
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ],
+            "level": "error",
+            "message": "Title is required"
+          }
+        ],
+        "name": "title",
+        "type": "string"
+      },
+      {
+        "options": {
+          "source": "title",
+          "maxLength": 96
+        },
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "custom"
+              },
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ],
+            "level": "error",
+            "message": "Slug is required"
+          }
+        ],
+        "name": "slug",
+        "type": "slug"
+      },
+      {
+        "of": [
+          {
+            "to": [
+              {
+                "type": "sections"
+              }
+            ],
+            "type": "reference",
+            "title": "Reference to sections"
+          }
+        ],
+        "name": "body",
+        "type": "array"
+      }
+    ],
+    "name": "page",
+    "type": "document"
+  },
+  {
+    "fields": [
+      {
+        "name": "sectionName",
+        "type": "string"
+      },
+      {
+        "name": "title",
+        "type": "string"
+      },
+      {
+        "description": "Tập hợp các section như hero, product để dễ quản lý và tái sử dụng.",
+        "of": [
+          {
+            "type": "heroSection"
+          },
+          {
+            "type": "productSection"
+          },
+          {
+            "options": {
+              "filter": "_type == \"categoryGroup\""
+            },
+            "to": [
+              {
+                "type": "categoryGroup"
+              }
+            ],
+            "type": "reference",
+            "title": "Reference to category group"
+          }
+        ],
+        "name": "sections",
+        "type": "array",
+        "title": "Sections List"
+      }
+    ],
+    "name": "sections",
+    "type": "document"
+  },
+  {
+    "fields": [
+      {
+        "name": "title",
+        "type": "string"
+      },
+      {
+        "name": "subtitle",
+        "type": "string"
+      },
+      {
+        "of": [
+          {
+            "fields": [
+              {
+                "description": "Important for accessibility and SEO",
+                "name": "alt",
+                "type": "string",
+                "title": "Alternative Text"
+              }
+            ],
+            "type": "image"
+          }
+        ],
+        "name": "images",
+        "type": "array",
+        "title": "Slider Images"
+      }
+    ],
+    "name": "heroSection",
+    "type": "object"
+  },
+  {
+    "fields": [
+      {
+        "initialValue": "Our Products",
+        "name": "sectionTitle",
+        "type": "string"
+      },
+      {
+        "rows": 3,
+        "description": "Mô tả cho section sản phẩm",
+        "name": "description",
+        "type": "text"
+      },
+      {
+        "options": {
+          "list": [
+            {
+              "title": "New Products",
+              "value": "new"
+            },
+            {
+              "title": "Best Sellers",
+              "value": "bestseller"
+            },
+            {
+              "title": "All Products",
+              "value": "all"
+            }
+          ]
+        },
+        "initialValue": "new",
+        "name": "displayType",
+        "type": "string"
+      },
+      {
+        "initialValue": 8,
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "min",
+                "constraint": 1
+              },
+              {
+                "flag": "max",
+                "constraint": 20
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "name": "limit",
+        "type": "number",
+        "title": "Number of Products"
+      }
+    ],
+    "name": "productSection",
+    "type": "object"
+  }
+]
