@@ -289,6 +289,7 @@ export async function getProductSlug(slug: string) {
         hoverImage { asset->{url}, alt }
       },
       categories[]->{
+        _id,
         title,
         slug,
         type,
@@ -310,5 +311,39 @@ export async function getProductSlug(slug: string) {
       msp
     }`,
     { slug }
+  );
+}
+
+// Lấy 10 sản phẩm liên quan cùng category, loại trừ sản phẩm hiện tại
+export async function getRelatedProducts(
+  currentProductId: string,
+  categoryIds: string[]
+) {
+  if (!Array.isArray(categoryIds) || categoryIds.length === 0) return [];
+  return client.fetch(
+    groq`*[_type == "product" && _id != $currentProductId && count(categories[_ref in $categoryIds]) > 0][0...10]{
+      _id,
+      title,
+      slug,
+      price,
+      originalPrice,
+      msp,
+      thumbnail {
+        defaultImage { asset->{url}, alt },
+        hoverImage { asset->{url}, alt }
+      },
+      categories[]->{
+        _id,
+        title,
+        slug
+      },
+      colors[]{
+        colorCode,
+        image{ asset->{url}, alt },
+        detailImages[]{ asset->{url}, alt },
+        sizes[]{ size, quantity }
+      }
+    }`,
+    { currentProductId, categoryIds }
   );
 }

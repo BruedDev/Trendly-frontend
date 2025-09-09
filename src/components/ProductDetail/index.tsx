@@ -16,10 +16,12 @@ import ProductDetail_UI from "@/ui/ProductDetail";
 
 interface ProductDetailProps extends ProductProps {
   isPreview?: boolean;
+  relatedProducts?: import("@/types/Products_section").RelatedProduct[];
 }
 
 export default function ProductDetail({
   product,
+  relatedProducts,
   isPreview = false,
 }: ProductDetailProps) {
   const [selectedImageIndex, setSelectedImageIndex] = React.useState(0);
@@ -83,6 +85,7 @@ export default function ProductDetail({
         setActiveColor={handleSetActiveColor}
         activeColorImage={activeColorImage}
         isPreview={isPreview}
+        relatedProducts={relatedProducts ?? []}
       />
     </div>
   );
