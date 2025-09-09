@@ -1,10 +1,14 @@
-import type { ProductProps } from "@/types/Products_section";
+import type {
+  ProductProps,
+  RelatedProductsProps,
+} from "@/types/Products_section";
 import { ProductImage as ProductImageType } from "@/types/Products_section";
 import styles from "./ProductDetail.module.scss";
 import SiderBar from "./siderBar";
 import ImageMain from "./imageMain";
 import Info from "./info";
 import Tabs from "./Tabs";
+import RelatedProducts from "./relatedProducts";
 
 interface ProductDetailUIProps extends ProductProps {
   currentImages: string[];
@@ -19,11 +23,13 @@ interface ProductDetailUIProps extends ProductProps {
     image?: ProductImageType | null
   ) => void;
   activeColorImage: ProductImageType | null;
-    isPreview?: boolean; // Added prop for preview functionality
+  isPreview?: boolean;
+  relatedProducts: RelatedProductsProps["products"];
 }
 
 export default function ProductDetailUI({
   product,
+  relatedProducts,
   currentImages,
   selectedImageIndex,
   onThumbnailClick,
@@ -33,7 +39,7 @@ export default function ProductDetailUI({
   activeColor,
   setActiveColor,
   activeColorImage,
-    isPreview = false, // Default value for isPreview
+  isPreview = false,
 }: ProductDetailUIProps) {
   const handleImageChange = (index: number) => {
     onThumbnailClick(index);
@@ -59,23 +65,27 @@ export default function ProductDetailUI({
           />
         </div>
         <div className={styles.info}>
-            <Info
-              product={product}
-              sizes={sizes}
-              selectedSize={selectedSize}
-              onSizeClick={onSizeClick}
-              activeColor={activeColor}
-              setActiveColor={setActiveColor}
-              activeColorImage={activeColorImage}
-              isPreview={isPreview} // Pass isPreview prop to Info component
-            />
+          <Info
+            product={product}
+            sizes={sizes}
+            selectedSize={selectedSize}
+            onSizeClick={onSizeClick}
+            activeColor={activeColor}
+            setActiveColor={setActiveColor}
+            activeColorImage={activeColorImage}
+            isPreview={isPreview}
+          />
         </div>
       </div>
       {!isPreview && (
-        <div className={styles.describe}>
+        <div className={styles.Tabs}>
           <Tabs product={product} />
         </div>
       )}
+
+      <div className={styles.relatedProducts}>
+        <RelatedProducts products={relatedProducts ?? []} />
+      </div>
     </div>
   );
 }
