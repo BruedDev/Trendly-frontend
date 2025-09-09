@@ -1,3 +1,22 @@
+// Sản phẩm liên quan (Related Product)
+export interface RelatedProduct {
+  _id: string;
+  title: string;
+  slug: { current: string };
+  price: number;
+  originalPrice?: number;
+  thumbnail?: ProductThumbnail;
+  msp: string;
+  categories?: Array<{
+    _id: string;
+    title: string;
+    slug: { current: string };
+  }>;
+}
+
+export interface RelatedProductsProps {
+  products: RelatedProduct[];
+}
 // ===== CUSTOM TYPES =====
 export type ActiveColor = number | null;
 
@@ -53,6 +72,7 @@ export interface ProductColor {
 }
 
 export interface ProductCategory {
+  _id: string;
   title: string;
   slug: { current: string };
   image?: { asset?: { url?: string }; alt?: string };

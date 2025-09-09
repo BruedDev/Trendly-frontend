@@ -1,5 +1,8 @@
 import { notFound } from "next/navigation";
-import { getProductSlug } from "../../../../../sanity/query/sanity.query";
+import {
+  getProductSlug,
+  getRelatedProducts,
+} from "../../../../../sanity/query/sanity.query";
 import { Product } from "@/types/Products_section";
 import ProductDetail from "@/components/ProductDetail";
 
@@ -18,9 +21,17 @@ export default async function ProductPage({ params }: Props) {
     notFound();
   }
 
+  // Lấy sản phẩm liên quan
+  let relatedProducts: import("@/types/Products_section").RelatedProduct[] = [];
+  if (product && product.categories) {
+    const categoryIds = product.categories.map((cat) => cat._id);
+    relatedProducts =
+      (await getRelatedProducts(product._id, categoryIds)) ?? [];
+  }
+
   return (
     <>
-      <ProductDetail product={product} />
+      <ProductDetail product={product} relatedProducts={relatedProducts} />
     </>
   );
 }
