@@ -9,6 +9,8 @@ import { useOverlay } from "@/hooks/useOverlay";
 import StatusMessage from "@/components/StatusMessage";
 import FlyToCart from "@/components/FlyToCart";
 import { useFlyToCart } from "@/hooks/useFlyToCart";
+import { Provider } from "react-redux";
+import store from "@/store";
 
 export default function LayoutClient({
   children,
@@ -22,11 +24,13 @@ export default function LayoutClient({
   }, []);
 
   return (
-    <StatusMessageProvider>
-      <ContextProvider>
-        <LayoutContent>{children}</LayoutContent>
-      </ContextProvider>
-    </StatusMessageProvider>
+    <Provider store={store}>
+      <StatusMessageProvider>
+        <ContextProvider>
+          <LayoutContent>{children}</LayoutContent>
+        </ContextProvider>
+      </StatusMessageProvider>
+    </Provider>
   );
 }
 
