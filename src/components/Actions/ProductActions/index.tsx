@@ -60,7 +60,15 @@ export default function ActionsProduct({
         {types.includes("preview") && (
           <Preview className={buttonClassName} product={product} />
         )}
-        {types.includes("pay") && <Pay className={buttonClassName} />}
+        {types.includes("pay") && (
+          <Pay
+            className={buttonClassName}
+            product={product}
+            selectedSize={size}
+            colorCode={colorCode}
+            activeColorImage={activeColorImage} // THÊM PROP MỚI Ở ĐÂY
+          />
+        )}
       </div>
     </>
   );

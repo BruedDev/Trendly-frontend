@@ -9,6 +9,17 @@
   --gradient-nav: #{$gradient-nav-light};
   --bg-CircleQuantity: #{$bg-CircleQuantity-light};
   --bg-tooltip: #{$bg-tooltip-light};
+
+  --input-bg: #{$input-bg-light};
+  --input-border: #{$input-border-light};
+  --input-border-focus: #{$input-border-focus-light};
+  --input-text: #{$input-text-light};
+  --label-text: #{$label-text-light};
+  --label-focus: #{$label-focus-light};
+  --input-disabled-bg: #{$input-disabled-bg-light};
+  --input-disabled-text: #{$input-disabled-text-light};
+  --input-error-border: #{$input-error-border-light};
+  --input-error-text: #{$input-error-text-light};
 }
 
 [data-theme="dark"] {
@@ -20,4 +31,15 @@
   --gradient-nav: #{$gradient-nav-dark};
   --bg-CircleQuantity: #{$bg-CircleQuantity-dark};
   --bg-tooltip: #{$bg-tooltip-dark};
+
+  --input-bg: #{$input-bg-dark};
+  --input-border: #{$input-border-dark};
+  --input-border-focus: #{$input-border-focus-dark};
+  --input-text: #{$input-text-dark};
+  --label-text: #{$label-text-dark};
+  --label-focus: #{$label-focus-dark};
+  --input-disabled-bg: #{$input-disabled-bg-dark};
+  --input-disabled-text: #{$input-disabled-text-dark};
+  --input-error-border: #{$input-error-border-dark};
+  --input-error-text: #{$input-error-text-dark};
 }

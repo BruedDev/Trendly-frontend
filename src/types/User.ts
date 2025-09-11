@@ -1,3 +1,8 @@
+export interface EditProfilePayload {
+  fullName?: string;
+  phone?: string;
+  address?: string;
+}
 export interface User {
   _id: string;
   fullName: string;
