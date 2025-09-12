@@ -9,6 +9,8 @@ import { useOverlay } from "@/hooks/useOverlay";
 import StatusMessage from "@/components/StatusMessage";
 import FlyToCart from "@/components/FlyToCart";
 import { useFlyToCart } from "@/hooks/useFlyToCart";
+
+import SuspenseWrapper from "@/components/Suspense";
 import { Provider } from "react-redux";
 import store from "@/store";
 
@@ -27,7 +29,9 @@ export default function LayoutClient({
     <Provider store={store}>
       <StatusMessageProvider>
         <ContextProvider>
-          <LayoutContent>{children}</LayoutContent>
+          <SuspenseWrapper>
+            <LayoutContent>{children}</LayoutContent>
+          </SuspenseWrapper>
         </ContextProvider>
       </StatusMessageProvider>
     </Provider>

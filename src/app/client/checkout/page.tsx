@@ -18,19 +18,9 @@ export default function CheckoutPage() {
     if (checkoutState) {
       try {
         const decodedToken = jwtDecode<DecodedToken>(checkoutState);
-
         setMissingFields(decodedToken.missingFields || []);
         setDecodedProducts(decodedToken.products || []);
-
-        const fetchProductDetails = async () => {
-          const productIds = decodedToken.products.map((p) => p.productId);
-
-          if (productIds.length > 0) {
-          }
-          setIsLoading(false);
-        };
-
-        fetchProductDetails();
+        setIsLoading(false);
       } catch (err) {
         console.error("Lỗi giải mã token, chuyển hướng:", err);
         router.push("/");

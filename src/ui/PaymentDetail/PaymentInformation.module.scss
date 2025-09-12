@@ -1,21 +1,29 @@
 .container {
-  margin-bottom: 24px;
+  margin: 0 auto;
 
-  h2 {
-    color: var(--foreground);
-    font-size: 24px;
-    font-weight: 600;
-    margin-bottom: 24px;
-    padding-bottom: 12px;
-    border-bottom: 1px solid var(--border-color);
+  .logo {
+    @include flex-center;
+    width: fit-content;
+    height: 60px;
+    margin: 0 auto;
+
+    @include respond(md) {
+      display: none;
+    }
   }
 }
 
 .form {
   display: flex;
   flex-direction: column;
-  gap: 24px;
-  max-width: 600px;
+  gap: 20px;
+  max-width: 100%;
+  border-radius: 8px;
+  backdrop-filter: blur(10px);
+
+  @media (max-width: 768px) {
+    gap: 0;
+  }
 }
 
 .textInput {
@@ -26,7 +34,7 @@
 
 .selectRow {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: repeat(3, 1fr);
   gap: 16px;
 
   :global(.formGroup) {
@@ -35,60 +43,29 @@
 
   @media (max-width: 768px) {
     grid-template-columns: 1fr;
-    gap: 16px;
-  }
-}
-
-.submitButton {
-  margin-top: 16px;
-  padding: 16px 32px;
-  background: linear-gradient(135deg, #3b82f6, #2563eb);
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-size: 16px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all $timing-fast $ease-smooth;
-  box-shadow: 0 2px 4px rgba(59, 130, 246, 0.2);
-
-  &:hover {
-    background: linear-gradient(135deg, #2563eb, #1d4ed8);
-    transform: translateY(-1px);
-    box-shadow: 0 4px 8px rgba(59, 130, 246, 0.3);
-  }
-
-  &:active {
-    transform: translateY(0);
-    box-shadow: 0 2px 4px rgba(59, 130, 246, 0.2);
-  }
-
-  &:focus {
-    outline: none;
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
-  }
-
-  @media (max-width: 768px) {
-    padding: 14px 24px;
-    font-size: 15px;
+    gap: 0;
   }
 }
 
 .error {
-  color: var(--input-error-text);
-  font-size: 14px;
+  color: var(--price-color);
+  font-size: 13px;
   margin-top: 8px;
-  padding: 12px;
-  background: rgba(248, 113, 113, 0.1);
-  border: 1px solid var(--input-error-border);
-  border-radius: 6px;
+  padding: 8px 12px;
+  background: rgba(231, 3, 3, 0.1);
+  border: 1px solid var(--price-color);
+  border-radius: 4px;
   animation: slideIn $timing-fast $ease-smooth;
+
+  [data-theme="dark"] & {
+    background: rgba(231, 3, 3, 0.15);
+  }
 }
 
 @keyframes slideIn {
   from {
     opacity: 0;
-    transform: translateY(-8px);
+    transform: translateY(-4px);
   }
   to {
     opacity: 1;
@@ -96,22 +73,54 @@
   }
 }
 
-// Loading state
-.loadingContainer {
+.actions {
   display: flex;
+  justify-content: end;
   align-items: center;
-  justify-content: center;
-  padding: 40px;
-  color: var(--foreground);
-  font-size: 16px;
+  width: 100%;
 }
 
-// No user found state
-.noUserContainer {
+.editButton {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 40px;
-  color: var(--input-error-text);
-  font-size: 16px;
+  justify-content: flex-end;
+}
+
+.editBtn,
+.cancelBtn {
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  margin-bottom: 10px;
+
+  @include respond(md) {
+    margin-right: 0;
+    padding: 8px 0;
+  }
+}
+
+.editBtn {
+  background: transparent;
+  color: var(--text-color);
+
+  &:hover {
+    background: var(--hover-bg);
+    border-color: var(--primary-color);
+  }
+}
+
+.cancelBtn {
+  color: var(--foreground);
+
+  &:disabled {
+    pointer-events: none !important;
+    user-select: none !important;
+    opacity: 0.5;
+    background: var(--input-disabled-bg, #222);
+    color: var(--foreground, #bbb);
+    cursor: not-allowed !important;
+    border-color: var(--input-border, #444);
+    box-shadow: none;
+    filter: none;
+  }
 }

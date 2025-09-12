@@ -12,10 +12,14 @@ export interface ProductPayload {
 // Định nghĩa cấu trúc dữ liệu sản phẩm trong token thanh toán
 export interface ProductInToken {
   productId: string;
-  quantity: number;
-  size: string;
+  name: string;
   color: string;
+  size: string;
+  quantity: number;
+  price: number;
+  total: number;
   imageUrl?: string;
+  msp: string;
 }
 
 // Định nghĩa cấu trúc dữ liệu token thanh toán

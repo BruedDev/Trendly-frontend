@@ -1,5 +1,6 @@
 .container {
   display: flex;
+  gap: 30px;
 }
 
 .paymentInformation {
@@ -7,4 +8,28 @@
 }
 .yourProduct {
   flex: 1;
+}
+
+@include respond(lg) {
+  .paymentInformation {
+    flex: 1;
+  }
+  .yourProduct {
+    flex: 1;
+  }
+}
+
+@include respond(md) {
+  .container {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 50px;
+  }
+  .actions {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    z-index: 999;
+    width: 100%;
+  }
 }

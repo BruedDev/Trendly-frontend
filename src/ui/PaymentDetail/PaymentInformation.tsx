@@ -1,15 +1,31 @@
+import { useState, useEffect } from "react";
 import { PaymentInformationProps } from "@/types/Pay";
 import FormInput from "@/components/FormInput";
 import styles from "./PaymentInformation.module.scss";
+import Link from "next/link";
+import Logo from "@/components/Header/Logo";
 
-export default function PaymentInformation(props: PaymentInformationProps) {
+// ✅ Extend interface để nhận thêm props từ container
+interface PaymentInformationExtendedProps extends PaymentInformationProps {
+  isEditing: boolean;
+  canCancelEdit: boolean;
+  onEdit: () => void;
+  onCancel: () => void;
+  onContinue: () => void;
+  onSubmit: (formData: {
+    fullName: string;
+    phone: string;
+    address: string;
+  }) => Promise<void>;
+}
+
+export default function PaymentInformation(
+  props: PaymentInformationExtendedProps
+) {
   const {
     user,
-    editProfile,
-    fetchUser,
     userLoading,
     userError,
-    missingFields,
     provinces,
     districts,
     wards,
@@ -19,27 +35,75 @@ export default function PaymentInformation(props: PaymentInformationProps) {
     onProvinceChange,
     onDistrictChange,
     onWardChange,
+    isEditing,
+    canCancelEdit,
+    onEdit,
+    onCancel,
+    // onContinue,
+    onSubmit,
   } = props;
 
-  // Cấu hình các field dạng map
+  // ✅ State riêng cho UI validation - chỉ check đã nhập gì chưa
+  const [uiErrors, setUiErrors] = useState<string[]>([]);
+  const [currentInputs, setCurrentInputs] = useState({
+    fullName: "",
+    phone: "",
+  });
+
+  // ✅ Khởi tạo giá trị input khi user thay đổi
+  useEffect(() => {
+    if (user) {
+      setCurrentInputs({
+        fullName: user.fullName || "",
+        phone: user.phone || "",
+      });
+    }
+  }, [user]);
+
+  // ✅ Logic UI validation - chỉ check rỗng hay không
+  useEffect(() => {
+    const errors: string[] = [];
+
+    // Check fullName: rỗng thì đỏ
+    if (!currentInputs.fullName.trim()) {
+      errors.push("fullName");
+    }
+
+    // Check phone: rỗng thì đỏ
+    if (!currentInputs.phone.trim()) {
+      errors.push("phone");
+    }
+
+    // Check address: rỗng VÀ chưa chọn tỉnh thì đỏ
+    const hasUserAddress = user?.address && user.address.trim();
+    if (!hasUserAddress && !selectedProvince) {
+      errors.push("address");
+    }
+
+    setUiErrors(errors);
+  }, [currentInputs, selectedProvince, user?.address]);
+
   const formFields = [
     {
       name: "fullName",
       label: "Họ tên",
       type: "text" as const,
       defaultValue: user?.fullName,
+      disabled: !isEditing,
     },
     {
       name: "phone",
       label: "Số điện thoại",
       type: "text" as const,
       defaultValue: user?.phone,
+      disabled: !isEditing,
     },
     {
       name: "address",
       label: "Địa chỉ",
       type: "text" as const,
       value: user?.address || "",
+      disabled: true,
       readOnly: true,
     },
   ];
@@ -52,7 +116,7 @@ export default function PaymentInformation(props: PaymentInformationProps) {
       placeholder: "Chọn tỉnh/thành phố",
       options: provinces.map((p) => ({ value: String(p.code), label: p.name })),
       onChange: onProvinceChange,
-      disabled: false,
+      disabled: !isEditing,
     },
     {
       name: "district",
@@ -61,7 +125,7 @@ export default function PaymentInformation(props: PaymentInformationProps) {
       placeholder: "Chọn quận/huyện",
       options: districts.map((d) => ({ value: String(d.code), label: d.name })),
       onChange: onDistrictChange,
-      disabled: !selectedProvince,
+      disabled: !isEditing || !selectedProvince,
     },
     {
       name: "ward",
@@ -70,9 +134,17 @@ export default function PaymentInformation(props: PaymentInformationProps) {
       placeholder: "Chọn phường/xã",
       options: wards.map((w) => ({ value: String(w.code), label: w.name })),
       onChange: onWardChange,
-      disabled: !selectedDistrict,
+      disabled: !isEditing || !selectedDistrict,
     },
   ];
+
+  // ✅ Handler cho input changes
+  const handleInputChange = (name: string, value: string) => {
+    setCurrentInputs((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -97,17 +169,43 @@ export default function PaymentInformation(props: PaymentInformationProps) {
       }`;
     }
 
-    await editProfile({ fullName, phone, address });
-    await fetchUser();
+    try {
+      await onSubmit({ fullName, phone, address });
+    } catch (error) {
+      console.error("Lỗi khi cập nhật thông tin:", error);
+    }
   };
 
-  if (userLoading) return <div>Đang tải thông tin...</div>;
+  if (userLoading) return null;
   if (!user) return <div>Không tìm thấy thông tin người dùng.</div>;
 
   return (
     <div className={styles.container}>
-      <h2>Thông tin cá nhân</h2>
-      <form className={styles.form} onSubmit={handleSubmit}>
+      <Link href="/" className={styles.logo}>
+        <Logo />
+      </Link>
+
+      <div className={styles.editButton}>
+        {isEditing ? (
+          <button
+            type="button"
+            className={styles.cancelBtn}
+            onClick={onCancel}
+            disabled={!canCancelEdit}
+          >
+            Hủy
+          </button>
+        ) : (
+          canCancelEdit && (
+            <button type="button" className={styles.editBtn} onClick={onEdit}>
+              Chỉnh sửa
+            </button>
+          )
+        )}
+      </div>
+
+      {/* ✅ Thêm id="payment-form" để PaymentDetailActions có thể submit */}
+      <form id="payment-form" className={styles.form} onSubmit={handleSubmit}>
         {/* Text inputs */}
         {formFields.map((field) => (
           <div key={field.name} className={styles.textInput}>
@@ -117,13 +215,19 @@ export default function PaymentInformation(props: PaymentInformationProps) {
               type={field.type}
               defaultValue={field.defaultValue}
               value={field.value}
+              disabled={field.disabled}
               readOnly={field.readOnly}
-              isError={missingFields.includes(field.name)}
+              isError={uiErrors.includes(field.name)} // ✅ Dùng uiErrors thay vì missingFields
+              onChange={
+                field.name === "fullName" || field.name === "phone"
+                  ? (value) => handleInputChange(field.name, value)
+                  : undefined
+              }
             />
           </div>
         ))}
 
-        {/* Select inputs in one row */}
+        {/* Select inputs */}
         <div className={styles.selectRow}>
           {selectFields.map((field) => (
             <FormInput
@@ -136,14 +240,10 @@ export default function PaymentInformation(props: PaymentInformationProps) {
               options={field.options}
               onChange={field.onChange}
               disabled={field.disabled}
-              isError={missingFields.includes(field.name)}
+              isError={uiErrors.includes(field.name)} // ✅ Dùng uiErrors thay vì missingFields
             />
           ))}
         </div>
-
-        <button type="submit" className={styles.submitButton}>
-          Cập nhật thông tin
-        </button>
 
         {userError && <div className={styles.error}>{userError}</div>}
       </form>

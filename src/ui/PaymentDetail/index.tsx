@@ -1,8 +1,9 @@
 import { PaymentDetailProps } from "@/types/Pay";
 import { User, EditProfilePayload, AccountUserResponse } from "@/types/User";
-import styles from "./PaymentDetail.module.scss"; // Tên file CSS của bạn
+import styles from "./PaymentDetail.module.scss";
 import PaymentInformation from "./PaymentInformation";
-import YourProduct from "./YourProduct"; // Giả sử có component này
+import YourProduct from "./YourProduct";
+import PaymentDetailActions from "./actions";
 
 interface AdminUnit {
   name: string;
@@ -25,6 +26,25 @@ export interface PaymentDetailUIProps extends PaymentDetailProps {
   onProvinceChange: (code: string) => void;
   onDistrictChange: (code: string) => void;
   onWardChange: (code: string) => void;
+
+  // ✅ Thêm các props mới từ container
+  isEditing: boolean;
+  canCancelEdit: boolean;
+  onEdit: () => void;
+  onCancel: () => void;
+  onContinue: () => void;
+  onSubmit: (formData: {
+    fullName: string;
+    phone: string;
+    address: string;
+  }) => Promise<void>;
+
+  // ✅ Thêm handler cho việc xóa sản phẩm
+  onRemoveProduct: (
+    productId: string,
+    color: string,
+    size: string
+  ) => Promise<void>;
 }
 
 export default function PaymentDetailUI(props: PaymentDetailUIProps) {
@@ -47,10 +67,25 @@ export default function PaymentDetailUI(props: PaymentDetailUIProps) {
           onProvinceChange={props.onProvinceChange}
           onDistrictChange={props.onDistrictChange}
           onWardChange={props.onWardChange}
+          isEditing={props.isEditing}
+          canCancelEdit={props.canCancelEdit}
+          onEdit={props.onEdit}
+          onCancel={props.onCancel}
+          onContinue={props.onContinue}
+          onSubmit={props.onSubmit}
         />
+        <div className={styles.actions}>
+          <PaymentDetailActions
+            isEditing={props.isEditing}
+            onContinue={props.onContinue}
+          />
+        </div>
       </div>
       <div className={styles.yourProduct}>
-        <YourProduct products={props.products} />
+        <YourProduct
+          products={props.products}
+          onRemoveProduct={props.onRemoveProduct} // ✅ Truyền handler xuống YourProduct
+        />
       </div>
     </div>
   );
