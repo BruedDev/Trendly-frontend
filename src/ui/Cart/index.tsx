@@ -23,7 +23,7 @@ export default function Cart() {
           </div>
           <p className={styles.emptyCartText}>Hiện chưa có sản phẩm</p>
         </div>
-        <CartFooter total={0} />
+        <CartFooter total={0} cart={[]} />
       </div>
     );
   }
@@ -49,7 +49,7 @@ export default function Cart() {
           decreaseQuantity(productId, colorCode ?? "")
         }
       />
-      <CartFooter total={total} />
+      <CartFooter total={total} cart={cart} />
     </div>
   );
 }

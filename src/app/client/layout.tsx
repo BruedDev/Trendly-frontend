@@ -3,6 +3,7 @@ import { Noto_Sans, Roboto, Lora } from "next/font/google";
 import LayoutClient from "./layoutClient";
 import "../globals.css";
 import "../globals.scss";
+import Providers from "./providers";
 
 const notoSans = Noto_Sans({
   variable: "--font-noto-sans",
@@ -69,7 +70,9 @@ export default function RootLayout({
         className={`${notoSans.variable} ${roboto.variable} ${lora.variable} antialiased`}
         suppressHydrationWarning
       >
-        <LayoutClient>{children}</LayoutClient>
+        <Providers>
+          <LayoutClient>{children}</LayoutClient>
+        </Providers>
       </body>
     </html>
   );

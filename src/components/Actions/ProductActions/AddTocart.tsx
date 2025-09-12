@@ -48,15 +48,6 @@ export default function AddToCartProduct({
     // Đảm bảo lấy đúng image theo activeColor
     const imageToFly = activeColorImage || product.thumbnail?.defaultImage;
 
-    // Log để debug (có thể xóa sau khi fix xong)
-    console.log("Flying image:", {
-      activeColorImage,
-      defaultImage: product.thumbnail?.defaultImage,
-      imageToFly,
-      productId: product._id,
-      sectionId,
-    });
-
     if (!imageToFly) {
       console.warn("No image found for flying animation");
       addProductToCart(product, colorCode, size);
