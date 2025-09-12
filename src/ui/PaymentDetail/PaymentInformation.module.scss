@@ -1,0 +1,126 @@
+.container {
+  margin: 0 auto;
+
+  .logo {
+    @include flex-center;
+    width: fit-content;
+    height: 60px;
+    margin: 0 auto;
+
+    @include respond(md) {
+      display: none;
+    }
+  }
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 100%;
+  border-radius: 8px;
+  backdrop-filter: blur(10px);
+
+  @media (max-width: 768px) {
+    gap: 0;
+  }
+}
+
+.textInput {
+  :global(.formGroup) {
+    margin-bottom: 0;
+  }
+}
+
+.selectRow {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+
+  :global(.formGroup) {
+    margin-bottom: 0;
+  }
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+}
+
+.error {
+  color: var(--price-color);
+  font-size: 13px;
+  margin-top: 8px;
+  padding: 8px 12px;
+  background: rgba(231, 3, 3, 0.1);
+  border: 1px solid var(--price-color);
+  border-radius: 4px;
+  animation: slideIn $timing-fast $ease-smooth;
+
+  [data-theme="dark"] & {
+    background: rgba(231, 3, 3, 0.15);
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.actions {
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  width: 100%;
+}
+
+.editButton {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.editBtn,
+.cancelBtn {
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  margin-bottom: 10px;
+
+  @include respond(md) {
+    margin-right: 0;
+    padding: 8px 0;
+  }
+}
+
+.editBtn {
+  background: transparent;
+  color: var(--text-color);
+
+  &:hover {
+    background: var(--hover-bg);
+    border-color: var(--primary-color);
+  }
+}
+
+.cancelBtn {
+  color: var(--foreground);
+
+  &:disabled {
+    pointer-events: none !important;
+    user-select: none !important;
+    opacity: 0.5;
+    background: var(--input-disabled-bg, #222);
+    color: var(--foreground, #bbb);
+    cursor: not-allowed !important;
+    border-color: var(--input-border, #444);
+    box-shadow: none;
+    filter: none;
+  }
+}
