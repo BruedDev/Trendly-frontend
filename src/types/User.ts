@@ -26,4 +26,5 @@ export interface UserContextType {
   loading: boolean;
   error: string | null;
   fetchUser: () => Promise<void>;
+  setUser: (user: User | null) => void;
 }
