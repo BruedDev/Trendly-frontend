@@ -42,7 +42,7 @@ export interface InitiateCheckoutResponse {
   checkoutState: string;
 }
 
-interface AdminUnit {
+export interface AdminUnit {
   name: string;
   code: number;
 }
@@ -50,7 +50,6 @@ interface AdminUnit {
 export interface PaymentInformationProps {
   user: User | null;
   editProfile: (data: EditProfilePayload) => Promise<AccountUserResponse>;
-  fetchUser: () => Promise<void>;
   userLoading: boolean;
   userError: string | null;
   missingFields: string[];

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { PaymentDetailProps, ProductInToken } from "@/types/Pay";
 import PaymentDetailUI from "@/ui/PaymentDetail";
@@ -10,6 +10,7 @@ import {
   getDistricts,
   getWards,
 } from "@/services/VietnamRegions";
+import { User } from "@/types/User";
 
 interface AdminUnit {
   name: string;
@@ -30,7 +31,7 @@ interface DistrictResponse {
 
 export default function PaymentDetail(props: PaymentDetailProps) {
   const router = useRouter();
-  const { user, loading, error, fetchUser } = useUser();
+  const { user, loading, error, setUser } = useUser();
   const [provinces, setProvinces] = useState<AdminUnit[]>([]);
   const [districts, setDistricts] = useState<AdminUnit[]>([]);
   const [wards, setWards] = useState<AdminUnit[]>([]);
@@ -46,61 +47,55 @@ export default function PaymentDetail(props: PaymentDetailProps) {
   const [isEditing, setIsEditing] = useState(false);
   const [isInitialized, setIsInitialized] = useState(false);
 
+  // ✅ Optimistic missing fields calculation
+  const calculateMissingFields = useCallback(
+    (userData: User | null) => {
+      if (!userData) return [];
+
+      const missing: string[] = [];
+      if (!userData.fullName?.trim()) missing.push("fullName");
+      if (!userData.phone?.trim()) missing.push("phone");
+
+      const hasAddress = userData.address?.trim();
+      const hasLocationSelected =
+        selectedProvince && selectedDistrict && selectedWard;
+      if (!hasAddress && !hasLocationSelected) missing.push("address");
+
+      return missing;
+    },
+    [selectedProvince, selectedDistrict, selectedWard]
+  );
+
+  const currentMissingFields = calculateMissingFields(user);
+
   // ✅ Cập nhật products khi props.products thay đổi
   useEffect(() => {
     setProducts(props.products || []);
   }, [props.products]);
 
-  // ✅ Tính toán missing fields 1 lần duy nhất
-  const currentMissingFields = (() => {
-    if (!user || loading || !isInitialized) return [];
-
-    const missing: string[] = [];
-
-    if (!user.fullName?.trim()) {
-      missing.push("fullName");
-    }
-
-    if (!user.phone?.trim()) {
-      missing.push("phone");
-    }
-
-    const hasAddress = user.address?.trim();
-    const hasLocationSelected =
-      selectedProvince && selectedDistrict && selectedWard;
-    if (!hasAddress && !hasLocationSelected) {
-      missing.push("address");
-    }
-
-    return missing;
-  })();
-
-  // ✅ Quản lý chế độ chỉnh sửa
+  // ✅ Quản lý chế độ chỉnh sửa với delay
   useEffect(() => {
     if (!user || loading || !isInitialized) return;
 
-    if (currentMissingFields.length > 0) {
-      setIsEditing(true);
-    }
-  }, [
-    user,
-    loading,
-    selectedProvince,
-    selectedDistrict,
-    selectedWard,
-    isInitialized,
-    currentMissingFields,
-  ]);
+    // ✅ Delay để tránh flash effect
+    const timer = setTimeout(() => {
+      if (currentMissingFields.length > 0) {
+        setIsEditing(true);
+      }
+    }, 300);
 
-  // ✅ Khởi tạo provinces và đánh dấu đã sẵn sàng
+    return () => clearTimeout(timer);
+  }, [user, loading, isInitialized, currentMissingFields]);
+
+  // ✅ Khởi tạo provinces
   useEffect(() => {
     const fetchProvinces = async () => {
       try {
         const provinces = await getProvinces();
         setProvinces(provinces as AdminUnit[]);
-        setIsInitialized(true);
       } catch (error) {
         console.error("Failed to fetch provinces:", error);
+      } finally {
         setIsInitialized(true);
       }
     };
@@ -159,7 +154,6 @@ export default function PaymentDetail(props: PaymentDetailProps) {
     }
   };
 
-  // ✅ Logic xóa sản phẩm - SIÊU ĐỠN GIẢN
   const handleRemoveProduct = async (
     productId: string,
     color: string,
@@ -173,7 +167,6 @@ export default function PaymentDetail(props: PaymentDetailProps) {
         size,
       });
 
-      // ✅ Backend đã trả về JWT mới, chỉ cần update URL
       const newURL = `${window.location.pathname}?state=${result.checkoutState}`;
       router.replace(newURL);
 
@@ -184,7 +177,6 @@ export default function PaymentDetail(props: PaymentDetailProps) {
   };
 
   const handleContinue = async () => {
-    // Logic tiếp tục thanh toán
     if (!products || !products.length) {
       console.warn("Không có sản phẩm để thanh toán");
       return;
@@ -198,8 +190,10 @@ export default function PaymentDetail(props: PaymentDetailProps) {
     address: string;
   }) => {
     try {
-      await editProfile(formData);
-      await fetchUser();
+      const res = await editProfile(formData);
+      if (res && res.user) {
+        setUser(res.user);
+      }
       setIsEditing(false);
     } catch (error) {
       console.error("Lỗi khi cập nhật thông tin:", error);
@@ -211,17 +205,11 @@ export default function PaymentDetail(props: PaymentDetailProps) {
     user && !loading && isInitialized && currentMissingFields.length === 0
   );
 
-  // ✅ Không render UI nếu chưa khởi tạo xong
-  if (!isInitialized) {
-    return null;
-  }
-
   return (
     <PaymentDetailUI
       {...props}
       products={products}
       user={user}
-      fetchUser={fetchUser}
       userLoading={loading}
       userError={error}
       missingFields={currentMissingFields}
