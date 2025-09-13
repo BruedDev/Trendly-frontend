@@ -13,10 +13,8 @@ interface AdminUnit {
 export interface PaymentDetailUIProps extends PaymentDetailProps {
   user: User | null;
   editProfile: (data: EditProfilePayload) => Promise<AccountUserResponse>;
-  fetchUser: () => Promise<void>;
   userLoading: boolean;
   userError: string | null;
-
   provinces: AdminUnit[];
   districts: AdminUnit[];
   wards: AdminUnit[];
@@ -26,8 +24,6 @@ export interface PaymentDetailUIProps extends PaymentDetailProps {
   onProvinceChange: (code: string) => void;
   onDistrictChange: (code: string) => void;
   onWardChange: (code: string) => void;
-
-  // ✅ Thêm các props mới từ container
   isEditing: boolean;
   canCancelEdit: boolean;
   onEdit: () => void;
@@ -38,8 +34,6 @@ export interface PaymentDetailUIProps extends PaymentDetailProps {
     phone: string;
     address: string;
   }) => Promise<void>;
-
-  // ✅ Thêm handler cho việc xóa sản phẩm
   onRemoveProduct: (
     productId: string,
     color: string,
@@ -54,7 +48,6 @@ export default function PaymentDetailUI(props: PaymentDetailUIProps) {
         <PaymentInformation
           user={props.user}
           editProfile={props.editProfile}
-          fetchUser={props.fetchUser}
           userLoading={props.userLoading}
           userError={props.userError}
           missingFields={props.missingFields}

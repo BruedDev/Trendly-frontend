@@ -5,7 +5,6 @@ import styles from "./PaymentInformation.module.scss";
 import Link from "next/link";
 import Logo from "@/components/Header/Logo";
 
-// ✅ Extend interface để nhận thêm props từ container
 interface PaymentInformationExtendedProps extends PaymentInformationProps {
   isEditing: boolean;
   canCancelEdit: boolean;
@@ -24,7 +23,6 @@ export default function PaymentInformation(
 ) {
   const {
     user,
-    userLoading,
     userError,
     provinces,
     districts,
@@ -39,49 +37,59 @@ export default function PaymentInformation(
     canCancelEdit,
     onEdit,
     onCancel,
-    // onContinue,
     onSubmit,
   } = props;
 
-  // ✅ State riêng cho UI validation - chỉ check đã nhập gì chưa
   const [uiErrors, setUiErrors] = useState<string[]>([]);
   const [currentInputs, setCurrentInputs] = useState({
     fullName: "",
     phone: "",
   });
+  const [touched, setTouched] = useState<{ [key: string]: boolean }>({});
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
-  // ✅ Khởi tạo giá trị input khi user thay đổi
+  // ✅ Prevent flash error on first load
+  const [hasInteracted, setHasInteracted] = useState(false);
+  const [isInitialLoad, setIsInitialLoad] = useState(true);
+
+  // ✅ Delay showing errors to prevent flash
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setHasInteracted(true);
+      setIsInitialLoad(false);
+    }, 1200); // 1.2s delay để user có thời gian nhìn thấy data
+
+    return () => clearTimeout(timer);
+  }, []);
+
   useEffect(() => {
     if (user) {
       setCurrentInputs({
         fullName: user.fullName || "",
         phone: user.phone || "",
       });
+      setTouched({});
+      setIsSubmitted(false);
     }
   }, [user]);
 
-  // ✅ Logic UI validation - chỉ check rỗng hay không
   useEffect(() => {
+    // ✅ Chỉ validate sau khi đã interact hoặc đang editing
+    if (!hasInteracted && !isEditing) return;
+
     const errors: string[] = [];
-
-    // Check fullName: rỗng thì đỏ
-    if (!currentInputs.fullName.trim()) {
-      errors.push("fullName");
-    }
-
-    // Check phone: rỗng thì đỏ
-    if (!currentInputs.phone.trim()) {
-      errors.push("phone");
-    }
-
-    // Check address: rỗng VÀ chưa chọn tỉnh thì đỏ
+    if (!currentInputs.fullName.trim()) errors.push("fullName");
+    if (!currentInputs.phone.trim()) errors.push("phone");
     const hasUserAddress = user?.address && user.address.trim();
-    if (!hasUserAddress && !selectedProvince) {
-      errors.push("address");
-    }
-
+    if (!hasUserAddress && !selectedProvince) errors.push("address");
     setUiErrors(errors);
-  }, [currentInputs, selectedProvince, user?.address]);
+  }, [
+    currentInputs,
+    selectedProvince,
+    user?.address,
+    hasInteracted,
+    isEditing,
+  ]);
 
   const formFields = [
     {
@@ -138,16 +146,32 @@ export default function PaymentInformation(
     },
   ];
 
-  // ✅ Handler cho input changes
   const handleInputChange = (name: string, value: string) => {
     setCurrentInputs((prev) => ({
       ...prev,
       [name]: value,
     }));
+    setTouched((prev) => ({ ...prev, [name]: true }));
+  };
+
+  // ✅ Helper để quyết định có show error không
+  const shouldShowFieldError = (fieldName: string) => {
+    // Không show error trong initial load
+    if (isInitialLoad) return false;
+
+    // Show error nếu đã submit hoặc đã touch field đó và đã interact
+    return (
+      hasInteracted &&
+      (isSubmitted || touched[fieldName]) &&
+      uiErrors.includes(fieldName)
+    );
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsSubmitted(true);
+    setHasInteracted(true); // Force show errors when submitting
+
     const form = e.target as HTMLFormElement;
     const fullName = (form.elements.namedItem("fullName") as HTMLInputElement)
       .value;
@@ -176,9 +200,6 @@ export default function PaymentInformation(
     }
   };
 
-  if (userLoading) return null;
-  if (!user) return <div>Không tìm thấy thông tin người dùng.</div>;
-
   return (
     <div className={styles.container}>
       <Link href="/" className={styles.logo}>
@@ -204,9 +225,7 @@ export default function PaymentInformation(
         )}
       </div>
 
-      {/* ✅ Thêm id="payment-form" để PaymentDetailActions có thể submit */}
       <form id="payment-form" className={styles.form} onSubmit={handleSubmit}>
-        {/* Text inputs */}
         {formFields.map((field) => (
           <div key={field.name} className={styles.textInput}>
             <FormInput
@@ -217,7 +236,7 @@ export default function PaymentInformation(
               value={field.value}
               disabled={field.disabled}
               readOnly={field.readOnly}
-              isError={uiErrors.includes(field.name)} // ✅ Dùng uiErrors thay vì missingFields
+              isError={shouldShowFieldError(field.name)}
               onChange={
                 field.name === "fullName" || field.name === "phone"
                   ? (value) => handleInputChange(field.name, value)
@@ -227,7 +246,6 @@ export default function PaymentInformation(
           </div>
         ))}
 
-        {/* Select inputs */}
         <div className={styles.selectRow}>
           {selectFields.map((field) => (
             <FormInput
@@ -238,9 +256,12 @@ export default function PaymentInformation(
               value={field.value}
               placeholder={field.placeholder}
               options={field.options}
-              onChange={field.onChange}
+              onChange={(value) => {
+                field.onChange(value);
+                setTouched((prev) => ({ ...prev, [field.name]: true }));
+              }}
               disabled={field.disabled}
-              isError={uiErrors.includes(field.name)} // ✅ Dùng uiErrors thay vì missingFields
+              isError={shouldShowFieldError(field.name)}
             />
           ))}
         </div>
