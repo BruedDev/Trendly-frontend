@@ -1,11 +1,11 @@
-import styles from "./actions.module.scss";
+import styles from "./CheckoutActions.module.scss";
 
 interface PaymentDetailActionsProps {
   isEditing: boolean;
   onContinue: () => void;
 }
 
-export default function PaymentDetailActions({
+export default function CheckoutActions({
   isEditing,
   onContinue,
 }: PaymentDetailActionsProps) {

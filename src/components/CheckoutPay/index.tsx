@@ -1,10 +1,10 @@
 import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { PaymentDetailProps, ProductInToken } from "@/types/Pay";
-import PaymentDetailUI from "@/ui/PaymentDetail";
+import CheckoutPaylUI from "@/ui/CheckoutPay";
 import { useUser } from "@/hooks/useUser";
 import { editProfile } from "@/services/user";
-import { removeItem } from "@/services/pay";
+import { removeItem, confirmOrder } from "@/services/pay"; // ✅ thêm confirmOrder
 import {
   getProvinces,
   getDistricts,
@@ -29,7 +29,7 @@ interface DistrictResponse {
   wards: AdminUnit[];
 }
 
-export default function PaymentDetail(props: PaymentDetailProps) {
+export default function CheckoutPayComponent(props: PaymentDetailProps) {
   const router = useRouter();
   const { user, loading, error, setUser } = useUser();
   const [provinces, setProvinces] = useState<AdminUnit[]>([]);
@@ -77,7 +77,6 @@ export default function PaymentDetail(props: PaymentDetailProps) {
   useEffect(() => {
     if (!user || loading || !isInitialized) return;
 
-    // ✅ Delay để tránh flash effect
     const timer = setTimeout(() => {
       if (currentMissingFields.length > 0) {
         setIsEditing(true);
@@ -176,12 +175,38 @@ export default function PaymentDetail(props: PaymentDetailProps) {
     }
   };
 
-  const handleContinue = async () => {
+  // ✅ Hàm mới: gọi confirmOrder
+  const handleConfirmOrder = async () => {
     if (!products || !products.length) {
       console.warn("Không có sản phẩm để thanh toán");
       return;
     }
-    console.log("Tiếp tục thanh toán với sản phẩm:", products);
+
+    try {
+      const totalAmount = products.reduce(
+        (sum, p) => sum + (p.price || 0) * (p.quantity || 1),
+        0
+      );
+
+      const res = await confirmOrder({
+        products,
+        totalAmount,
+        paymentMethod: "paypal", // hiện tại chỉ PayPal
+      });
+
+      type PaypalLink = { rel: string; href: string };
+      const approvalUrl = res.payment.links?.find(
+        (l: PaypalLink) => l.rel === "approve"
+      )?.href;
+
+      if (approvalUrl) {
+        window.location.href = approvalUrl; // ✅ redirect sang PayPal
+      } else {
+        console.error("Không tìm thấy approvalUrl từ PayPal");
+      }
+    } catch (error) {
+      console.error("Lỗi khi xác nhận đơn:", error);
+    }
   };
 
   const handleSubmit = async (formData: {
@@ -206,7 +231,7 @@ export default function PaymentDetail(props: PaymentDetailProps) {
   );
 
   return (
-    <PaymentDetailUI
+    <CheckoutPaylUI
       {...props}
       products={products}
       user={user}
@@ -226,7 +251,7 @@ export default function PaymentDetail(props: PaymentDetailProps) {
       canCancelEdit={canCancelEdit}
       onEdit={handleEdit}
       onCancel={handleCancel}
-      onContinue={handleContinue}
+      onContinue={handleConfirmOrder} // ✅ truyền hàm mới
       onSubmit={handleSubmit}
       editProfile={editProfile}
       onRemoveProduct={handleRemoveProduct}

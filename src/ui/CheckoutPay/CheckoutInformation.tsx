@@ -1,26 +1,11 @@
 import { useState, useEffect } from "react";
 import { PaymentInformationProps } from "@/types/Pay";
 import FormInput from "@/components/FormInput";
-import styles from "./PaymentInformation.module.scss";
+import styles from "./CheckoutInformation.module.scss";
 import Link from "next/link";
 import Logo from "@/components/Header/Logo";
 
-interface PaymentInformationExtendedProps extends PaymentInformationProps {
-  isEditing: boolean;
-  canCancelEdit: boolean;
-  onEdit: () => void;
-  onCancel: () => void;
-  onContinue: () => void;
-  onSubmit: (formData: {
-    fullName: string;
-    phone: string;
-    address: string;
-  }) => Promise<void>;
-}
-
-export default function PaymentInformation(
-  props: PaymentInformationExtendedProps
-) {
+export default function CheckoutInformation(props: PaymentInformationProps) {
   const {
     user,
     userError,

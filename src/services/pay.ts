@@ -1,29 +1,29 @@
-// services/pay.ts
 import API_ROUTES from "@/router/Pay-routes";
 import getFetchApi from "@/utils/getFetchApi";
-import {
+import type {
   InitiateCheckoutResponse,
   ProductPayload,
   ProductInToken,
+  ConfirmOrderResponse,
+  PaypalSuccessResponse,
 } from "@/types/Pay";
 
-const { INITIATE_CHECKOUT, REMOVE_ITEM } = API_ROUTES;
+const { INITIATE_CHECKOUT, REMOVE_ITEM, CONFIRM, PAYPAL_SUCCESS } = API_ROUTES;
 
+// ✅ Khởi tạo checkout
 export async function initiateCheckout(
   products: ProductPayload[]
 ): Promise<InitiateCheckoutResponse> {
-  const response = await getFetchApi<
-    { products: ProductPayload[] },
-    InitiateCheckoutResponse
-  >(INITIATE_CHECKOUT, {
-    method: "POST",
-    data: { products },
-  });
-
-  return response;
+  return getFetchApi<{ products: ProductPayload[] }, InitiateCheckoutResponse>(
+    INITIATE_CHECKOUT,
+    {
+      method: "POST",
+      data: { products },
+    }
+  );
 }
 
-// ✅ Cập nhật type để nhận checkoutState mới từ backend
+// ✅ Xóa sản phẩm trong checkout
 export async function removeItem({
   products,
   productId,
@@ -36,7 +36,7 @@ export async function removeItem({
   size: string;
 }): Promise<{
   products: ProductInToken[];
-  checkoutState: string; // ✅ Thêm checkoutState mới
+  checkoutState: string;
 }> {
   return getFetchApi<
     {
@@ -47,10 +47,45 @@ export async function removeItem({
     },
     {
       products: ProductInToken[];
-      checkoutState: string; // ✅ Backend sẽ trả về JWT mới
+      checkoutState: string;
     }
   >(REMOVE_ITEM, {
     method: "DELETE",
     data: { products, productId, color, size },
   });
+}
+
+// ✅ Xác nhận đơn → tạo order pending → gọi PayPal
+export async function confirmOrder({
+  products,
+  totalAmount,
+  paymentMethod,
+}: {
+  products: ProductPayload[];
+  totalAmount: number;
+  paymentMethod: "paypal" | "momo" | "zalopay";
+}): Promise<ConfirmOrderResponse> {
+  return getFetchApi<
+    {
+      products: ProductPayload[];
+      totalAmount: number;
+      paymentMethod: string;
+    },
+    ConfirmOrderResponse
+  >(CONFIRM, {
+    method: "POST",
+    data: { products, totalAmount, paymentMethod },
+  });
+}
+
+// ✅ Xác nhận đơn → tạo order pending → gọi PayPal
+export async function handlePaypalSuccess(
+  token: string
+): Promise<PaypalSuccessResponse> {
+  return getFetchApi<undefined, PaypalSuccessResponse>(
+    `${PAYPAL_SUCCESS}?token=${token}`,
+    {
+      method: "GET",
+    }
+  );
 }
