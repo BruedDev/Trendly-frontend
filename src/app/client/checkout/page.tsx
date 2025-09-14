@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { jwtDecode } from "jwt-decode";
-import PaymentDetail from "@/components/PaymentDetail";
+import CheckoutPayComponent from "@/components/CheckoutPay";
 import { ProductInToken, DecodedToken } from "@/types/Pay";
 
 export default function CheckoutPage() {
@@ -35,6 +35,9 @@ export default function CheckoutPage() {
   }
 
   return (
-    <PaymentDetail products={decodedProducts} missingFields={missingFields} />
+    <CheckoutPayComponent
+      products={decodedProducts}
+      missingFields={missingFields}
+    />
   );
 }

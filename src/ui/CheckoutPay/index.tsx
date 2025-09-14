@@ -1,9 +1,9 @@
 import { PaymentDetailProps } from "@/types/Pay";
 import { User, EditProfilePayload, AccountUserResponse } from "@/types/User";
-import styles from "./PaymentDetail.module.scss";
-import PaymentInformation from "./PaymentInformation";
+import styles from "./CheckoutPaylUI.module.scss";
+import CheckoutInformation from "./CheckoutInformation";
 import YourProduct from "./YourProduct";
-import PaymentDetailActions from "./actions";
+import CheckoutActions from "./CheckoutActions";
 
 interface AdminUnit {
   name: string;
@@ -41,11 +41,11 @@ export interface PaymentDetailUIProps extends PaymentDetailProps {
   ) => Promise<void>;
 }
 
-export default function PaymentDetailUI(props: PaymentDetailUIProps) {
+export default function CheckoutPaylUI(props: PaymentDetailUIProps) {
   return (
     <div className={`${styles.container} container_section`}>
       <div className={styles.paymentInformation}>
-        <PaymentInformation
+        <CheckoutInformation
           user={props.user}
           editProfile={props.editProfile}
           userLoading={props.userLoading}
@@ -68,7 +68,7 @@ export default function PaymentDetailUI(props: PaymentDetailUIProps) {
           onSubmit={props.onSubmit}
         />
         <div className={styles.actions}>
-          <PaymentDetailActions
+          <CheckoutActions
             isEditing={props.isEditing}
             onContinue={props.onContinue}
           />
@@ -77,7 +77,7 @@ export default function PaymentDetailUI(props: PaymentDetailUIProps) {
       <div className={styles.yourProduct}>
         <YourProduct
           products={props.products}
-          onRemoveProduct={props.onRemoveProduct} // ✅ Truyền handler xuống YourProduct
+          onRemoveProduct={props.onRemoveProduct}
         />
       </div>
     </div>
