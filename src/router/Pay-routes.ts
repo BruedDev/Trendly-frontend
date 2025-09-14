@@ -5,4 +5,8 @@ export default createRoutes({
   INITIATE_CHECKOUT: "/pay/initiate-checkout",
   // Xóa sản phẩm
   REMOVE_ITEM: "/pay/remove-item",
+  // Xác nhận đơn → tạo order pending → gọi cổng thanh toán
+  CONFIRM: "/pay/confirm",
+  // Xử lý callback PayPal success
+  PAYPAL_SUCCESS: "/pay/paypal/success",
 });
