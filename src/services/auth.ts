@@ -17,9 +17,5 @@ export async function login(data: LoginData) {
     data,
   });
 
-  // if (response.success && response.token) {
-  //   document.cookie = `token=${response.token}; path=/; max-age=31536000; secure; samesite=none`;
-  // }
-
   return response;
 }
